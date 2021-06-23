@@ -12,7 +12,8 @@
     resBtnsDisabled,
     pColor,
     bColor,
-    remaininghands,
+    numOfPs,
+    numOfBs,
     remainingPlayers,
     remainingBankers;
   let calc = "1";
@@ -28,9 +29,10 @@
     betBtnsDisabled = false;
     resBtnsDisabled = false;
     pColor = bColor = "blue";
-    remaininghands = 80;
     remainingPlayers = 40;
     remainingBankers = 40;
+    numOfBs = 0;
+    numOfPs = 0;
   }
   reset();
 
@@ -58,11 +60,7 @@
     }
   }
 
-  function nextRound() {
-    betBtnsDisabled = false;
-    resBtnsDisabled = false;
-    bets.push(bet);
-    results.push(res);
+  function calc1() {
     if (res == "p") {
       if (pWinChance == bWinChance) {
         pWinChance /= 2;
@@ -86,6 +84,54 @@
         bWinChance = 100 - pWinChance;
       }
     }
+  }
+
+  function calc2() {
+    if (res == "p") {
+      numOfPs++;
+    } else {
+      numOfBs++;
+    }
+    pWinChance = (100 * numOfBs) / (numOfBs + numOfPs);
+    bWinChance = (100 * numOfPs) / (numOfPs + numOfBs);
+  }
+
+  function calc3() {
+    if (res == "p") {
+      if (remainingPlayers) {
+        remainingPlayers--;
+      }
+    } else {
+      if (remainingBankers) {
+        remainingBankers--;
+      }
+    }
+    pWinChance =
+      (100 * remainingPlayers) / (remainingPlayers + remainingBankers);
+    bWinChance =
+      (100 * remainingBankers) / (remainingPlayers + remainingBankers);
+  }
+
+  function nextRound() {
+    betBtnsDisabled = false;
+    resBtnsDisabled = false;
+    bets.push(bet);
+    results.push(res);
+
+    switch (calc) {
+      case "1":
+        calc1();
+        break;
+      case "2":
+        calc2();
+        break;
+      case "3":
+        calc3();
+        break;
+      default:
+        break;
+    }
+
     round++;
     bet = res = null;
 
@@ -131,13 +177,13 @@
     <hr />
     <h2>Winning %</h2>
     <h2 style="margin-left:50px; font-weight: 350; color:{pColor};">
-      Player: {pWinChance}%
+      Player: {Math.round(pWinChance * 1000) / 1000}%
     </h2>
     <h2 style="margin-left:50px; font-weight: 350; color:{bColor};">
-      Banker: {bWinChance}%
+      Banker: {Math.round(bWinChance * 1000) / 1000}%
     </h2>
-    <div style="float: right;">
-      <label for="strgies" style="display: inline;">Change Calculator: </label>
+    <div>
+      <label for="strgies" style="display: inline;">Switch Calculator: </label>
       <!-- svelte-ignore a11y-no-onchange -->
       <select
         style="padding-left: 20px; margin-left: 10px;"
