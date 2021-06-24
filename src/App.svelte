@@ -15,8 +15,10 @@
     numOfPs,
     numOfBs,
     remainingPlayers,
-    remainingBankers;
-  let calc = "1";
+    remainingBankers,
+    level,
+    levelMax,
+    calc = "1";
 
   function reset() {
     round = 1;
@@ -33,13 +35,13 @@
     remainingBankers = 40;
     numOfBs = 0;
     numOfPs = 0;
+    level = 0;
+    levelMax = 0;
   }
   reset();
 
   function betAction(e) {
     bet = e.srcElement.value;
-    nextRound();
-    return;
     betBtnsDisabled = false;
     if (resBtnsDisabled) {
       nextRound();
@@ -50,8 +52,6 @@
 
   function resAction(e) {
     res = e.srcElement.value;
-    nextRound();
-    return;
     resBtnsDisabled = false;
     if (betBtnsDisabled) {
       nextRound();
@@ -132,6 +132,14 @@
         break;
     }
 
+    if (bet === res) {
+      levelMax = levelMax < level ? level : levelMax;
+      level = 0;
+      bWinChance = pWinChance = 50;
+    } else {
+      level++;
+    }
+
     round++;
     bet = res = null;
 
@@ -156,7 +164,7 @@
   <hr />
   <br />
 
-  <div style="display: none;">
+  <div style="display: block;">
     <h2 style="display: inline; margin-right: 20px;">Bet:</h2>
     <button on:click={betAction} value="p" disabled={betBtnsDisabled}>
       Player
@@ -172,6 +180,9 @@
   <button on:click={resAction} value="b" disabled={resBtnsDisabled}>
     Banker
   </button>
+
+  <h2 style="margin-right: 20px;">Current Lvl: {level}</h2>
+  <h2 style="margin-right: 20px;">Max Lvl: {levelMax}</h2>
 
   <div style="display: block; position:fixed; bottom:0; margin-bottom: 50px;">
     <hr />
