@@ -184,7 +184,7 @@
   <h2 style="margin-right: 20px;">Current Lvl: {level}</h2>
   <h2 style="margin-right: 20px;">Max Lvl: {levelMax}</h2>
 
-  <div style="display: block; position:fixed; bottom:0; margin-bottom: 50px;">
+  <div style="display: block;">
     <hr />
     <h2>Winning %</h2>
     <h2 style="margin-left:50px; font-weight: 350; color:{pColor};">
@@ -211,4 +211,21 @@
       </select>
     </div>
   </div>
+  <div
+    class="card text-center shadow-lg p-3 mb-5 bg-white rounded"
+    style="width: 18rem;"
+  >
+    <div class="card-header">Featured</div>
+    <div class="card-body">
+      <h5 class="card-title">Special title treatment</h5>
+      <p class="card-text">
+        With supporting text below as a natural lead-in to additional content.
+      </p>
+    </div>
+    <div class="card-footer text-muted">2 days ago</div>
+  </div>
 </div>
+
+<style type="text/scss" lang="scss">
+  @import url("https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css");
+</style>
