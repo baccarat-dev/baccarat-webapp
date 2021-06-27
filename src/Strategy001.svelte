@@ -32,8 +32,8 @@
 
   export function reset() {
     pWinChance = bWinChance = 50;
-    currentLevel = 1;
     maxLevel = maxLevel < currentLevel ? currentLevel : maxLevel;
+    currentLevel = 1;
   }
 
   function decreasePercent(result) {
@@ -76,11 +76,11 @@
       Max Level: {maxLevel}
     </h5>
     <hr />
-    <h5 style="text-align: left;" class="text-primary">
-      Player Odds: {pWinChance}%
-    </h5>
-    <h5 style="text-align: left;" class="text-danger">
-      Banker Odds: {bWinChance}%
-    </h5>
+    <h4 style="text-align: center;" class="text-primary">
+      P : {pWinChance}%
+    </h4>
+    <h4 style="text-align: center;" class="text-danger">
+      B : {bWinChance}%
+    </h4>
   </div>
 </div>
