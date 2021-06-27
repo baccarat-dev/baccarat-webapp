@@ -1,6 +1,6 @@
 <script>
   let currentLevel = 1,
-    maxLevel = 1,
+    maxLevel = parseInt(localStorage.getItem("maxLevel")) || 1,
     pWinChance = 50,
     bWinChance = 50;
 
@@ -34,6 +34,7 @@
     pWinChance = bWinChance = 50;
     maxLevel = maxLevel < currentLevel ? currentLevel : maxLevel;
     currentLevel = 1;
+    localStorage.setItem("maxLevel", maxLevel);
   }
 
   function decreasePercent(result) {

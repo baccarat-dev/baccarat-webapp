@@ -11,6 +11,9 @@
   function nextRound() {
     results = [...results, result];
     winningNums = [...winningNums, winningNum];
+    localStorage.setItem("results", JSON.stringify(results));
+    localStorage.setItem("winningNums", JSON.stringify(winningNums));
+
     strategy001.run(
       round,
       result,
@@ -21,6 +24,9 @@
     round++;
   }
 
+  results = JSON.parse(localStorage.getItem("results")) || [];
+  winningNums = JSON.parse(localStorage.getItem("winningNums")) || [];
+
   const events = {
     onWinNumChange(e) {
       winningNum = parseInt(e.target.value);
@@ -30,12 +36,18 @@
       nextRound();
     },
     reset() {
+      const yes = confirm("you sure?");
+      if (!yes) {
+        return;
+      }
       round = 1;
       results = [];
       result = null;
       winningNum = 1;
       winningNums = [];
       strategy001.reset();
+      localStorage.removeItem("results");
+      localStorage.removeItem("winningNums");
     },
   };
 </script>
