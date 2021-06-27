@@ -1,231 +1,171 @@
 <script>
-  import { element } from "svelte/internal";
+  import Strategy001 from "./Strategy001.svelte";
+  let round, results, result, winningNum, winningNums;
 
-  let round,
-    bets,
-    results,
-    bet,
-    res,
-    pWinChance,
-    bWinChance,
-    betBtnsDisabled,
-    resBtnsDisabled,
-    pColor,
-    bColor,
-    numOfPs,
-    numOfBs,
-    remainingPlayers,
-    remainingBankers,
-    level,
-    levelMax,
-    calc = "1";
+  let strategy001;
 
   function reset() {
     round = 1;
-    bets = [];
     results = [];
-    bet = null;
-    res = null;
-    pWinChance = 50;
-    bWinChance = 50;
-    betBtnsDisabled = false;
-    resBtnsDisabled = false;
-    pColor = bColor = "blue";
-    remainingPlayers = 40;
-    remainingBankers = 40;
-    numOfBs = 0;
-    numOfPs = 0;
-    level = 0;
-    levelMax = 0;
+    result = null;
+    winningNum = 1;
+    winningNums = [];
   }
   reset();
 
-  function betAction(e) {
-    bet = e.srcElement.value;
-    betBtnsDisabled = false;
-    if (resBtnsDisabled) {
-      nextRound();
-    } else {
-      betBtnsDisabled = true;
-    }
-  }
-
-  function resAction(e) {
-    res = e.srcElement.value;
-    resBtnsDisabled = false;
-    if (betBtnsDisabled) {
-      nextRound();
-    } else {
-      resBtnsDisabled = true;
-    }
-  }
-
-  function calc1() {
-    if (res == "p") {
-      if (pWinChance == bWinChance) {
-        pWinChance /= 2;
-        bWinChance = 100 - pWinChance;
-      } else if (pWinChance < bWinChance) {
-        pWinChance /= 2;
-        bWinChance = 100 - pWinChance;
-      } else {
-        bWinChance *= 2;
-        pWinChance = 100 - bWinChance;
-      }
-    } else {
-      if (pWinChance == bWinChance) {
-        bWinChance /= 2;
-        pWinChance = 100 - bWinChance;
-      } else if (bWinChance < pWinChance) {
-        bWinChance /= 2;
-        pWinChance = 100 - bWinChance;
-      } else {
-        pWinChance *= 2;
-        bWinChance = 100 - pWinChance;
-      }
-    }
-  }
-
-  function calc2() {
-    if (res == "p") {
-      numOfPs++;
-    } else {
-      numOfBs++;
-    }
-    pWinChance = (100 * numOfBs) / (numOfBs + numOfPs);
-    bWinChance = (100 * numOfPs) / (numOfPs + numOfBs);
-  }
-
-  function calc3() {
-    if (res == "p") {
-      if (remainingPlayers) {
-        remainingPlayers--;
-      }
-    } else {
-      if (remainingBankers) {
-        remainingBankers--;
-      }
-    }
-    pWinChance =
-      (100 * remainingPlayers) / (remainingPlayers + remainingBankers);
-    bWinChance =
-      (100 * remainingBankers) / (remainingPlayers + remainingBankers);
+  function resultBtnAction(e) {
+    result = e.target.value;
+    nextRound();
   }
 
   function nextRound() {
-    betBtnsDisabled = false;
-    resBtnsDisabled = false;
-    bets.push(bet);
-    results.push(res);
+    results = [...results, result];
+    winningNums = [...winningNums, winningNum];
+    console.log(results);
 
-    switch (calc) {
-      case "1":
-        calc1();
-        break;
-      case "2":
-        calc2();
-        break;
-      case "3":
-        calc3();
-        break;
-      default:
-        break;
-    }
-
-    if (bet === res) {
-      levelMax = levelMax < level ? level : levelMax;
-      level = 0;
-      bWinChance = pWinChance = 50;
-    } else {
-      level++;
-    }
+    strategy001.run(result, winningNum, round, results);
 
     round++;
-    bet = res = null;
-
-    if (pWinChance > bWinChance) {
-      pColor = "green";
-      bColor = "red";
-    } else if (pWinChance < bWinChance) {
-      bColor = "green";
-      pColor = "red";
-    } else {
-      bColor = pColor = "blue";
-    }
+    bet = result = null;
   }
+
+  const events = {
+    onWinNumChanged(e) {
+      winningNum = e.target.value;
+    },
+  };
 </script>
 
-<div style="margin: 3%;">
-  <button
-    style="float: left; background:#c00; padding-left:20px; padding-right:20px; color:aliceblue;"
-    on:click={reset}>Reset</button
-  >
-  <h1 style=" text-align: center; ">Round N°{round}</h1>
-  <hr />
-  <br />
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-6">
+      <div style="margin: 3%;">
+        <h3>Round N°{round}</h3>
 
-  <div style="display: block;">
-    <h2 style="display: inline; margin-right: 20px;">Bet:</h2>
-    <button on:click={betAction} value="p" disabled={betBtnsDisabled}>
-      Player
-    </button>
-    <button on:click={betAction} value="b" disabled={betBtnsDisabled}>
-      Banker
-    </button>
-  </div>
-  <h2 style="display: inline; margin-right: 20px;">Res:</h2>
-  <button on:click={resAction} value="p" disabled={resBtnsDisabled}>
-    Player
-  </button>
-  <button on:click={resAction} value="b" disabled={resBtnsDisabled}>
-    Banker
-  </button>
+        <blockquote>
+          <i class="text-secondary"
+            >(NB: Choose a number first then press P/B)</i
+          >
+        </blockquote>
 
-  <h2 style="margin-right: 20px;">Current Lvl: {level}</h2>
-  <h2 style="margin-right: 20px;">Max Lvl: {levelMax}</h2>
+        <input
+          on:input={(e) => {
+            winningNum = e.target.value;
+          }}
+          style="width: 70px; display:inline;"
+          type="number"
+          min="1"
+          max="10"
+          value={winningNum}
+          class="form-control input-lg"
+        />
+        <div class="btn-group m-0 p-0" style="margin: 0; padding:0;">
+          <button
+            on:click={(e) => {
+              if (winningNum > 1) winningNum--;
+            }}
+            class="btn btn-round btn-secondary">«</button
+          >
+          <button
+            on:click={events.onWinNumChanged}
+            value="1"
+            class="btn btn-secondary">1</button
+          >
+          <button
+            on:click={events.onWinNumChanged}
+            value="2"
+            class="btn btn-secondary">2</button
+          >
+          <button
+            on:click={events.onWinNumChanged}
+            value="3"
+            class="btn btn-secondary">3</button
+          >
+          <button
+            on:click={events.onWinNumChanged}
+            value="4"
+            class="btn btn-secondary">4</button
+          >
+          <button
+            on:click={events.onWinNumChanged}
+            value="5"
+            class="btn btn-secondary">5</button
+          >
+          <button
+            on:click={events.onWinNumChanged}
+            value="6"
+            class="btn btn-secondary">6</button
+          >
+          <button
+            on:click={events.onWinNumChanged}
+            value="7"
+            class="btn btn-secondary">7</button
+          >
+          <button
+            on:click={events.onWinNumChanged}
+            value="8"
+            class="btn btn-secondary">8</button
+          >
+          <button
+            on:click={events.onWinNumChanged}
+            value="9"
+            class="btn btn-secondary">9</button
+          >
+          <button
+            on:click={events.onWinNumChanged}
+            value="10"
+            type="button"
+            class="btn btn-secondary">10</button
+          >
+          <button
+            on:click={(e) => {
+              if (winningNum < 10) winningNum++;
+            }}
+            value="nxt"
+            class="btn btn-round btn-secondary">»</button
+          >
+        </div>
 
-  <div style="display: block;">
-    <hr />
-    <h2>Winning %</h2>
-    <h2 style="margin-left:50px; font-weight: 350; color:{pColor};">
-      Player: {Math.round(pWinChance * 1000) / 1000}%
-    </h2>
-    <h2 style="margin-left:50px; font-weight: 350; color:{bColor};">
-      Banker: {Math.round(bWinChance * 1000) / 1000}%
-    </h2>
-    <div>
-      <label for="strgies" style="display: inline;">Switch Calculator: </label>
-      <!-- svelte-ignore a11y-no-onchange -->
-      <select
-        style="padding-left: 20px; margin-left: 10px;"
-        name="strategy"
-        id="strgies"
-        on:change={(e) => {
-          reset();
-          calc = e.target.value;
-        }}
-      >
-        <option value="1">{"  1  "} </option>
-        <option value="2">{"  2  "} </option>
-        <option value="3">{"  3  "} </option>
-      </select>
+        <button
+          value="P"
+          on:click={resultBtnAction}
+          class="btn btn-lg btn-primary "
+          type="button">P</button
+        >
+        <button
+          value="B"
+          on:click={resultBtnAction}
+          class="btn btn-lg btn-danger "
+          type="button">B</button
+        >
+
+        <br /><br />
+        <Strategy001 bind:this={strategy001} />
+      </div>
     </div>
-  </div>
-  <div
-    class="card text-center shadow-lg p-3 mb-5 bg-white rounded"
-    style="width: 18rem;"
-  >
-    <div class="card-header">Featured</div>
-    <div class="card-body">
-      <h5 class="card-title">Special title treatment</h5>
-      <p class="card-text">
-        With supporting text below as a natural lead-in to additional content.
-      </p>
+
+    <div class="my-2 col-6">
+      <div
+        style="float:left; border-left: 1px solid #bbb;
+    height: 500px; margin-right: 1%;"
+      />
+      <h3>History</h3>
+      <hr />
+      <div class="d-flex flex-wrap">
+        {#each results as res, i}
+          <div class="card p-0 m-2" style="width: 66px;">
+            <h5 class="card-header p-1 m-0 text-center">
+              <span>
+                {res} - {winningNums[i]}
+              </span>
+            </h5>
+            <div class="card-body p-0 m-0 text-center">
+              {i + 1}
+            </div>
+          </div>
+        {/each}
+      </div>
     </div>
-    <div class="card-footer text-muted">2 days ago</div>
+    <br /> <br /><br />
   </div>
 </div>
-
-<style type="text/scss" lang="scss">
-  @import url("https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css");
-</style>

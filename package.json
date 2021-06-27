@@ -18,6 +18,8 @@
     "svelte": "^3.0.0"
   },
   "dependencies": {
+    "@types/bootstrap-slider": "^11.0.0",
+    "bootstrap-slider": "^11.0.2",
     "node-sass": "^6.0.1",
     "sirv-cli": "^1.0.0",
     "svelte-preprocess": "^4.7.3"
