@@ -48,6 +48,7 @@
       strategy001.reset();
       localStorage.removeItem("results");
       localStorage.removeItem("winningNums");
+      location.reload();
     },
   };
 </script>
