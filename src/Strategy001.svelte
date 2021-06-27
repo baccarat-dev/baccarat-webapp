@@ -4,17 +4,41 @@
     pWinChance = 50,
     bWinChance = 50;
 
-  export function run(result, winningNum, round, results) {
+  export function run(round, result, prevNum, prevResult) {
     if (round == 1) {
       return;
     }
+    console.log(prevNum, result, prevResult);
+    if (isEven(prevNum)) {
+      if (prevResult == result) {
+        // strategy won, we reset
+        reset();
+      } else {
+        // strategy lost
+        currentLevel++;
+        decreasePercent(prevResult);
+      }
+    } else {
+      if (prevResult != result) {
+        // strategy won, we reset
+        reset();
+      } else {
+        // strategy lost
+        currentLevel++;
+        decreasePercent(result === "P" ? "B" : "P");
+      }
+    }
+  }
 
-    pWinChance = 1;
+  export function reset() {
+    pWinChance = bWinChance = 50;
+    currentLevel = 1;
+    maxLevel = maxLevel < currentLevel ? currentLevel : maxLevel;
+  }
+
+  function decreasePercent(result) {
     if (result == "P") {
-      if (pWinChance == bWinChance) {
-        pWinChance /= 2;
-        bWinChance = 100 - pWinChance;
-      } else if (pWinChance < bWinChance) {
+      if (pWinChance <= 50) {
         pWinChance /= 2;
         bWinChance = 100 - pWinChance;
       } else {
@@ -22,23 +46,18 @@
         pWinChance = 100 - bWinChance;
       }
     } else if (result == "B") {
-      if (pWinChance == bWinChance) {
-        bWinChance /= 2;
-        pWinChance = 100 - bWinChance;
-      } else if (bWinChance < pWinChance) {
+      if (bWinChance <= 50) {
         bWinChance /= 2;
         pWinChance = 100 - bWinChance;
       } else {
         pWinChance *= 2;
         bWinChance = 100 - pWinChance;
       }
-    } else {
-      alert("tie");
     }
   }
 
   function isEven(x) {
-    return (x & -x) === 2;
+    return (x & -x) !== 1;
   }
 </script>
 
