@@ -16,6 +16,8 @@
       } else {
         // strategy lost
         currentLevel++;
+        maxLevel = maxLevel < currentLevel ? currentLevel : maxLevel;
+        localStorage.setItem("maxLevel", maxLevel);
         decreasePercent(prevResult);
       }
     } else {
@@ -25,6 +27,8 @@
       } else {
         // strategy lost
         currentLevel++;
+        maxLevel = maxLevel < currentLevel ? currentLevel : maxLevel;
+        localStorage.setItem("maxLevel", maxLevel);
         decreasePercent(result === "P" ? "B" : "P");
       }
     }
@@ -34,7 +38,7 @@
     pWinChance = bWinChance = 50;
     maxLevel = maxLevel < currentLevel ? currentLevel : maxLevel;
     currentLevel = 1;
-    localStorage.setItem("maxLevel", maxLevel);
+    localStorage.removeItem("maxLevel", maxLevel);
   }
 
   function decreasePercent(result) {
