@@ -1,16 +1,32 @@
 <script>
   import Strategy001 from "./Strategy001.svelte";
-  let round = 1,
-    results = [],
-    result = null,
-    winningNum = 1,
-    winningNums = [];
-
+  import {
+    round,
+    results,
+    result,
+    winningNum,
+    winningNums,
+  } from "./store/sessionStore";
   let strategy001;
 
+  import { createClient } from "@supabase/supabase-js";
+
+  const supabaseUrl = __api.env.SVELTE_APP_SUPABASE_URL;
+  const supabaseAnonKey = __api.env.SVELTE_APP_SUPABASE_ANON_KEY;
+
+  export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+  (async () => {
+    const { data, error } = await supabase.from("records").select(`
+      id
+  `);
+    console.log(data, error);
+  })();
+
   function nextRound() {
-    results = [...results, result];
-    winningNums = [...winningNums, winningNum];
+    console.log(results, $results);
+    results.update((x) => [...x, result]);
+    winningNums.update((x) => [...x, winningNum]);
     localStorage.setItem("results", JSON.stringify(results));
     localStorage.setItem("winningNums", JSON.stringify(winningNums));
 
@@ -21,18 +37,18 @@
       results[results.length - 2]
     );
 
-    round++;
+    round.update((r) => r + 1);
   }
 
-  results = JSON.parse(localStorage.getItem("results")) || [];
-  winningNums = JSON.parse(localStorage.getItem("winningNums")) || [];
+  results.set(JSON.parse(localStorage.getItem("results")) || []);
+  winningNums.set(JSON.parse(localStorage.getItem("winningNums")) || []);
 
   const events = {
     onWinNumChange(e) {
-      winningNum = parseInt(e.target.value);
+      winningNum.set(parseInt(e.target.value));
     },
     onResultBtnClick(e) {
-      result = e.target.value;
+      result.set(e.target.value);
       nextRound();
     },
     reset() {
@@ -40,11 +56,11 @@
       if (!yes) {
         return;
       }
-      round = 1;
-      results = [];
-      result = null;
-      winningNum = 1;
-      winningNums = [];
+      // round = 1;
+      // results = [];
+      // result = null;
+      // winningNum = 1;
+      // winningNums = [];
       strategy001.reset();
       localStorage.removeItem("results");
       localStorage.removeItem("winningNums");
@@ -63,7 +79,7 @@
       >
       <br />
       <div style="margin: 3%;">
-        <h3>Round N°{round}</h3>
+        <h3>Round N°{$round}</h3>
 
         <blockquote>
           <i class="text-secondary"
@@ -74,19 +90,19 @@
         <div class="d-flex flex-wrap">
           <input
             on:input={(e) => {
-              winningNum = e.target.value;
+              winningNum.set(e.target.value);
             }}
             style="width: 70px; display:inline; margin-right: 7px;"
             type="number"
             min="1"
             max="10"
-            value={winningNum}
+            value={$winningNum}
             class="form-control input-lg"
           />
           <div class="btn-group d-flex flex-wrap">
             <button
-              on:click={(e) => {
-                if (winningNum > 1) winningNum--;
+              on:click={() => {
+                if (winningNum > 1) winningNum.update((n) => n - 1);
               }}
               class="btn btn-round btn-secondary">«</button
             >
@@ -143,7 +159,7 @@
             >
             <button
               on:click={(e) => {
-                if (winningNum < 10) winningNum++;
+                if (winningNum < 10) winningNum.set(winningNum + 1);
               }}
               value="nxt"
               class="btn btn-round btn-secondary">»</button
