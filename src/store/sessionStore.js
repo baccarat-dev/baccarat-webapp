@@ -2,10 +2,10 @@ import { writable } from "svelte/store";
 
 export const count = writable(0);
 
-const round = writable(0),
-  result = writable(0),
-  results = writable([]),
-  winningNum = writable(0),
-  winningNums = writable([]);
+const round = writable(1),
+  result = writable(null),
+  resultsList = writable([]),
+  winNbr = writable(1),
+  winNbrsList = writable([]);
 
-export { round, result, results, winningNum, winningNums };
+export { round, result, resultsList, winNbr, winNbrsList };
