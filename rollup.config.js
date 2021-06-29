@@ -37,6 +37,7 @@ function serve() {
 }
 
 export default {
+  context: "window",
   input: "src/main.js",
   output: {
     sourcemap: true,
@@ -46,6 +47,7 @@ export default {
   },
   plugins: [
     replace({
+      preventAssignment: true,
       __api: JSON.stringify({
         env: {
           isProd: production,

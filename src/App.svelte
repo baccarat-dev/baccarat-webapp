@@ -1,217 +1,85 @@
 <script>
   import { onMount } from "svelte";
+
+  //strategies
   import Strategy001 from "./components/strategies/Strategy001.svelte";
-  import {
-    round,
-    result,
-    resultsList,
-    winNbr,
-    winNbrsList,
-  } from "./store/sessionStore";
-  import { createClient } from "@supabase/supabase-js";
-  const supabase = createClient(
-    __api.env.SVELTE_APP_SUPABASE_URL,
-    __api.env.SVELTE_APP_SUPABASE_ANON_KEY
-  );
   let strategy001;
 
-  let isPageLoading = true;
+  //state
+  import { isPageLoading } from "./store/sessionStore";
 
+  //components
+  import Toast from "./components/Toast.svelte";
+  import Loader from "./components/Loader.svelte";
   import Hamburger from "./components/sidebar/Hamburger.svelte";
-
-  onMount(async () => {
-    (async () => {
-      const { data, error } = await supabase
-        .from("records")
-        .select("result,winNbr");
-      $resultsList = data.map((x) => x.result);
-      $winNbrsList = data.map((x) => x.winNbr);
-      isPageLoading = false;
-    })();
+  import Recorder from "./components/game/Recorder.svelte";
+  import RecordsHistory from "./components/game/RecordsHistory.svelte";
+  let recordsHistory;
+  onMount(() => {
+    recordsHistory.fetch();
   });
-
-  function nextRound() {
-    (async () => {
-      const { data, error } = await supabase
-        .from("records")
-        .insert([{ result: $result, winNbr: $winNbr }]);
-      console.log(data, error);
-    })();
-
-    $resultsList = [...$resultsList, $result];
-    $winNbrsList = [...$winNbrsList, $winNbr];
-
-    console.log($resultsList);
-    console.log($winNbrsList);
-
-    strategy001.run(
-      $round,
-      $result,
-      $winNbrsList[$winNbrsList.length - 2],
-      $resultsList[$resultsList.length - 2]
-    );
-
-    $round++;
-  }
-
-  const events = {
-    onWinNumChange(e) {
-      const s = e.target.value;
-      console.log(s === ">");
-      if (s == "<") {
-        if ($winNbr > 1) {
-          $winNbr--;
-        }
-      } else if (s == ">") {
-        if ($winNbr < 9) {
-          $winNbr++;
-        }
-      } else {
-        $winNbr = parseInt(e.target.value);
-      }
-    },
-    onResultBtnClick(e) {
-      $result = e.target.value;
-      nextRound();
-    },
-    async reset() {
-      const yes = confirm("you sure?");
-      if (!yes) {
-        return;
-      }
-      const { data, error } = await supabase.from("records").delete().match({});
-      console.log(data, error);
-      $round = 1;
-      $resultsList = [];
-      $result = null;
-      $winNbr = 1;
-      $winNbrsList = [];
-      strategy001.reset();
-    },
-  };
 </script>
 
 <div style="margin: 0;padding:0;">
-  {#if isPageLoading}
-    <div
-      class="text-center"
-      style="height:100vh; display: flex; justify-content: center; align-items: center;"
-    >
-      <div
-        class="spinner-border text-dark"
-        role="status"
-        style="width: 5rem; height: 5rem;"
-      >
-        <span class="sr-only" />
+  <div
+    style={"display: " + ($isPageLoading === true ? "block" : "none") + " ;"}
+  >
+    <Loader />
+  </div>
+  <div>
+    <div class="container-fluid p-0 bg-white">
+      <Toast />
+      <div style="height: 90px;visibility:hidden;">
+        Pushes content underneath the navbar
       </div>
-    </div>
-  {:else}
-    <div class="home">
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3 mb-3">
-        <Hamburger />
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav" />
-        </div>
-        <button
-          class="m-0 btn btn-danger btn-md px-4 text-white mx-4"
-          style="float: right;"
-          on:click={events.reset}>Restart</button
+      <Hamburger />
+      <nav
+        style="position: fixed;top:0;width:100%; z-index: 99;"
+        class="navbar navbar-expand-lg navbar-dark bg-dark py-3 mb-3"
+      >
+        <span class="navbar-brand h1" style="margin-left: 75px;"
+          >Baccarat App</span
         >
       </nav>
-      <div class="container-fluid">
+
+      <br />
+
+      <div class="row m-0 bg-light pt-3 mb-5">
         <div class="row">
-          <div class="col-lg-6 col-sm-12">
-            <div style="margin: 10px;">
-              <h3>Round N°{$round}</h3>
-
-              <blockquote>
-                <i class="text-secondary"
-                  >( NB: Choose a number first then press P/B. )</i
-                >
-              </blockquote>
-
-              <div class="d-flex flex-wrap">
-                <input
-                  on:input={events.onWinNumChange}
-                  style="width: 70px; display:inline; margin-right: 7px;"
-                  type="number"
-                  min="0"
-                  max="9"
-                  value={$winNbr}
-                  class="form-control input-lg"
-                />
-                <div class="btn-group d-flex flex-wrap">
-                  <button
-                    on:click={events.onWinNumChange}
-                    value="<"
-                    class="btn btn-round btn-secondary">«</button
-                  >
-
-                  {#each Array(10) as _, i}
-                    <button
-                      on:click={events.onWinNumChange}
-                      value={i}
-                      class="btn btn-secondary">{i}</button
-                    >
-                  {/each}
-
-                  <button
-                    on:click={events.onWinNumChange}
-                    value=">"
-                    class="btn btn-round btn-secondary">»</button
-                  >
-                </div>
-
-                <button
-                  value="P"
-                  on:click={events.onResultBtnClick}
-                  class="btn btn-lg btn-primary mx-2"
-                  type="button">P</button
-                >
-                <button
-                  value="B"
-                  on:click={events.onResultBtnClick}
-                  class="btn btn-lg btn-danger "
-                  type="button">B</button
-                >
-              </div>
-
-              <br /><br />
-              <Strategy001 bind:this={strategy001} />
-            </div>
+          <div class="my-2 col-lg-7 col-sm-12 p-2">
+            <Recorder />
           </div>
 
-          <div class="my-2 col-lg-6 col-sm-12">
-            <div
-              style="float:left; border-left: 1px solid #bbb;
-    height: 500px; margin-right: 1%;"
-            />
-            <h3 class="text-center">History</h3>
-            <hr />
-            {#if $resultsList.length}
-              <div class="d-flex flex-wrap">
-                {#each $resultsList as res, i}
-                  <div class="card p-0 m-2" style="width: 66px;">
-                    <h5 class="card-header p-1 m-0 text-center">
-                      <span>
-                        {res} - {$winNbrsList[i]}
-                      </span>
-                    </h5>
-                    <div class="card-body p-0 m-0 text-center text-muted font-">
-                      {i + 1}
-                    </div>
-                  </div>
-                {/each}
-              </div>
-            {:else}
-              <div class="alert alert-warning mx-2" role="alert">
-                <h3 class="text-center text-warning">No Recent Data Yet</h3>
-              </div>
-            {/if}
+          <div class="my-2 col-lg-5 col-sm-12 p-2">
+            <RecordsHistory bind:this={recordsHistory} />
           </div>
-          <br /> <br /><br />
+        </div>
+        <br />
+      </div>
+      <!-- End recording Row -->
+      <div class="row m-0 bg-light pt-3">
+        <div class="row">
+          <div class="col">
+            <h1 class="text-primary mx-3" style="font-size: 1.75rem;">
+              Strategies:
+            </h1>
+          </div>
+        </div>
+        <div class="row">
+          <hr class="mx-4" style="width: 15rem;" />
+        </div>
+        <div class="row my-3">
+          <div class="col mx-5">
+            <Strategy001 bind:this={strategy001} />
+          </div>
         </div>
       </div>
+      <!-- End Strategies Row -->
+      <br /><br />
     </div>
-  {/if}
+    <!-- End Container  -->
+  </div>
 </div>
+
+<style>
+</style>

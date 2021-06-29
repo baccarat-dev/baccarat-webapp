@@ -65,7 +65,7 @@
 
 <div
   class="card text-center shadow-lg p-3 rounded border-primary"
-  style="width: 18rem;"
+  style="width: 15rem;"
 >
   <div class="card-header bg-light">
     <h6 class="card-title text-secondary">Strategy N°001 (Odd/Even)</h6>
@@ -77,12 +77,14 @@
     <h5 style="text-align: left;">
       Max Level: {maxLevel}
     </h5>
-    <hr />
-    <h4 style="text-align: center;" class="text-primary">
-      P : {pWinChance}%
-    </h4>
-    <h4 style="text-align: center;" class="text-danger">
-      B : {bWinChance}%
-    </h4>
+    <br />
+    <div class="d-flex">
+      <h4 style="text-align: center;" class="text-primary">
+        P: {pWinChance}%
+      </h4>
+      <h4 style="text-align: center; margin-left: auto;" class="text-danger">
+        B: {bWinChance}%
+      </h4>
+    </div>
   </div>
 </div>

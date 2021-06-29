@@ -1,20 +1,32 @@
+<script>
+  import MenuContent from "./MenuContent.svelte";
+  import { sideBarShow } from "../../store/sessionStore";
+</script>
+
 <div style="margin-right: 50px;">
   <input
     type="checkbox"
-    class="openSidebarMenu"
+    class="openSideBarMenu"
     id="openSidebarMenu"
-    style="z-index: 102;"
+    style="z-index: 102;position:fixed;top:27px;left:27px;"
+    checked={$sideBarShow}
+    on:change={() => {
+      console.log($sideBarShow);
+      $sideBarShow = !$sideBarShow;
+    }}
   />
   <label
     for="openSidebarMenu"
     class="sidebarIconToggle"
-    style="display:block; z-index: 101;"
+    style="display:block; z-index: 101;position:fixed;top:27px;left:27px;"
   >
     <div class="spinner diagonal part-1" />
     <div class="spinner horizontal" />
     <div class="spinner diagonal part-2" />
   </label>
-  <div id="sidebarMenu">p</div>
+  <div id="SideBarMenuConent" style="position:fixed;" class="bg-dark">
+    <MenuContent />
+  </div>
   <div id="overlay" />
 </div>
 
@@ -32,19 +44,21 @@
     opacity: 0;
     z-index: 99;
   }
-  #sidebarMenu {
+  #SideBarMenuConent {
     z-index: 100;
     height: 100%;
     position: fixed;
     left: 0;
     top: 0;
-    width: 250px;
-    transform: translateX(-250px);
+    width: 50vw;
+    min-width: 500px;
+    max-width: 100vw;
+    transform: translateX(-150vw);
     transition: transform 250ms ease-in-out;
-    background: #222;
+    padding-top: 100px;
   }
 
-  input[type="checkbox"]:checked ~ #sidebarMenu {
+  input[type="checkbox"]:checked ~ #SideBarMenuConent {
     transform: translateX(0);
   }
   input[type="checkbox"]:checked ~ #overlay {
@@ -65,7 +79,7 @@
     z-index: 99;
     height: 100%;
     width: 100%;
-    top: 22px;
+    top: 27px;
     left: 15px;
     height: 22px;
     width: 22px;
