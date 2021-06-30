@@ -9,17 +9,24 @@
   import { isPageLoading } from "./store/sessionStore";
 
   //components
-  import Toast from "./components/Toast.svelte";
-  import Loader from "./components/Loader.svelte";
+  import Toast from "./components/misc/Toast.svelte";
+  import Loader from "./components/misc/Loader.svelte";
   import Hamburger from "./components/sidebar/Hamburger.svelte";
   import Recorder from "./components/game/Recorder.svelte";
+  import History from "./components/game/RecordsHistory.svelte";
+  let HistoryObj;
+  let LoaderObj;
+
+  onMount(async () => {
+    await HistoryObj.fetch();
+  });
 </script>
 
 <div style="margin: 0;padding:0;">
   <div
     style={"display: " + ($isPageLoading === true ? "block" : "none") + " ;"}
   >
-    <Loader />
+    <Loader bind:this={LoaderObj} {isPageLoading} />
   </div>
   <div>
     <div class="container-fluid p-0 bg-white">
@@ -41,14 +48,12 @@
 
       <div class="row m-0 bg-light pt-3 mb-5">
         <div class="row">
-          <div class="my-2 col-lg-7 col-sm-12 p-2">
-            <Recorder />
-          </div>
-
-          <div class="my-2 col-lg-5 col-sm-12 p-2">
-            <p>-</p>
-          </div>
+          <Recorder />
         </div>
+        <div class="row">
+          <History bind:this={HistoryObj} />
+        </div>
+
         <br />
       </div>
       <!-- End recording Row -->

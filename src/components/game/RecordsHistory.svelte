@@ -7,9 +7,10 @@
   } from "../../store/sessionStore";
 
   export async function fetch() {
-    // const { data, error } = await supabase.from("test").select("id");
-    // $resultsList = data.slice(0, 100).map((x) => x.id);
-    // $winNbrsList = data.slice(0, 100).map((x) => x.id);
+    const { data, error } = await supabase.from("terl").select("res,nbr");
+    $resultsList = data.slice(0, 1000).map((x) => x.res);
+    $winNbrsList = data.slice(0, 1000).map((x) => x.nbr);
+    console.log(data, error);
     $isPageLoading = false;
   }
 </script>
@@ -24,7 +25,7 @@
         <div class="card p-0 m-2" style="width: 66px;">
           <h5 class="card-header p-1 m-0 text-center">
             <span>
-              {res}
+              {res} - {winNbrsList[0]}
               <!--  - {$winNbrsList[i]} -->
             </span>
           </h5>

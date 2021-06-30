@@ -4,11 +4,12 @@
   import { backOut } from "svelte/easing";
 
   let toasts = [];
-  let retainMs = 2500;
+  let duration = 2500;
   let type = "";
   let toastId = 0;
-  const pushToast = (msg = "", _type = "success") => {
+  const pushToast = (msg = "", _type = "success", _duration = 2500) => {
     type = _type;
+    duration = _duration;
     toasts = [
       ...toasts,
       {
@@ -18,7 +19,7 @@
     ];
     setTimeout(() => {
       unshiftToast();
-    }, retainMs);
+    }, duration);
   };
 
   const unshiftToast = () => {
