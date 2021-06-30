@@ -7,9 +7,9 @@
   } from "../../store/sessionStore";
 
   export async function fetch() {
-    const { data, error } = await supabase.from("test").select("id");
-    $resultsList = data.slice(0, 100).map((x) => x.id);
-    $winNbrsList = data.slice(0, 100).map((x) => x.id);
+    // const { data, error } = await supabase.from("test").select("id");
+    // $resultsList = data.slice(0, 100).map((x) => x.id);
+    // $winNbrsList = data.slice(0, 100).map((x) => x.id);
     $isPageLoading = false;
   }
 </script>

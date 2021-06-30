@@ -13,11 +13,6 @@
   import Loader from "./components/Loader.svelte";
   import Hamburger from "./components/sidebar/Hamburger.svelte";
   import Recorder from "./components/game/Recorder.svelte";
-  import RecordsHistory from "./components/game/RecordsHistory.svelte";
-  let recordsHistory;
-  onMount(() => {
-    recordsHistory.fetch();
-  });
 </script>
 
 <div style="margin: 0;padding:0;">
@@ -51,7 +46,7 @@
           </div>
 
           <div class="my-2 col-lg-5 col-sm-12 p-2">
-            <RecordsHistory bind:this={recordsHistory} />
+            <p>-</p>
           </div>
         </div>
         <br />

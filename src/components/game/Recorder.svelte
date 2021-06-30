@@ -70,7 +70,7 @@
             on:click={onChangeWinNbr}
             value={i}
             style="border-radius: 0;"
-            class={"btn btn-outline-dark btn-lg mr-1 " +
+            class={"btn btn-outline-dark btn-lg mr-1 display-4 " +
               (winNbrBtnsStatus[i] === 1 ? "active" : "")}>{i}</button
           >
         {/each}
