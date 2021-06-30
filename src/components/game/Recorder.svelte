@@ -63,14 +63,14 @@
           on:click={onChangeWinNbr}
           value="<"
           style="border-radius: 0;border-top-left-radius: 50%;border-bottom-left-radius: 50%;"
-          class="btn btn-outline-dark btn-md">«</button
+          class="btn btn-outline-dark btn-lg">«</button
         >
         {#each Array(5) as _, i}
           <button
             on:click={onChangeWinNbr}
             value={i}
             style="border-radius: 0;"
-            class={"btn btn-outline-dark btn-md mr-1 " +
+            class={"btn btn-outline-dark btn-lg mr-1 " +
               (winNbrBtnsStatus[i] === 1 ? "active" : "")}>{i}</button
           >
         {/each}
@@ -81,7 +81,7 @@
             on:click={onChangeWinNbr}
             value={i + 5}
             style="border-radius: 0;"
-            class={"btn btn-outline-dark btn-md mr-1 " +
+            class={"btn btn-outline-dark btn-lg mr-1 " +
               (winNbrBtnsStatus[i + 5] === 1 ? "active" : "")}
             >{i + 5}
           </button>
@@ -92,7 +92,7 @@
           on:click={onChangeWinNbr}
           value=">"
           style="border-radius: 0; border-top-right-radius: 50%;border-bottom-right-radius: 50%;"
-          class="btn btn-outline-dark btn-md">»</button
+          class="btn btn-outline-dark btn-lg">»</button
         >
       </div>
     </div>
@@ -101,7 +101,7 @@
       <button
         value="P"
         on:click={onResultBtnClick}
-        class={"btn btn-md btn-outline-primary " +
+        class={"btn btn-lg btn-outline-primary " +
           ($result === "P" ? "active" : "")}
         type="button">P</button
       >
@@ -109,7 +109,7 @@
       <button
         value="B"
         on:click={onResultBtnClick}
-        class={"btn btn-md btn-outline-danger mx-2 " +
+        class={"btn btn-lg btn-outline-danger mx-2 " +
           ($result === "B" ? "active" : "")}
         type="button">B</button
       >
@@ -117,7 +117,7 @@
       <button
         value="T"
         on:click={onResultBtnClick}
-        class={"btn btn-md btn-outline-success " +
+        class={"btn btn-lg btn-outline-success " +
           ($result === "T" ? "active" : "")}
         type="button">T</button
       >
@@ -136,7 +136,7 @@
             on:click={onChangeWinHand}
             value={i + 1}
             style="border-radius: 0;"
-            class="btn btn-md btn-outline-dark mr-1 vertical-center"
+            class="btn btn-lg btn-outline-dark mr-1 vertical-center"
             >{i + 1}</button
           >
         {/each}
@@ -152,32 +152,32 @@
           on:click={onChangeWinHand}
           value="10"
           style="border-radius: 0;"
-          class="btn btn-md btn-outline-dark mr-1 vertical-center">10</button
+          class="btn btn-lg btn-outline-dark mr-1 vertical-center">10</button
         >
         <button
           on:click={onChangeWinHand}
           value="J"
           style="border-radius: 0;"
-          class="btn btn-md btn-outline-dark vertical-center"
+          class="btn btn-lg btn-outline-dark vertical-center"
           >J
         </button>
         <button
           on:click={onChangeWinHand}
           value="Q"
           style="border-radius: 0;"
-          class="btn btn-md btn-outline-dark vertical-center"
+          class="btn btn-lg btn-outline-dark vertical-center"
           >Q
         </button>
         <button
           on:click={onChangeWinHand}
           value="K"
           style="border-radius: 0;"
-          class="btn btn-md btn-outline-dark mr-1 vertical-center"
+          class="btn btn-lg btn-outline-dark mr-1 vertical-center"
           >K
         </button>
 
         <p
-          class="d-flex flex-nowrap text-center display-6 px-1 bg-warning vertical-center rounded border border-warning"
+          class="d-flex flex-nowrap text-center display-6 px-1 bg-info vertical-center rounded border border-info"
           style="font-size:1.5rem; font-weight: 350; height:40px;margin-left: 30px;border-width: 3px!important; margin-right: 10px;"
         >
           <span
@@ -197,7 +197,7 @@
           name="undoCardSelect"
           on:click={onChangeWinHand}
           value="undo"
-          class="btn btn-md btn-outline-warning mr-1 p-0 px-3 h1 vertical-center"
+          class="btn btn-lg btn-outline-info mr-1 p-0 px-3 h1 vertical-center"
           style="font-weight: 900; height:40px;color:#333;border-width:medium;"
         >
           ↩
