@@ -25,8 +25,7 @@
         <div class="card p-0 m-2" style="width: 66px;">
           <h5 class="card-header p-1 m-0 text-center">
             <span>
-              {res} - {winNbrsList[0]}
-              <!--  - {$winNbrsList[i]} -->
+              {res} - {$winNbrsList[0]}
             </span>
           </h5>
           <div class="card-body p-0 m-0 text-center text-muted font-">
