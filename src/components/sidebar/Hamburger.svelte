@@ -27,7 +27,12 @@
   <div id="SideBarMenuConent" style="position:fixed;" class="bg-dark">
     <MenuContent />
   </div>
-  <div id="overlay" />
+  <div
+    id="overlay"
+    on:click={() => {
+      $sideBarShow = false;
+    }}
+  />
 </div>
 
 <style>
