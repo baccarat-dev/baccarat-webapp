@@ -53,6 +53,34 @@
   >
     Round N°{$round}:
   </h3>
+  <br />
+  <div class="d-flex flex-nowrap justify-content-center">
+    <!-- Player Btn -->
+    <button
+      value="P"
+      on:click={onResultBtnClick}
+      class={"btn btn-lg btn-outline-primary " +
+        ($result === "P" ? "active" : "")}
+      type="button">P</button
+    >
+    <!-- Banker Btn -->
+    <button
+      value="B"
+      on:click={onResultBtnClick}
+      class={"btn btn-lg btn-outline-danger mx-2 " +
+        ($result === "B" ? "active" : "")}
+      type="button">B</button
+    >
+    <!-- Tie Btn -->
+    <button
+      value="T"
+      on:click={onResultBtnClick}
+      class={"btn btn-lg btn-outline-success " +
+        ($result === "T" ? "active" : "")}
+      type="button">T</button
+    >
+  </div>
+  <br />
 
   <!-- BEGIN Winning Number Selection Btn Group -->
   <div class="d-flex flex-wrap align-items-center justify-content-center">
@@ -95,32 +123,6 @@
           class="btn btn-outline-dark btn-lg">»</button
         >
       </div>
-    </div>
-    <div class="d-flex flex-nowrap ">
-      <!-- Player Btn -->
-      <button
-        value="P"
-        on:click={onResultBtnClick}
-        class={"btn btn-lg btn-outline-primary " +
-          ($result === "P" ? "active" : "")}
-        type="button">P</button
-      >
-      <!-- Banker Btn -->
-      <button
-        value="B"
-        on:click={onResultBtnClick}
-        class={"btn btn-lg btn-outline-danger mx-2 " +
-          ($result === "B" ? "active" : "")}
-        type="button">B</button
-      >
-      <!-- Tie Btn -->
-      <button
-        value="T"
-        on:click={onResultBtnClick}
-        class={"btn btn-lg btn-outline-success " +
-          ($result === "T" ? "active" : "")}
-        type="button">T</button
-      >
     </div>
   </div>
   <!-- END Winning Number Selection Btn Group -->
@@ -177,7 +179,7 @@
         </button>
 
         <p
-          class="d-flex flex-nowrap text-center display-6 px-1 bg-info vertical-center rounded border border-info"
+          class="d-flex flex-nowrap text-center display-6 px-1 bg-dark vertical-center rounded border border-dark"
           style="font-size:1.5rem; font-weight: 350; height:40px;margin-left: 30px;border-width: 3px!important; margin-right: 10px;"
         >
           <span
@@ -197,7 +199,7 @@
           name="undoCardSelect"
           on:click={onChangeWinHand}
           value="undo"
-          class="btn btn-lg btn-outline-info mr-1 p-0 px-3 h1 vertical-center"
+          class="btn btn-lg btn-outline-dark mr-1 p-0 px-3 h1 vertical-center"
           style="font-weight: 900; height:40px;color:#333;border-width:medium;"
         >
           ↩
