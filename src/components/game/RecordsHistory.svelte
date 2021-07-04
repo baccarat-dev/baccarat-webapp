@@ -46,7 +46,11 @@
     if (x < 1 || x > 10) {
       window.pushToast("Enter number between 1 and 10", "danger", 5000);
     } else {
-      nbrRows = parseInt(x);
+      if (e.target.name === "nbrRows") {
+        nbrRows = parseInt(x);
+      } else if (e.target.name === "nbrCols") {
+        nbrCols = parseInt(x);
+      }
       populateDataMatrix();
     }
   }
@@ -61,9 +65,10 @@
         type="number"
         min="1"
         max="10"
-        style="width: 70px; height:50px; font-weight: 500;font-size: 30px;"
+        name="nbrRows"
+        style="width: 80px; height:50px; font-weight: 500;font-size: 30px;"
         value={nbrRows}
-        on:change={(e) => {}}
+        on:change={onDimsInputChange}
       />
       X
       <input
@@ -72,16 +77,9 @@
         min="1"
         max="10"
         value={nbrCols}
-        style="width: 70px; height:50px; font-weight: 500;font-size: 30px;"
-        on:change={(e) => {
-          const x = e.target.value;
-          if (x < 1 || x > 10) {
-            window.pushToast("Enter number between 1 and 10", "danger", 5000);
-          } else {
-            nbrCols = parseInt(x);
-            populateDataMatrix();
-          }
-        }}
+        name="nbrCols"
+        style="width: 80px; height:50px; font-weight: 500;font-size: 30px;"
+        on:change={onDimsInputChange}
       />
     </div>
   </h1>

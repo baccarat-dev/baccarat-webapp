@@ -2,8 +2,8 @@
   import { onMount } from "svelte";
 
   //strategies
-  import Strategy001 from "./components/strategies/Strategy001.svelte";
-  let strategy001;
+  import Strategy_001 from "./components/strategies/Strategy_001.svelte";
+  let strategy_001_Component;
 
   //state
   import { isPageLoading } from "./store/sessionStore";
@@ -14,11 +14,11 @@
   import Hamburger from "./components/sidebar/Hamburger.svelte";
   import Recorder from "./components/game/Recorder.svelte";
   import History from "./components/game/RecordsHistory.svelte";
-  let HistoryObj;
-  let LoaderObj;
+  let HistoryComponent;
+  let LoaderComponent;
 
   onMount(async () => {
-    await HistoryObj.fetch();
+    await HistoryComponent.fetch();
   });
 </script>
 
@@ -26,7 +26,7 @@
   <div
     style={"display: " + ($isPageLoading === true ? "block" : "none") + " ;"}
   >
-    <Loader bind:this={LoaderObj} {isPageLoading} />
+    <Loader bind:this={LoaderComponent} {isPageLoading} />
   </div>
   <div>
     <div class="container-fluid p-0 bg-white">
@@ -48,10 +48,10 @@
 
       <div class="row m-0 bg-light pt-3 mb-5">
         <div class="col">
-          <Recorder {HistoryObj} />
+          <Recorder {HistoryComponent} />
         </div>
         <div class="col">
-          <History bind:this={HistoryObj} />
+          <History bind:this={HistoryComponent} />
         </div>
 
         <br />
@@ -70,7 +70,7 @@
         </div>
         <div class="row my-3">
           <div class="col mx-5">
-            <Strategy001 bind:this={strategy001} />
+            <Strategy_001 bind:this={strategy_001_Component} />
           </div>
         </div>
       </div>

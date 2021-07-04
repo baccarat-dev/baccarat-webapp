@@ -50,7 +50,7 @@
 
   async function addRecord() {
     if (!$result) {
-      console.log(HistoryObj);
+      console.log(HistoryComponent);
       window.pushToast("Select P, B, or T", "danger");
     } else if ($winNbr === null) {
       window.pushToast("Select winning number", "danger");
@@ -61,7 +61,7 @@
       console.log(data, error);
       $resultsList.push($result);
       $winNbrsList.push($winNbr);
-      HistoryObj.populateDataMatrix();
+      HistoryComponent.populateDataMatrix();
     }
   }
 
@@ -70,11 +70,11 @@
     console.log(data, error);
     $resultsList = [];
     $winNbrsList = [];
-    HistoryObj.reset();
+    HistoryComponent.reset();
     window.pushToast("All records cleared! ", "danger");
   }
 
-  export let HistoryObj;
+  export let HistoryComponent;
 </script>
 
 <div>
