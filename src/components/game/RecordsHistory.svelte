@@ -6,33 +6,100 @@
     isPageLoading,
   } from "../../store/sessionStore";
 
+  let nbrRows = 5;
+  let nbrCols = 5;
+
+  let dataMatrix = [];
+
   export async function fetch() {
-    const { data, error } = await supabase.from("terl").select("res,nbr");
-    $resultsList = data.slice(0, 1000).map((x) => x.res);
-    $winNbrsList = data.slice(0, 1000).map((x) => x.nbr);
+    const { data, error } = await supabase.from("records").select("res,nbr");
     console.log(data, error);
+    $resultsList = data.map((x) => x.res);
+    $winNbrsList = data.map((x) => x.nbr);
+    populateDataMatrix();
     $isPageLoading = false;
+  }
+
+  export function populateDataMatrix() {
+    dataMatrix = [];
+    for (let i = 0; i < nbrCols; i++) {
+      const row = [];
+      for (let j = 0; j < nbrRows; j++) {
+        const idx = i * nbrRows + j;
+        row.push([$resultsList[idx], $winNbrsList[idx]]);
+      }
+      dataMatrix.push(row);
+    }
+    dataMatrix = mT(dataMatrix);
+  }
+
+  // return the transpose of a matrix
+  function mT(matrix) {
+    return matrix.reduce(
+      ($, row) => row.map((_, i) => [...($[i] || []), row[i]]),
+      []
+    );
   }
 </script>
 
 <div>
-  <h1 class="text-primary mx-3" style="font-size: 1.75rem;">History</h1>
+  <h1 class="text-primary mx-3" style="font-size: 1.75rem;">
+    History: ({nbrRows}x{nbrCols})
+    <div class="input-group d-inline mx-5">
+      <input
+        class="d-inline form-control"
+        type="number"
+        min="1"
+        max="10"
+        style="width: 70px; height:50px; font-weight: 500;font-size: 30px;"
+        value={nbrRows}
+        on:change={(e) => {
+          const x = e.target.value;
+          if (x < 1 || x > 10) {
+            window.pushToast("Enter number between 1 and 10", "danger", 5000);
+          } else {
+            nbrRows = parseInt(x);
+            populateDataMatrix();
+          }
+        }}
+      />
+      X
+      <input
+        class="form-control d-inline"
+        type="number"
+        min="1"
+        max="10"
+        value={nbrCols}
+        style="width: 70px; height:50px; font-weight: 500;font-size: 30px;"
+        on:change={(e) => {
+          const x = e.target.value;
+          if (x < 1 || x > 10) {
+            window.pushToast("Enter number between 1 and 10", "danger", 5000);
+          } else {
+            nbrCols = parseInt(x);
+            populateDataMatrix();
+          }
+        }}
+      />
+    </div>
+  </h1>
   <hr class="mx-3" style="width: auto;" />
 
   {#if $resultsList.length > 0}
     <div class="d-flex flex-wrap">
-      {#each $resultsList as res, i}
-        <div class="card p-0 m-2" style="width: 66px;">
-          <h5 class="card-header p-1 m-0 text-center">
-            <span>
-              {res} - {$winNbrsList[0]}
-            </span>
-          </h5>
-          <div class="card-body p-0 m-0 text-center text-muted font-">
-            {i + 1}
-          </div>
-        </div>
-      {/each}
+      <table class="table table-bordered table-dark w-auto">
+        <tbody>
+          {#each dataMatrix as row}
+            <tr style="line-height: 50px;">
+              {#each row as c}
+                <td style="min-width:70px;min-height:60px;"
+                  >{c.every((x) => !!x) ? c[0] + " - " + c[1] : "-"}</td
+                >
+              {/each}
+            </tr>
+          {/each}
+        </tbody>
+      </table>
     </div>
   {:else}
     <div class="alert alert-warning mx-2">
@@ -40,3 +107,6 @@
     </div>
   {/if}
 </div>
+
+<style>
+</style>

@@ -47,10 +47,10 @@
       <br />
 
       <div class="row m-0 bg-light pt-3 mb-5">
-        <div class="row">
-          <Recorder />
+        <div class="col">
+          <Recorder {HistoryObj} />
         </div>
-        <div class="row">
+        <div class="col">
           <History bind:this={HistoryObj} />
         </div>
 

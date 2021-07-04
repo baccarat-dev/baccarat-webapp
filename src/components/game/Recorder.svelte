@@ -1,5 +1,13 @@
 <script>
-  import { result, winNbr, round, hand } from "../../store/sessionStore";
+  import {
+    result,
+    winNbr,
+    round,
+    hand,
+    resultsList,
+    winNbrsList,
+  } from "../../store/sessionStore";
+  import { supabase } from "../../supabaseClient";
 
   const winNbrBtnsStatusReset = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   let winNbrBtnsStatus = winNbrBtnsStatusReset;
@@ -39,6 +47,34 @@
   function onResultBtnClick(e) {
     $result = e.target.value;
   }
+
+  async function addRecord() {
+    if (!$result) {
+      console.log(HistoryObj);
+      window.pushToast("Select P, B, or T", "danger");
+    } else if (!$winNbr) {
+      window.pushToast("Select winning number", "danger");
+    } else {
+      const { data, error } = await supabase
+        .from("records")
+        .insert([{ res: $result, nbr: $winNbr }]);
+      console.log(data, error);
+      $resultsList.push($result);
+      $winNbrsList.push($winNbr);
+      HistoryObj.populateDataMatrix();
+    }
+  }
+
+  async function deleteAll() {
+    const { data, error } = await supabase.from("records").delete();
+    console.log(data, error);
+    $resultsList = [];
+    $winNbrsList = [];
+    HistoryObj.reset();
+    window.pushToast("All records cleared! ", "danger");
+  }
+
+  export let HistoryObj;
 </script>
 
 <div>
@@ -78,6 +114,15 @@
       class={"btn btn-lg btn-outline-success " +
         ($result === "T" ? "active" : "")}
       type="button">T</button
+    >
+
+    <!-- Add Btn -->
+    <button
+      on:click={addRecord}
+      value="Add"
+      style="font-size: 25px;font-weight: 500;"
+      class="btn btn-lg btn-outline-warning mx-5 p-0 px-3"
+      type="button">ADD</button
     >
   </div>
   <br />
@@ -208,6 +253,12 @@
       <!-- END J,Q,K row -->
     </div>
   </div>
+  <div class="d-flex justify-content-center my-3">
+    <button class="btn btn-lg btn-danger" on:click={deleteAll}>
+      DELETE ALL
+    </button>
+  </div>
+
   <!-- END cards selection Btn Group -->
 
   <br /><br /><br />

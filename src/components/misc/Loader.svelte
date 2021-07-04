@@ -29,7 +29,7 @@
     <div
       class="spinner-border text-dark"
       role="status"
-      style="width: 5rem; height: 5rem;"
+      style="width: 8rem; height: 8rem;"
     >
       <span class="sr-only" />
     </div>
