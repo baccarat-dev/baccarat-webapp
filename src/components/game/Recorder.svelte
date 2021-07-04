@@ -62,6 +62,13 @@
       $resultsList.push($result);
       $winNbrsList.push($winNbr);
       HistoryComponent.populateDataMatrix();
+      strategy_001_Component.run(
+        $round,
+        $result,
+        $winNbrsList[$round - 1],
+        $resultsList[$round - 1]
+      );
+      $round++;
     }
   }
 
@@ -74,6 +81,7 @@
     window.pushToast("All records cleared! ", "danger");
   }
 
+  export let strategy_001_Component;
   export let HistoryComponent;
 </script>
 

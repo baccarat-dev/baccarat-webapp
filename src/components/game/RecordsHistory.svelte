@@ -22,11 +22,23 @@
 
   export function populateDataMatrix() {
     dataMatrix = [];
+    let latestResults;
+    let latestWinNbrs;
+    const boardSize = nbrCols * nbrRows;
+    const dataLength = $resultsList.length;
+    if (dataLength > boardSize) {
+      latestResults = $resultsList.slice(dataLength - boardSize, dataLength);
+      latestWinNbrs = $winNbrsList.slice(dataLength - boardSize, dataLength);
+    } else {
+      latestResults = $resultsList;
+      latestWinNbrs = $winNbrsList;
+    }
+    console.log(latestResults, latestWinNbrs);
     for (let i = 0; i < nbrCols; i++) {
       const row = [];
       for (let j = 0; j < nbrRows; j++) {
         const idx = i * nbrRows + j;
-        row.push([$resultsList[idx], $winNbrsList[idx]]);
+        row.push([latestResults[idx], latestWinNbrs[idx]]);
       }
       dataMatrix.push(row);
     }
@@ -58,7 +70,7 @@
 
 <div>
   <h1 class="text-primary mx-3" style="font-size: 1.75rem;">
-    History: ({nbrRows}x{nbrCols})
+    Most Recent: ({nbrRows}x{nbrCols})
     <div class="input-group d-inline mx-5">
       <input
         class="d-inline form-control"

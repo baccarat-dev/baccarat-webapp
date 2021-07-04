@@ -5,10 +5,10 @@
     bWinChance = 50;
 
   export function run(round, result, prevNum, prevResult) {
-    if (round == 1) {
+    console.log(round, prevNum, result, prevResult);
+    if (round == 0) {
       return;
     }
-    console.log(prevNum, result, prevResult);
     if (isEven(prevNum)) {
       if (prevResult == result) {
         // strategy won, we reset
@@ -56,6 +56,7 @@
         bWinChance = 100 - pWinChance;
       }
     }
+    pWinChance = Math.random(pWinChance * 100) / 100;
   }
 
   function isEven(x) {

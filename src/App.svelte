@@ -48,7 +48,7 @@
 
       <div class="row m-0 bg-light pt-3 mb-5">
         <div class="col">
-          <Recorder {HistoryComponent} />
+          <Recorder {HistoryComponent} {strategy_001_Component} />
         </div>
         <div class="col">
           <History bind:this={HistoryComponent} />
