@@ -52,7 +52,7 @@
     if (!$result) {
       console.log(HistoryObj);
       window.pushToast("Select P, B, or T", "danger");
-    } else if (!$winNbr) {
+    } else if ($winNbr === null) {
       window.pushToast("Select winning number", "danger");
     } else {
       const { data, error } = await supabase

@@ -40,6 +40,16 @@
       []
     );
   }
+
+  function onDimsInputChange(e) {
+    const x = e.target.value;
+    if (x < 1 || x > 10) {
+      window.pushToast("Enter number between 1 and 10", "danger", 5000);
+    } else {
+      nbrRows = parseInt(x);
+      populateDataMatrix();
+    }
+  }
 </script>
 
 <div>
@@ -53,15 +63,7 @@
         max="10"
         style="width: 70px; height:50px; font-weight: 500;font-size: 30px;"
         value={nbrRows}
-        on:change={(e) => {
-          const x = e.target.value;
-          if (x < 1 || x > 10) {
-            window.pushToast("Enter number between 1 and 10", "danger", 5000);
-          } else {
-            nbrRows = parseInt(x);
-            populateDataMatrix();
-          }
-        }}
+        on:change={(e) => {}}
       />
       X
       <input
@@ -93,7 +95,9 @@
             <tr style="line-height: 50px;">
               {#each row as c}
                 <td style="min-width:70px;min-height:60px;"
-                  >{c.every((x) => !!x) ? c[0] + " - " + c[1] : "-"}</td
+                  >{c.every((x) => typeof x !== "undefined")
+                    ? c[0] + " - " + c[1]
+                    : "-"}</td
                 >
               {/each}
             </tr>
