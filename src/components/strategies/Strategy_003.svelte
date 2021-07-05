@@ -8,30 +8,17 @@
 
   export function run(round, result, prevNum, prevResult) {
     console.log(round, result, prevNum, prevResult);
-    if (round === 1) {
+    if (round < 7) {
       return;
     }
-
-    if (isEven(prevNum)) {
-      if (prevResult === result) {
-        // strategy won, we reset
-        reset();
-      } else {
-        // strategy lost
-        currentLevel++;
-        maxLevel = maxLevel < currentLevel ? currentLevel : maxLevel;
-        decreasePercent(prevResult);
-      }
+    if (prevResult === result) {
+      // strategy won, we reset
+      reset();
     } else {
-      if (prevResult !== result) {
-        // strategy won, we reset
-        reset();
-      } else {
-        // strategy lost
-        currentLevel++;
-        maxLevel = maxLevel < currentLevel ? currentLevel : maxLevel;
-        decreasePercent(result === "P" ? "B" : "P");
-      }
+      // strategy lost
+      currentLevel++;
+      maxLevel = maxLevel < currentLevel ? currentLevel : maxLevel;
+      decreasePercent(prevResult);
     }
   }
 
@@ -69,7 +56,7 @@
 
 <div>
   <StrategyCard
-    name="Strategy N°001 (Odd/Even)"
+    name="MIRRORING"
     {currentLevel}
     {maxLevel}
     {pWinChance}

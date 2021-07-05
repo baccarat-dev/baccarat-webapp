@@ -75,12 +75,21 @@
         $winNbrsList[$round - 2],
         $resultsList[$round - 2]
       );
+
+      strategy_003_Component.run(
+        $round,
+        $result,
+        null,
+        $resultsList[$round - 5 - 1]
+      );
       $round++;
     }
     console.log($winNbrsList, $resultsList);
   }
 
-  export let strategy_001_Component, strategy_002_Component;
+  export let strategy_001_Component,
+    strategy_002_Component,
+    strategy_003_Component;
   export let MostRecentRecordsComponent;
 </script>
 
