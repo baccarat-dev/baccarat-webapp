@@ -5,7 +5,11 @@
   import Strategy_001 from "./components/strategies/Strategy_001.svelte";
   import Strategy_002 from "./components/strategies/Strategy_002.svelte";
   import Strategy_003 from "./components/strategies/Strategy_003.svelte";
-  let strategy_001_Component, strategy_002_Component, strategy_003_Component;
+  import Strategy_004 from "./components/strategies/Strategy_004.svelte";
+  let strategy_001_Component,
+    strategy_002_Component,
+    strategy_003_Component,
+    strategy_004_Component;
 
   //state
   import { isPageLoading } from "./store/sessionStore";
@@ -55,6 +59,7 @@
             {strategy_001_Component}
             {strategy_002_Component}
             {strategy_003_Component}
+            {strategy_004_Component}
           />
         </div>
         <div class="col-12 col-lg-6">
@@ -75,15 +80,18 @@
         <div class="row">
           <hr class="mx-4" style="width: 15rem;" />
         </div>
-        <div class="d-flex justify-content-center my-3 flex-wrap">
-          <div class="mx-5">
+        <div class="d-flex justify-content-center flex-wrap">
+          <div class="mx-5 my-3">
             <Strategy_001 bind:this={strategy_001_Component} />
           </div>
-          <div class="mx-5">
+          <div class="mx-5 my-3">
             <Strategy_002 bind:this={strategy_002_Component} />
           </div>
-          <div class="mx-5">
+          <div class="mx-5 my-3">
             <Strategy_003 bind:this={strategy_003_Component} />
+          </div>
+          <div class="mx-5 my-3">
+            <Strategy_004 bind:this={strategy_004_Component} />
           </div>
         </div>
       </div>

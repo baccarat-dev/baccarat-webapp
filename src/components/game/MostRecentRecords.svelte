@@ -6,8 +6,8 @@
     isPageLoading,
   } from "../../store/sessionStore";
 
-  let nbrRows = 4;
-  let nbrCols = 5;
+  let nbrRows = 5;
+  let nbrCols = 10;
 
   let dataMatrix = [];
 

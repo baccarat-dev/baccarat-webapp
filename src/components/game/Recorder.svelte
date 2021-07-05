@@ -76,20 +76,17 @@
         $resultsList[$round - 2]
       );
 
-      strategy_003_Component.run(
-        $round,
-        $result,
-        null,
-        $resultsList[$round - 5 - 1]
-      );
+      strategy_003_Component.run($round, $result, $resultsList);
+      strategy_004_Component.run($round, $result, $resultsList);
       $round++;
     }
-    console.log($winNbrsList, $resultsList);
+    //($winNbrsList, $resultsList);
   }
 
   export let strategy_001_Component,
     strategy_002_Component,
-    strategy_003_Component;
+    strategy_003_Component,
+    strategy_004_Component;
   export let MostRecentRecordsComponent;
 </script>
 

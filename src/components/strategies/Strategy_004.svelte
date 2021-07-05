@@ -13,7 +13,7 @@
       return;
     }
     console.log(prevResult, L);
-    if (prevResult === result) {
+    if (prevResult !== result) {
       // strategy won, we reset
       reset();
     } else {
