@@ -54,7 +54,7 @@
 
 <div>
   <StrategyCard
-    name="MIRRORING"
+    name="ANTI-MIRRORING"
     {currentLevel}
     {maxLevel}
     {pWinChance}
