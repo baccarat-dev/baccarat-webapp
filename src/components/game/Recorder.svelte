@@ -50,7 +50,7 @@
 
   async function addRecord() {
     if (!$result) {
-      console.log(HistoryComponent);
+      console.log(MostRecentRecordsComponent);
       window.pushToast("Select P, B, or T", "danger");
     } else if ($winNbr === null) {
       window.pushToast("Select winning number", "danger");
@@ -61,8 +61,17 @@
       console.log(data, error);
       $resultsList.push($result);
       $winNbrsList.push($winNbr);
-      HistoryComponent.populateDataMatrix();
+      MostRecentRecordsComponent.populateDataMatrix();
+
+      // update strategies
       strategy_001_Component.run(
+        $round,
+        $result,
+        $winNbrsList[$round - 1],
+        $resultsList[$round - 1]
+      );
+
+      strategy_002_Component.run(
         $round,
         $result,
         $winNbrsList[$round - 1],
@@ -70,19 +79,11 @@
       );
       $round++;
     }
+    console.log($winNbrsList, $resultsList);
   }
 
-  async function deleteAll() {
-    const { data, error } = await supabase.from("records").delete();
-    console.log(data, error);
-    $resultsList = [];
-    $winNbrsList = [];
-    HistoryComponent.reset();
-    window.pushToast("All records cleared! ", "danger");
-  }
-
-  export let strategy_001_Component;
-  export let HistoryComponent;
+  export let strategy_001_Component, strategy_002_Component;
+  export let MostRecentRecordsComponent;
 </script>
 
 <div>
@@ -117,6 +118,7 @@
     >
     <!-- Tie Btn -->
     <button
+      style="display: none;"
       value="T"
       on:click={onResultBtnClick}
       class={"btn btn-lg btn-outline-success " +
@@ -129,7 +131,7 @@
       on:click={addRecord}
       value="Add"
       style="font-size: 25px;font-weight: 500;"
-      class="btn btn-lg btn-outline-warning mx-5 p-0 px-3"
+      class="btn btn-lg btn-outline-warning mx-2 p-0 px-3"
       type="button">ADD</button
     >
   </div>
@@ -182,7 +184,10 @@
   <br />
 
   <!-- BEGIN cards selection Btn Group -->
-  <div class="d-flex flex-wrap align-items-center justify-content-center">
+  <div
+    style="display: none !important;"
+    class="d-flex flex-wrap align-items-center justify-content-center"
+  >
     <div class="d-flex flex-wrap mx-4 justify-content-center">
       <!-- BEGIN 1 to 9 row -->
       <div class="mr-3 my-3">
@@ -260,11 +265,6 @@
       </div>
       <!-- END J,Q,K row -->
     </div>
-  </div>
-  <div class="d-flex justify-content-center my-3">
-    <button class="btn btn-lg btn-danger" on:click={deleteAll}>
-      DELETE ALL
-    </button>
   </div>
 
   <!-- END cards selection Btn Group -->

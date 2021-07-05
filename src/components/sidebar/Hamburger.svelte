@@ -56,13 +56,17 @@
     left: 0;
     top: 0;
     width: 50vw;
-    min-width: 500px;
+    min-width: 50vw;
     max-width: 100vw;
     transform: translateX(-150vw);
     transition: transform 250ms ease-in-out;
     padding-top: 100px;
   }
-
+  @media only screen and (max-width: 600px) {
+    #SideBarMenuConent {
+      width: 90vw !important;
+    }
+  }
   input[type="checkbox"]:checked ~ #SideBarMenuConent {
     transform: translateX(0);
   }

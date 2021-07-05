@@ -3,7 +3,8 @@
 
   //strategies
   import Strategy_001 from "./components/strategies/Strategy_001.svelte";
-  let strategy_001_Component;
+  import Strategy_002 from "./components/strategies/Strategy_002.svelte";
+  let strategy_001_Component, strategy_002_Component;
 
   //state
   import { isPageLoading } from "./store/sessionStore";
@@ -13,12 +14,12 @@
   import Loader from "./components/misc/Loader.svelte";
   import Hamburger from "./components/sidebar/Hamburger.svelte";
   import Recorder from "./components/game/Recorder.svelte";
-  import History from "./components/game/RecordsHistory.svelte";
-  let HistoryComponent;
+  import MostRecentRecords from "./components/game/MostRecentRecords.svelte";
+  let MostRecentRecordsComponent;
   let LoaderComponent;
 
   onMount(async () => {
-    await HistoryComponent.fetch();
+    await MostRecentRecordsComponent.fetch();
   });
 </script>
 
@@ -47,11 +48,15 @@
       <br />
 
       <div class="row m-0 bg-light pt-3 mb-5">
-        <div class="col">
-          <Recorder {HistoryComponent} {strategy_001_Component} />
+        <div class="col-12 col-lg-6">
+          <Recorder
+            {MostRecentRecordsComponent}
+            {strategy_001_Component}
+            {strategy_002_Component}
+          />
         </div>
-        <div class="col">
-          <History bind:this={HistoryComponent} />
+        <div class="col-12 col-lg-6">
+          <MostRecentRecords bind:this={MostRecentRecordsComponent} />
         </div>
 
         <br />
@@ -68,9 +73,12 @@
         <div class="row">
           <hr class="mx-4" style="width: 15rem;" />
         </div>
-        <div class="row my-3">
-          <div class="col mx-5">
+        <div class="d-flex justify-content-center my-3">
+          <div class="mx-5">
             <Strategy_001 bind:this={strategy_001_Component} />
+          </div>
+          <div class="mx-5">
+            <Strategy_002 bind:this={strategy_002_Component} />
           </div>
         </div>
       </div>

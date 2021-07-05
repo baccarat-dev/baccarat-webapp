@@ -13,7 +13,6 @@
 
   export async function fetch() {
     const { data, error } = await supabase.from("records").select("res,nbr");
-    console.log(data, error);
     $resultsList = data.map((x) => x.res);
     $winNbrsList = data.map((x) => x.nbr);
     populateDataMatrix();
@@ -33,7 +32,6 @@
       latestResults = $resultsList;
       latestWinNbrs = $winNbrsList;
     }
-    console.log(latestResults, latestWinNbrs);
     for (let i = 0; i < nbrCols; i++) {
       const row = [];
       for (let j = 0; j < nbrRows; j++) {
@@ -66,35 +64,49 @@
       populateDataMatrix();
     }
   }
+
+  async function deleteAll() {
+    const { data, error } = await supabase.from("records").delete();
+    console.log(data, error);
+    $resultsList = [];
+    $winNbrsList = [];
+    window.pushToast("All records cleared! ", "danger");
+    window.location.reload();
+  }
 </script>
 
 <div>
-  <h1 class="text-primary mx-3" style="font-size: 1.75rem;">
+  <h1 class="text-primary mx-3 d-inline" style="font-size: 1.75rem;">
     Most Recent: ({nbrRows}x{nbrCols})
-    <div class="input-group d-inline mx-5">
-      <input
-        class="d-inline form-control"
-        type="number"
-        min="1"
-        max="10"
-        name="nbrRows"
-        style="width: 80px; height:50px; font-weight: 500;font-size: 30px;"
-        value={nbrRows}
-        on:change={onDimsInputChange}
-      />
-      X
-      <input
-        class="form-control d-inline"
-        type="number"
-        min="1"
-        max="10"
-        value={nbrCols}
-        name="nbrCols"
-        style="width: 80px; height:50px; font-weight: 500;font-size: 30px;"
-        on:change={onDimsInputChange}
-      />
-    </div>
   </h1>
+  <div class="input-group d-inline mx-5">
+    <input
+      class="d-inline form-control"
+      type="number"
+      min="1"
+      max="10"
+      name="nbrRows"
+      style="width: 80px; height:50px; font-weight: 500;font-size: 30px;"
+      value={nbrRows}
+      on:change={onDimsInputChange}
+    />
+    X
+    <input
+      class="form-control d-inline"
+      type="number"
+      min="1"
+      max="10"
+      value={nbrCols}
+      name="nbrCols"
+      style="width: 80px; height:50px; font-weight: 500;font-size: 30px;"
+      on:change={onDimsInputChange}
+    />
+  </div>
+  <div style="display:inline-flex;">
+    <button class="btn btn-lg btn-danger" on:click={deleteAll}>
+      DELETE ALL
+    </button>
+  </div>
   <hr class="mx-3" style="width: auto;" />
 
   {#if $resultsList.length > 0}
