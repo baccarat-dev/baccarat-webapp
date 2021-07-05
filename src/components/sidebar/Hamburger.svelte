@@ -11,7 +11,6 @@
     style="z-index: 102;position:fixed;top:27px;left:27px;"
     checked={$sideBarShow}
     on:change={() => {
-      console.log($sideBarShow);
       $sideBarShow = !$sideBarShow;
     }}
   />

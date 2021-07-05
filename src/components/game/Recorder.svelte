@@ -50,7 +50,6 @@
 
   async function addRecord() {
     if (!$result) {
-      console.log(MostRecentRecordsComponent);
       window.pushToast("Select P, B, or T", "danger");
     } else if ($winNbr === null) {
       window.pushToast("Select winning number", "danger");
@@ -58,7 +57,6 @@
       const { data, error } = await supabase
         .from("records")
         .insert([{ res: $result, nbr: $winNbr }]);
-      console.log(data, error);
       $resultsList.push($result);
       $winNbrsList.push($winNbr);
       MostRecentRecordsComponent.populateDataMatrix();
@@ -67,15 +65,15 @@
       strategy_001_Component.run(
         $round,
         $result,
-        $winNbrsList[$round - 1],
-        $resultsList[$round - 1]
+        $winNbrsList[$round - 2],
+        $resultsList[$round - 2]
       );
 
       strategy_002_Component.run(
         $round,
         $result,
-        $winNbrsList[$round - 1],
-        $resultsList[$round - 1]
+        $winNbrsList[$round - 2],
+        $resultsList[$round - 2]
       );
       $round++;
     }

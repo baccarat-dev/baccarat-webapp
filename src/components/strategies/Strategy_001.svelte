@@ -11,8 +11,9 @@
     if (round == 1) {
       return;
     }
+
     if (isEven(prevNum)) {
-      if (prevResult == result) {
+      if (prevResult === result) {
         // strategy won, we reset
         reset();
       } else {
@@ -22,7 +23,7 @@
         decreasePercent(prevResult);
       }
     } else {
-      if (prevResult != result) {
+      if (prevResult !== result) {
         // strategy won, we reset
         reset();
       } else {
@@ -36,7 +37,6 @@
 
   export function reset() {
     pWinChance = bWinChance = 50;
-    maxLevel = maxLevel < currentLevel ? currentLevel : maxLevel;
     currentLevel = 1;
   }
 
@@ -63,7 +63,7 @@
   }
 
   function isEven(x) {
-    return (x & -x) !== 1;
+    return x % 2 === 0;
   }
 </script>
 

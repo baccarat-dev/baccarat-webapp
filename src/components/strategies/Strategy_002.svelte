@@ -7,19 +7,14 @@
     bWinChance = 50;
 
   export function run(round, result, prevNum, prevResult) {
-    console.log("running strategy 2");
-    console.log(round, prevNum, result, prevResult);
-    if (round == 1) {
+    if (round === 1) {
       return;
     }
     if (isEven(prevNum)) {
       if (prevResult !== result) {
-        console.log("strategy 2: iseven + prev!==result");
         // strategy won, we reset
         reset();
       } else {
-        console.log("strategy 2: iseven + prev === result");
-
         // strategy lost
         currentLevel++;
         maxLevel = maxLevel < currentLevel ? currentLevel : maxLevel;
@@ -27,12 +22,9 @@
       }
     } else {
       if (prevResult === result) {
-        console.log("strategy 2: uneven + prev === result");
         // strategy won, we reset
         reset();
       } else {
-        console.log("strategy 2: uneven + prev !== result");
-
         // strategy lost
         currentLevel++;
         maxLevel = maxLevel < currentLevel ? currentLevel : maxLevel;
@@ -42,14 +34,11 @@
   }
 
   export function reset() {
-    console.log("strategy 2 reset");
     pWinChance = bWinChance = 50;
-    maxLevel = maxLevel < currentLevel ? currentLevel : maxLevel;
     currentLevel = 1;
   }
 
   function decreasePercent(result) {
-    console.log("strategy 2 decreased");
     if (result == "P") {
       if (pWinChance <= 50) {
         pWinChance /= 2;

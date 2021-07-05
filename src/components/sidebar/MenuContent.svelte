@@ -13,7 +13,6 @@
       return;
     }
     const { data, error } = await supabase.from("records").delete().match({});
-    console.log(data, error);
     $round = 1;
     $resultsList = [];
     $result = null;
@@ -24,8 +23,6 @@
   }
 
   function selectGame(e) {
-    console.log(e);
-    console.log(e);
     $sideBarShow = false;
     window.pushToast('Switched to "' + e.target.className + '"');
   }

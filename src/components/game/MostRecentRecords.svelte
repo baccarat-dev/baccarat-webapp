@@ -67,7 +67,6 @@
 
   async function deleteAll() {
     const { data, error } = await supabase.from("records").delete();
-    console.log(data, error);
     $resultsList = [];
     $winNbrsList = [];
     window.pushToast("All records cleared! ", "danger");
