@@ -1,12 +1,14 @@
 <script>
   import StrategyCard from "./StrategyCard.svelte";
+  import { calcPercent } from "./common";
 
   let currentLevel = 1,
     maxLevel = 1,
-    pWinChance = 50,
-    bWinChance = 50;
+    percentage = 50,
+    nextMove = null;
 
-  export function run(round, result, prevNum, prevResult) {
+  export function run(round, result, winNbr, prevNum, prevResult) {
+    nextMove = !isEven(winNbr) ? result : result === "P" ? "B" : "P";
     if (round === 1) {
       return;
     }
@@ -18,7 +20,7 @@
         // strategy lost
         currentLevel++;
         maxLevel = maxLevel < currentLevel ? currentLevel : maxLevel;
-        decreasePercent(prevResult);
+        percentage = calcPercent(percentage);
       }
     } else {
       if (prevResult === result) {
@@ -28,36 +30,14 @@
         // strategy lost
         currentLevel++;
         maxLevel = maxLevel < currentLevel ? currentLevel : maxLevel;
-        decreasePercent(result === "P" ? "B" : "P");
+        percentage = calcPercent(percentage);
       }
     }
   }
 
   export function reset() {
-    pWinChance = bWinChance = 50;
+    percentage = 50;
     currentLevel = 1;
-  }
-
-  function decreasePercent(result) {
-    if (result == "P") {
-      if (pWinChance <= 50) {
-        pWinChance /= 2;
-        bWinChance = 100 - pWinChance;
-      } else {
-        bWinChance *= 2;
-        pWinChance = 100 - bWinChance;
-      }
-    } else if (result == "B") {
-      if (bWinChance <= 50) {
-        bWinChance /= 2;
-        pWinChance = 100 - bWinChance;
-      } else {
-        pWinChance *= 2;
-        bWinChance = 100 - pWinChance;
-      }
-    }
-    pWinChance = Math.round(pWinChance * 1000) / 1000;
-    bWinChance = Math.round(bWinChance * 1000) / 1000;
   }
 
   function isEven(x) {
@@ -67,10 +47,10 @@
 
 <div>
   <StrategyCard
-    name="Strategy N°002 (Reversed Odd/Even)"
+    name="Anti Odd/Even"
     {currentLevel}
     {maxLevel}
-    {pWinChance}
-    {bWinChance}
+    {percentage}
+    {nextMove}
   />
 </div>

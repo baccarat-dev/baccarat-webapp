@@ -65,6 +65,7 @@
       strategy_001_Component.run(
         $round,
         $result,
+        $winNbr,
         $winNbrsList[$round - 2],
         $resultsList[$round - 2]
       );
@@ -72,6 +73,7 @@
       strategy_002_Component.run(
         $round,
         $result,
+        $winNbr,
         $winNbrsList[$round - 2],
         $resultsList[$round - 2]
       );

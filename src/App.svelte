@@ -77,22 +77,24 @@
             </h1>
           </div>
         </div>
-        <div class="row">
-          <hr class="mx-4" style="width: 15rem;" />
-        </div>
-        <div class="d-flex justify-content-center flex-wrap">
-          <div class="mx-5 my-3">
+        <br /><br /><br />
+        <div>
+          <div class="my-3">
             <Strategy_001 bind:this={strategy_001_Component} />
           </div>
-          <div class="mx-5 my-3">
+          <hr />
+          <div class="my-3">
             <Strategy_002 bind:this={strategy_002_Component} />
           </div>
-          <div class="mx-5 my-3">
+          <hr />
+          <div class="my-3">
             <Strategy_003 bind:this={strategy_003_Component} />
           </div>
-          <div class="mx-5 my-3">
+          <hr />
+          <div class="my-3">
             <Strategy_004 bind:this={strategy_004_Component} />
           </div>
+          <hr />
         </div>
       </div>
       <!-- End Strategies Row -->
