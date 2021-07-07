@@ -13,7 +13,7 @@
     maxlvl: {maxLevel}
   </h3>
   <h3 style="min-width: 200px;">
-    %: {percentage}
+    %: {percentage ? percentage : "-"}
   </h3>
   <h3 style="min-width: 200px;">
     next: {nextMove ? nextMove : "-"}

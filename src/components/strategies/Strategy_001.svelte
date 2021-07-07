@@ -3,9 +3,9 @@
   import { calcPercent } from "./common";
 
   let currentLevel = 1,
-    maxLevel = 1,
-    percentage = 50,
-    nextMove = null;
+    maxLevel = 8,
+    percentage = null,
+    nextMove = "-";
 
   export function run(round, result, winNbr, prevNum, prevResult) {
     nextMove = isEven(winNbr) ? result : result === "P" ? "B" : "P";
@@ -20,7 +20,7 @@
         // strategy lost
         currentLevel++;
         maxLevel = maxLevel < currentLevel ? currentLevel : maxLevel;
-        percentage = calcPercent(percentage);
+        percentage = calcPercent(currentLevel, maxLevel);
       }
     } else {
       nextMove = result === "P" ? "B" : "P";
@@ -31,13 +31,13 @@
         // strategy lost
         currentLevel++;
         maxLevel = maxLevel < currentLevel ? currentLevel : maxLevel;
-        percentage = calcPercent(percentage);
+        percentage = calcPercent(currentLevel, maxLevel);
       }
     }
   }
 
   export function reset() {
-    percentage = 50;
+    percentage = Math.round(1000 / maxLevel) / 10;
     currentLevel = 1;
   }
 

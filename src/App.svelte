@@ -6,10 +6,12 @@
   import Strategy_002 from "./components/strategies/Strategy_002.svelte";
   import Strategy_003 from "./components/strategies/Strategy_003.svelte";
   import Strategy_004 from "./components/strategies/Strategy_004.svelte";
+  import Strategy_005 from "./components/strategies/Strategy_005.svelte";
   let strategy_001_Component,
     strategy_002_Component,
     strategy_003_Component,
-    strategy_004_Component;
+    strategy_004_Component,
+    strategy_005_Component;
 
   //state
   import { isPageLoading } from "./store/sessionStore";
@@ -60,6 +62,7 @@
             {strategy_002_Component}
             {strategy_003_Component}
             {strategy_004_Component}
+            {strategy_005_Component}
           />
         </div>
         <div class="col-12 col-lg-6">
@@ -93,6 +96,10 @@
           <hr />
           <div class="my-3">
             <Strategy_004 bind:this={strategy_004_Component} />
+          </div>
+          <hr />
+          <div class="my-3">
+            <Strategy_005 bind:this={strategy_005_Component} />
           </div>
           <hr />
         </div>

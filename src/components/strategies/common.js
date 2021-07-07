@@ -1,3 +1,3 @@
-export function calcPercent(percentage) {
-  return 100 - Math.round(1000 * ((100 - percentage) / 2)) / 1000;
+export function calcPercent(lvl, maxlvl) {
+  return Math.round((lvl * 1000) / maxlvl) / 10;
 }

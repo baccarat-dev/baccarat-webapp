@@ -3,37 +3,42 @@
   import { calcPercent } from "./common";
 
   let currentLevel = 1,
-    maxLevel = 10,
+    maxLevel = 12,
     percentage = null,
     nextMove = "-",
-    hasWonInColumn = false;
+    hasWonInColumn = false,
+    cornerCellIdx = 15;
 
   export function run(result, resultsList) {
     const round = resultsList.length;
 
-    if (round < 6) {
+    if (round < 16) {
       return;
     }
-    const prevResult = resultsList[round - 5 - 1] === "P" ? "B" : "P";
-    const nextResult = resultsList[round - 5] === "P" ? "B" : "P";
+    let targetIdx = 15;
+    const mod5 = (round - 1) % 5;
+    if (mod5 === 0) {
+      cornerCellIdx = round - 1;
+      targetIdx = cornerCellIdx;
+      return;
+    } else if (mod5 < 5) {
+      targetIdx = cornerCellIdx - 5 * (mod5 - 1);
+    }
 
-    if (round % 5 === 1) {
-      hasWonInColumn = false;
-      nextMove = nextResult;
-      return;
-    }
-    if (hasWonInColumn) {
-      return;
-    }
-    if (prevResult === result) {
+    const targetResult = resultsList[targetIdx];
+    const nextResult = resultsList[targetIdx - 5];
+
+    console.log(`targetResult:${targetResult}  |  nextResult:${nextResult}`);
+
+    if (targetResult === result) {
       // strategy won, we reset
       hasWonInColumn = true;
       reset();
     }
-    if (hasWonInColumn || round % 5 === 0) {
+    if (hasWonInColumn || mod5 === 4) {
       nextMove = "-";
     } else {
-      // strategy lost, we calc % and set nextMove
+      // strategy lost, we calc % and set next move
       currentLevel++;
       maxLevel = maxLevel < currentLevel ? currentLevel : maxLevel;
       percentage = calcPercent(currentLevel, maxLevel);
@@ -49,7 +54,7 @@
 
 <div>
   <StrategyCard
-    name="Anti-Mirroring"
+    name="L-shape"
     {currentLevel}
     {maxLevel}
     {percentage}

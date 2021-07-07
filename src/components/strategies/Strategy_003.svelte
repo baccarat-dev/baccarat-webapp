@@ -3,33 +3,46 @@
   import { calcPercent } from "./common";
 
   let currentLevel = 1,
-    maxLevel = 1,
-    percentage = 50,
-    nextMove = null;
+    maxLevel = 10,
+    percentage = null,
+    nextMove = "-",
+    hasWonInColumn = false;
 
-  export function run(round, result, resultsList) {
-    const prevResult = resultsList[round - 5 - 1];
-    const L = resultsList.length;
-    if (L >= 6) {
-      nextMove = resultsList[round - 5];
-    }
-    if (L < 7 || L % 5 === 1) {
+  export function run(result, resultsList) {
+    const round = resultsList.length;
+
+    if (round < 6) {
       return;
     }
-    console.log(prevResult, L);
+    const prevResult = resultsList[round - 5 - 1];
+    const nextResult = resultsList[round - 5];
+
+    if (round % 5 === 1) {
+      hasWonInColumn = false;
+      nextMove = nextResult;
+      return;
+    }
+    if (hasWonInColumn) {
+      return;
+    }
     if (prevResult === result) {
       // strategy won, we reset
+      hasWonInColumn = true;
       reset();
+    }
+    if (hasWonInColumn || round % 5 === 0) {
+      nextMove = "-";
     } else {
-      // strategy lost
+      // strategy lost, we calc % and set nextMove
       currentLevel++;
       maxLevel = maxLevel < currentLevel ? currentLevel : maxLevel;
-      percentage = calcPercent(percentage);
+      percentage = calcPercent(currentLevel, maxLevel);
+      nextMove = nextResult;
     }
   }
 
   export function reset() {
-    percentage = 50;
+    percentage = Math.round(1000 / maxLevel) / 10;
     currentLevel = 1;
   }
 </script>
