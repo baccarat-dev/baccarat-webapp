@@ -19,7 +19,7 @@
     const mod5 = (round - 1) % 5;
     if (mod5 === 0) {
       cornerCellIdx = round - 1;
-      nextMove = resultsList[cornerCellIdx];
+      nextMove = resultsList[cornerCellIdx] === "P" ? "B" : "P";
       return;
     } else if (mod5 < 5) {
       targetIdx = cornerCellIdx - 5 * (mod5 - 1);
