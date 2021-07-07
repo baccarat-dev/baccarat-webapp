@@ -81,6 +81,7 @@
       strategy_003_Component.run($result, $resultsList);
       strategy_004_Component.run($result, $resultsList);
       strategy_005_Component.run($result, $resultsList);
+      strategy_006_Component.run($result, $resultsList);
       $round++;
     }
     //($winNbrsList, $resultsList);
@@ -90,7 +91,8 @@
     strategy_002_Component,
     strategy_003_Component,
     strategy_004_Component,
-    strategy_005_Component;
+    strategy_005_Component,
+    strategy_006_Component;
 
   export let MostRecentRecordsComponent;
 </script>

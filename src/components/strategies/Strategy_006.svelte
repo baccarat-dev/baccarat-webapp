@@ -19,18 +19,16 @@
     const mod5 = (round - 1) % 5;
     if (mod5 === 0) {
       cornerCellIdx = round - 1;
-      targetIdx = cornerCellIdx;
+      nextMove = resultsList[cornerCellIdx];
       return;
     } else if (mod5 < 5) {
       targetIdx = cornerCellIdx - 5 * (mod5 - 1);
     }
 
     const targetResult = resultsList[targetIdx];
-    const nextResult = resultsList[targetIdx - 5];
+    const nextResult = resultsList[targetIdx - 5] === "P" ? "B" : "P";
 
-    console.log(`targetResult:${targetResult}  |  nextResult:${nextResult}`);
-
-    if (targetResult === result) {
+    if (targetResult !== result) {
       // strategy won, we reset
       hasWonInColumn = true;
       reset();
@@ -38,7 +36,7 @@
     if (hasWonInColumn || mod5 === 4) {
       nextMove = "-";
     } else {
-      // strategy lost, we calc % and set next move
+      // strategy lost, we calc % and set nextMove
       currentLevel++;
       maxLevel = maxLevel < currentLevel ? currentLevel : maxLevel;
       percentage = calcPercent(currentLevel, maxLevel);
@@ -54,7 +52,7 @@
 
 <div>
   <StrategyCard
-    name="L-shape"
+    name="Anti L-shape"
     {currentLevel}
     {maxLevel}
     {percentage}

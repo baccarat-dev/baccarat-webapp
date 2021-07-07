@@ -28,8 +28,6 @@
     const targetResult = resultsList[targetIdx];
     const nextResult = resultsList[targetIdx - 5];
 
-    console.log(`targetResult:${targetResult}  |  nextResult:${nextResult}`);
-
     if (targetResult === result) {
       // strategy won, we reset
       hasWonInColumn = true;
