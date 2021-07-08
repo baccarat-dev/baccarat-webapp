@@ -46,28 +46,13 @@
     const targetResult = resultsList[targetIdx];
     const nextResult = resultsList[nextIdx];
 
-    console.log(
-      "g:" + targetIdx,
-      targetResult,
-      "   nxt:" + nextIdx,
-      nextResult,
-      "   mod5",
-      mod5
-    );
     if (targetResult === result) {
       // strategy won, we reset
-      console.log(
-        "targetResult === result",
-        targetResult === result,
-        targetResult,
-        result
-      );
       hasWonInColumn = true;
       reset();
     }
     if (hasWonInColumn) {
       nextMove = "-";
-      console.log("hasWonInColumn", hasWonInColumn, mod5);
     } else {
       // strategy lost, we calc % and set nextMove
       currentLevel++;

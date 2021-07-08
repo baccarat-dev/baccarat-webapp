@@ -7,34 +7,51 @@
     percentage = null,
     nextMove = "-",
     hasWonInColumn = false,
-    cornerCellIdx = 15;
+    cornerCellIdx = 0;
 
   export function run(result, resultsList) {
     const round = resultsList.length;
-
+    const mod5 = round % 5;
+    console.log(mod5);
     if (round < 16) {
       return;
     }
-    let targetIdx = 15;
-    const mod5 = (round - 1) % 5;
-    if (mod5 === 0) {
-      hasWonInColumn = false;
-      cornerCellIdx = round - 1;
-      nextMove = resultsList[cornerCellIdx] === "P" ? "B" : "P";
-      return;
-    } else if (mod5 < 5) {
-      targetIdx = cornerCellIdx - 5 * (mod5 - 1);
+
+    let targetIdx;
+    let nextIdx;
+    switch (mod5) {
+      case 1:
+        hasWonInColumn = false;
+        cornerCellIdx = round - 1;
+        nextMove = resultsList[cornerCellIdx - 15];
+        return;
+      case 2:
+        targetIdx = cornerCellIdx - 15;
+        nextIdx = targetIdx + 5;
+        break;
+      case 3:
+        targetIdx = cornerCellIdx - 10;
+        nextIdx = targetIdx + 5;
+        break;
+      case 4:
+        targetIdx = cornerCellIdx - 5;
+        nextIdx = targetIdx + 5;
+        break;
+      default:
+        targetIdx = cornerCellIdx;
+        nextIdx = "-";
+        break;
     }
 
     const targetResult = resultsList[targetIdx];
-    const nextResult = resultsList[targetIdx - 5] === "P" ? "B" : "P";
+    const nextResult = resultsList[nextIdx];
 
     if (targetResult !== result) {
       // strategy won, we reset
       hasWonInColumn = true;
       reset();
     }
-    if (hasWonInColumn || mod5 === 4) {
+    if (hasWonInColumn) {
       nextMove = "-";
     } else {
       // strategy lost, we calc % and set nextMove
