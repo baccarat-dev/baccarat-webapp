@@ -16,29 +16,58 @@
     if (round < 16) {
       return;
     }
-    const targetIdx = cornerCellIdx - 5 * (mod5 - 1);
+
+    let targetIdx;
     let nextIdx;
-    if (mod5 === 1) {
-      cornerCellIdx = round - 1;
-      nextMove = resultsList[cornerCellIdx - 5];
-      return;
-    } else if (mod5 === 4) {
-      nextIdx = targetIdx;
-    } else {
-      nextIdx = targetIdx - 5 * (mod5 - 1);
+    switch (mod5) {
+      case 1:
+        hasWonInColumn = false;
+        cornerCellIdx = round - 1;
+        nextMove = resultsList[cornerCellIdx - 15];
+        return;
+      case 2:
+        targetIdx = cornerCellIdx - 15;
+        nextIdx = targetIdx + 5;
+        break;
+      case 3:
+        targetIdx = cornerCellIdx - 10;
+        nextIdx = targetIdx + 5;
+        break;
+      case 4:
+        targetIdx = cornerCellIdx - 5;
+        nextIdx = targetIdx + 5;
+        break;
+      default:
+        targetIdx = cornerCellIdx;
+        nextIdx = "-";
+        break;
     }
 
     const targetResult = resultsList[targetIdx];
     const nextResult = resultsList[nextIdx];
 
-    console.log(targetIdx, "next: " + targetIdx - 5);
+    console.log(
+      "g:" + targetIdx,
+      targetResult,
+      "   nxt:" + nextIdx,
+      nextResult,
+      "   mod5",
+      mod5
+    );
     if (targetResult === result) {
       // strategy won, we reset
+      console.log(
+        "targetResult === result",
+        targetResult === result,
+        targetResult,
+        result
+      );
       hasWonInColumn = true;
       reset();
     }
-    if (hasWonInColumn || mod5 === 0) {
+    if (hasWonInColumn) {
       nextMove = "-";
+      console.log("hasWonInColumn", hasWonInColumn, mod5);
     } else {
       // strategy lost, we calc % and set nextMove
       currentLevel++;

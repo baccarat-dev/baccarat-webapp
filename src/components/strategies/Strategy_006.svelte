@@ -18,6 +18,7 @@
     let targetIdx = 15;
     const mod5 = (round - 1) % 5;
     if (mod5 === 0) {
+      hasWonInColumn = false;
       cornerCellIdx = round - 1;
       nextMove = resultsList[cornerCellIdx] === "P" ? "B" : "P";
       return;
