@@ -7,33 +7,37 @@
     percentage = null,
     nextMove = "-",
     hasWonInColumn = false,
-    cornerCellIdx = 15;
+    cornerCellIdx = 0;
 
   export function run(result, resultsList) {
     const round = resultsList.length;
-
+    const mod5 = round % 5;
+    console.log(mod5);
     if (round < 16) {
       return;
     }
-    let targetIdx = 15;
-    const mod5 = (round - 1) % 5;
-    if (mod5 === 0) {
+    const targetIdx = cornerCellIdx - 5 * (mod5 - 1);
+    let nextIdx;
+    if (mod5 === 1) {
       cornerCellIdx = round - 1;
-      nextMove = resultsList[cornerCellIdx];
+      nextMove = resultsList[cornerCellIdx - 5];
       return;
-    } else if (mod5 < 5) {
-      targetIdx = cornerCellIdx - 5 * (mod5 - 1);
+    } else if (mod5 === 4) {
+      nextIdx = targetIdx;
+    } else {
+      nextIdx = targetIdx - 5 * (mod5 - 1);
     }
 
     const targetResult = resultsList[targetIdx];
-    const nextResult = resultsList[targetIdx - 5];
+    const nextResult = resultsList[nextIdx];
 
+    console.log(targetIdx, "next: " + targetIdx - 5);
     if (targetResult === result) {
       // strategy won, we reset
       hasWonInColumn = true;
       reset();
     }
-    if (hasWonInColumn || mod5 === 4) {
+    if (hasWonInColumn || mod5 === 0) {
       nextMove = "-";
     } else {
       // strategy lost, we calc % and set nextMove
