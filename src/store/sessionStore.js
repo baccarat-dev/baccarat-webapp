@@ -1,4 +1,4 @@
-import { readable, writable } from "svelte/store";
+import { writable } from "svelte/store";
 
 export const round = writable(1),
   bet = writable(null),
@@ -10,6 +10,6 @@ export const round = writable(1),
   sideBarShow = writable(false),
   isPageLoading = writable(true);
 
-export const MAIN_API_URL = "http://localhost:11111";
-// https://baccarat-api-server.herokuapp.com
-// http://localhost:11111
+export const REMOTE_API_URL = "https://baccarat-api-server.herokuapp.com";
+export const LOCAL_API_URL = "http://localhost:11111";
+export const MAIN_API_URL = REMOTE_API_URL;
