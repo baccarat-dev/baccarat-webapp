@@ -7,13 +7,13 @@
     percentage = null,
     nextMove = "-";
 
-  export function run(round, result, winNbr, prevNum, prevResult) {
-    nextMove = !isEven(winNbr) ? result : result === "P" ? "B" : "P";
+  export function run(round, bet, winNbr, prevNum, prevBet) {
+    nextMove = !isEven(winNbr) ? bet : bet === "P" ? "B" : "P";
     if (round === 1) {
       return;
     }
     if (isEven(prevNum)) {
-      if (prevResult !== result) {
+      if (prevBet !== bet) {
         // strategy won, we reset
         reset();
       } else {
@@ -23,7 +23,7 @@
         percentage = calcPercent(currentLevel, maxLevel);
       }
     } else {
-      if (prevResult === result) {
+      if (prevBet === bet) {
         // strategy won, we reset
         reset();
       } else {

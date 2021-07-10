@@ -8,24 +8,24 @@
     nextMove = "-",
     hasWonInColumn = false;
 
-  export function run(result, resultsList) {
-    const round = resultsList.length;
+  export function run(bet, betsList) {
+    const round = betsList.length;
 
     if (round < 6) {
       return;
     }
-    const prevResult = resultsList[round - 5 - 1];
-    const nextResult = resultsList[round - 5];
+    const prevBet = betsList[round - 5 - 1];
+    const nextBet = betsList[round - 5];
 
     if (round % 5 === 1) {
       hasWonInColumn = false;
-      nextMove = nextResult;
+      nextMove = nextBet;
       return;
     }
     if (hasWonInColumn) {
       return;
     }
-    if (prevResult === result) {
+    if (prevBet === bet) {
       // strategy won, we reset
       hasWonInColumn = true;
       reset();
@@ -37,7 +37,7 @@
       currentLevel++;
       maxLevel = maxLevel < currentLevel ? currentLevel : maxLevel;
       percentage = calcPercent(currentLevel, maxLevel);
-      nextMove = nextResult;
+      nextMove = nextBet;
     }
   }
 

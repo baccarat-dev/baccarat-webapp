@@ -1,13 +1,14 @@
 <script>
   import {
-    result,
+    bet,
     winNbr,
     round,
     hand,
-    resultsList,
+    betsList,
     winNbrsList,
   } from "../../store/sessionStore";
-  import { supabase } from "../../supabaseClient";
+
+  import { saveRecordDB } from "../../api/main/shortGame";
 
   const winNbrBtnsStatusReset = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   let winNbrBtnsStatus = winNbrBtnsStatusReset;
@@ -44,52 +45,36 @@
     }
   }
 
-  function onResultBtnClick(e) {
-    $result = e.target.value;
+  function onBetBtnClick(e) {
+    $bet = e.target.value;
   }
 
-  async function addRecord() {
-    if (!$result) {
-      window.pushToast("Select P, B, or T", "danger");
-    } else if ($winNbr === null) {
-      window.pushToast("Select winning number", "danger");
-    } else {
-      const { data, error } = await supabase
-        .from("records")
-        .insert([{ res: $result, nbr: $winNbr }]);
-      $resultsList.push($result);
-      $winNbrsList.push($winNbr);
-      MostRecentRecordsComponent.populateDataMatrix();
+  async function addRecord(e) {
+    $bet = e.target.value;
+    // if (!$bet) {
+    //   window.pushToast("Select P, B, or T", "danger");
+    // } else if ($winNbr === null) {
+    //   window.pushToast("Select winning number", "danger");
+    // }
 
-      // update strategies
-      strategy_001_Component.run(
-        $round,
-        $result,
-        $winNbr,
-        $winNbrsList[$round - 2],
-        $resultsList[$round - 2]
-      );
+    const dataRes = saveRecordDB($bet);
+    console.log(dataRes);
+    window.pushToast("done: " + $bet);
 
-      strategy_002_Component.run(
-        $round,
-        $result,
-        $winNbr,
-        $winNbrsList[$round - 2],
-        $resultsList[$round - 2]
-      );
+    $betsList.push($bet);
+    $winNbrsList.push($bet);
+    MostRecentRecordsComponent.populateDataMatrix();
 
-      strategy_003_Component.run($result, $resultsList);
-      strategy_004_Component.run($result, $resultsList);
-      strategy_005_Component.run($result, $resultsList);
-      strategy_006_Component.run($result, $resultsList);
-      $round++;
-    }
-    //($winNbrsList, $resultsList);
+    strategy_003_Component.run($bet, $betsList);
+    strategy_004_Component.run($bet, $betsList);
+    strategy_005_Component.run($bet, $betsList);
+    strategy_006_Component.run($bet, $betsList);
+    $round++;
+
+    //($winNbrsList, $betsList);
   }
 
-  export let strategy_001_Component,
-    strategy_002_Component,
-    strategy_003_Component,
+  export let strategy_003_Component,
     strategy_004_Component,
     strategy_005_Component,
     strategy_006_Component;
@@ -114,93 +99,90 @@
     <!-- Player Btn -->
     <button
       value="P"
-      on:click={onResultBtnClick}
-      class={"btn btn-lg btn-outline-primary " +
-        ($result === "P" ? "active" : "")}
+      on:click={addRecord}
+      class={"btn btn-lg btn-outline-primary " + ($bet === "P" ? "active" : "")}
       type="button">P</button
     >
     <!-- Banker Btn -->
     <button
       value="B"
-      on:click={onResultBtnClick}
+      on:click={addRecord}
       class={"btn btn-lg btn-outline-danger mx-2 " +
-        ($result === "B" ? "active" : "")}
+        ($bet === "B" ? "active" : "")}
       type="button">B</button
     >
     <!-- Tie Btn -->
-    <button
-      style="display: none;"
+    <!-- <button
       value="T"
-      on:click={onResultBtnClick}
+      on:click={onBetBtnClick}
       class={"btn btn-lg btn-outline-success " +
-        ($result === "T" ? "active" : "")}
+        ($bet =onBetBtnClick== "T" ? "active" : "")}
       type="button">T</button
-    >
+    > -->
 
     <!-- Add Btn -->
-    <button
+    <!-- <button
       on:click={addRecord}
       value="Add"
       style="font-size: 25px;font-weight: 500;"
       class="btn btn-lg btn-outline-warning mx-2 p-0 px-3"
       type="button">ADD</button
-    >
+    > -->
   </div>
   <br />
 
   <!-- BEGIN Winning Number Selection Btn Group -->
-  <div class="d-flex flex-wrap align-items-center justify-content-center">
-    <div class="d-flex flex-wrap mx-4 justify-content-center">
-      <div>
-        <button
-          name="prevArrow"
-          on:click={onChangeWinNbr}
-          value="<"
-          style="border-radius: 0;border-top-left-radius: 50%;border-bottom-left-radius: 50%;"
-          class="btn btn-outline-dark btn-lg">«</button
-        >
-        {#each Array(5) as _, i}
+  <!-- <div class="d-flex flex-wrap align-items-center justify-content-center">
+      <div class="d-flex flex-wrap mx-4 justify-content-center">
+        <div>
           <button
+            name="prevArrow"
             on:click={onChangeWinNbr}
-            value={i}
-            style="border-radius: 0;"
-            class={"btn btn-outline-dark btn-lg mr-1 display-4 " +
-              (winNbrBtnsStatus[i] === 1 ? "active" : "")}>{i}</button
+            value="<"
+            style="border-radius: 0;border-top-left-radius: 50%;border-bottom-left-radius: 50%;"
+            class="btn btn-outline-dark btn-lg">«</button
           >
-        {/each}
-      </div>
-      <div>
-        {#each Array(5) as _, i}
-          <button
-            on:click={onChangeWinNbr}
-            value={i + 5}
-            style="border-radius: 0;"
-            class={"btn btn-outline-dark btn-lg mr-1 " +
-              (winNbrBtnsStatus[i + 5] === 1 ? "active" : "")}
-            >{i + 5}
-          </button>
-        {/each}
+          {#each Array(5) as _, i}
+            <button
+              on:click={onChangeWinNbr}
+              value={i}
+              style="border-radius: 0;"
+              class={"btn btn-outline-dark btn-lg mr-1 display-4 " +
+                (winNbrBtnsStatus[i] === 1 ? "active" : "")}>{i}</button
+            >
+          {/each}
+        </div>
+        <div>
+          {#each Array(5) as _, i}
+            <button
+              on:click={onChangeWinNbr}
+              value={i + 5}
+              style="border-radius: 0;"
+              class={"btn btn-outline-dark btn-lg mr-1 " +
+                (winNbrBtnsStatus[i + 5] === 1 ? "active" : "")}
+              >{i + 5}
+            </button>
+          {/each}
 
-        <button
-          name="nxtArrow"
-          on:click={onChangeWinNbr}
-          value=">"
-          style="border-radius: 0; border-top-right-radius: 50%;border-bottom-right-radius: 50%;"
-          class="btn btn-outline-dark btn-lg">»</button
-        >
+          <button
+            name="nxtArrow"
+            on:click={onChangeWinNbr}
+            value=">"
+            style="border-radius: 0; border-top-right-radius: 50%;border-bottom-right-radius: 50%;"
+            class="btn btn-outline-dark btn-lg">»</button
+          >
+        </div>
       </div>
-    </div>
-  </div>
+    </div> -->
   <!-- END Winning Number Selection Btn Group -->
   <br />
 
   <!-- BEGIN cards selection Btn Group -->
-  <div
+  <!-- <div
     style="display: none !important;"
     class="d-flex flex-wrap align-items-center justify-content-center"
   >
     <div class="d-flex flex-wrap mx-4 justify-content-center">
-      <!-- BEGIN 1 to 9 row -->
       <div class="mr-3 my-3">
         {#each Array(9) as _, i}
           <button
@@ -212,9 +194,7 @@
           >
         {/each}
       </div>
-      <!-- END 1 to 10 row -->
-
-      <!-- BEGIN 10,J,Q,K row -->
+      >
       <div
         class="d-flex"
         style="-ms-flex-item-align: center;align-items: center;align-content: center;"
@@ -274,9 +254,8 @@
           ↩
         </button>
       </div>
-      <!-- END J,Q,K row -->
     </div>
-  </div>
+  </div> -->
 
   <!-- END cards selection Btn Group -->
 

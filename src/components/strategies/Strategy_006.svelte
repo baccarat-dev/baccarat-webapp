@@ -9,8 +9,8 @@
     hasWonInColumn = false,
     cornerCellIdx = 0;
 
-  export function run(result, resultsList) {
-    const round = resultsList.length;
+  export function run(bet, betsList) {
+    const round = betsList.length;
     const mod5 = round % 5;
     console.log(mod5);
     if (round < 16) {
@@ -23,7 +23,7 @@
       case 1:
         hasWonInColumn = false;
         cornerCellIdx = round - 1;
-        nextMove = resultsList[cornerCellIdx - 15];
+        nextMove = betsList[cornerCellIdx - 15];
         return;
       case 2:
         targetIdx = cornerCellIdx - 15;
@@ -43,10 +43,10 @@
         break;
     }
 
-    const targetResult = resultsList[targetIdx];
-    const nextResult = resultsList[nextIdx];
+    const targetBet = betsList[targetIdx];
+    const nextBet = betsList[nextIdx];
 
-    if (targetResult !== result) {
+    if (targetBet !== bet) {
       // strategy won, we reset
       hasWonInColumn = true;
       reset();
@@ -58,7 +58,7 @@
       currentLevel++;
       maxLevel = maxLevel < currentLevel ? currentLevel : maxLevel;
       percentage = calcPercent(currentLevel, maxLevel);
-      nextMove = nextResult;
+      nextMove = nextBet;
     }
   }
 

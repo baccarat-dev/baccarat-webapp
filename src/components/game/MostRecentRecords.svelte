@@ -1,42 +1,44 @@
 <script>
-  import { supabase } from "../../supabaseClient";
   import {
-    resultsList,
+    betsList,
     winNbrsList,
     isPageLoading,
   } from "../../store/sessionStore";
+
+  import { getAllRecordsDB, resetGameDB } from "../../api/main/shortGame";
 
   let nbrRows = 5;
   let nbrCols = 10;
 
   let dataMatrix = [];
 
-  export async function fetch() {
-    const { data, error } = await supabase.from("records").select("res,nbr");
-    $resultsList = data.map((x) => x.res);
-    $winNbrsList = data.map((x) => x.nbr);
+  export async function fetchAllRecords() {
+    const data = await getAllRecordsDB();
+    console.log(data);
+    $betsList = data;
+    $winNbrsList = data;
     populateDataMatrix();
     $isPageLoading = false;
   }
 
   export function populateDataMatrix() {
     dataMatrix = [];
-    let latestResults;
+    let latestBets;
     let latestWinNbrs;
     const boardSize = nbrCols * nbrRows;
-    const dataLength = $resultsList.length;
+    const dataLength = $betsList.length;
     if (dataLength > boardSize) {
-      latestResults = $resultsList.slice(dataLength - boardSize, dataLength);
+      latestBets = $betsList.slice(dataLength - boardSize, dataLength);
       latestWinNbrs = $winNbrsList.slice(dataLength - boardSize, dataLength);
     } else {
-      latestResults = $resultsList;
+      latestBets = $betsList;
       latestWinNbrs = $winNbrsList;
     }
     for (let i = 0; i < nbrCols; i++) {
       const row = [];
       for (let j = 0; j < nbrRows; j++) {
         const idx = i * nbrRows + j;
-        row.push([latestResults[idx], latestWinNbrs[idx]]);
+        row.push([latestBets[idx], latestWinNbrs[idx]]);
       }
       dataMatrix.push(row);
     }
@@ -66,8 +68,9 @@
   }
 
   async function deleteAll() {
-    const { data, error } = await supabase.from("records").delete();
-    $resultsList = [];
+    const res = await resetGameDB();
+    console.log(res);
+    $betsList = [];
     $winNbrsList = [];
     window.pushToast("All records cleared! ", "danger");
     window.location.reload();
@@ -108,7 +111,7 @@
   </div>
   <hr class="mx-3" style="width: auto;" />
 
-  {#if $resultsList.length > 0}
+  {#if $betsList.length > 0}
     <div class="d-flex flex-wrap">
       <table class="table table-bordered table-dark w-auto">
         <tbody>

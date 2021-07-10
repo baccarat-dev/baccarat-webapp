@@ -1,26 +1,13 @@
 <script>
   import {
     round,
-    result,
-    resultsList,
+    bet,
+    betsList,
     winNbr,
     winNbrsList,
     sideBarShow,
   } from "../../store/sessionStore";
-  async function reset() {
-    const yes = confirm("you sure?");
-    if (!yes) {
-      return;
-    }
-    const { data, error } = await supabase.from("records").delete().match({});
-    $round = 1;
-    $resultsList = [];
-    $result = null;
-    $winNbr = 1;
-    $winNbrsList = [];
-    strategy001.reset();
-    window.pushToast("done");
-  }
+  async function reset() {}
 
   function selectGame(e) {
     $sideBarShow = false;
@@ -41,7 +28,7 @@
 
     <button
       class="m-0 btn btn-danger btn-md px-4 text-white mx-4 float-right d-inline"
-      on:click={reset}>Delete Current</button
+      >Delete Current</button
     >
 
     <br /><br />

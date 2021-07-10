@@ -2,15 +2,11 @@
   import { onMount } from "svelte";
 
   //strategies
-  import Strategy_001 from "./components/strategies/Strategy_001.svelte";
-  import Strategy_002 from "./components/strategies/Strategy_002.svelte";
   import Strategy_003 from "./components/strategies/Strategy_003.svelte";
   import Strategy_004 from "./components/strategies/Strategy_004.svelte";
   import Strategy_005 from "./components/strategies/Strategy_005.svelte";
   import Strategy_006 from "./components/strategies/Strategy_006.svelte";
-  let strategy_001_Component,
-    strategy_002_Component,
-    strategy_003_Component,
+  let strategy_003_Component,
     strategy_004_Component,
     strategy_005_Component,
     strategy_006_Component;
@@ -28,7 +24,7 @@
   let LoaderComponent;
 
   onMount(async () => {
-    await MostRecentRecordsComponent.fetch();
+    await MostRecentRecordsComponent.fetchAllRecords();
   });
 </script>
 
@@ -60,8 +56,6 @@
         <div class="col-12 col-lg-6">
           <Recorder
             {MostRecentRecordsComponent}
-            {strategy_001_Component}
-            {strategy_002_Component}
             {strategy_003_Component}
             {strategy_004_Component}
             {strategy_005_Component}
@@ -85,13 +79,6 @@
         </div>
         <br /><br /><br />
         <div>
-          <div class="my-3">
-            <Strategy_001 bind:this={strategy_001_Component} />
-          </div>
-          <hr />
-          <div class="my-3">
-            <Strategy_002 bind:this={strategy_002_Component} />
-          </div>
           <hr />
           <div class="my-3">
             <Strategy_003 bind:this={strategy_003_Component} />
