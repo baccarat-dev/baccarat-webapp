@@ -53,11 +53,11 @@
 <style>
   .toast-wrapper {
     position: fixed;
-    right: 0;
+    right: 55px;
     top: 0;
     text-align: center;
     z-index: 9999;
-    width: 80vw;
+    width: auto;
   }
   .toast-item {
     border-radius: 4px;
@@ -66,5 +66,6 @@
     max-width: 300px;
     opacity: 0.95;
     color: #fff;
+    font-weight: 900;
   }
 </style>

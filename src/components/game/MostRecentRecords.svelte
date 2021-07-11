@@ -68,16 +68,19 @@
     }
   }
 
-  async function deleteAll() {
-    const res = await resetGameDB();
-    console.log(res);
-    resetStoreValues();
-    window.pushToast("All records cleared! ", "danger");
+  async function resetGame() {
+    if ($betsList.length === 0) {
+      window.pushToast("Game Has No Records Yet.", "warning");
+    } else {
+      const res = await resetGameDB();
+      resetStoreValues();
+      window.pushToast("All records cleared! ", "danger");
+    }
   }
 </script>
 
 <div>
-  <h1 class="text-primary mx-3 d-inline" style="font-size: 1.75rem;">
+  <h1 class="text-primary mx-3 my-3">
     Most Recent: ({nbrRows}x{nbrCols})
   </h1>
   <div class="input-group d-inline mx-5">
@@ -104,8 +107,8 @@
     />
   </div>
   <div style="display:inline-flex;">
-    <button class="btn btn-lg btn-danger" on:click={deleteAll}>
-      DELETE ALL
+    <button class="btn btn-lg btn-danger" on:click={resetGame}>
+      RESET GAME
     </button>
   </div>
   <hr class="mx-3" style="width: auto;" />

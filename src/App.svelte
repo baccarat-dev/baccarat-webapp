@@ -72,9 +72,7 @@
       <div class="row m-0 bg-light pt-3">
         <div class="row">
           <div class="col">
-            <h1 class="text-primary mx-3" style="font-size: 1.75rem;">
-              Strategies:
-            </h1>
+            <h1 class="text-primary mx-3">Strategies:</h1>
           </div>
         </div>
         <br /><br /><br />

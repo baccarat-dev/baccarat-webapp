@@ -64,8 +64,11 @@
   }
 
   function handleKeydown(e) {
-    $bet = e.key.toUpperCase();
-    addRecord();
+    const key = e.key.toUpperCase();
+    if (["P", "B"].includes(key)) {
+      $bet = key;
+      addRecord();
+    }
   }
 
   export let strategy_003_Component,
@@ -80,7 +83,7 @@
 
 <div>
   <div class="row">
-    <h1 class="text-primary mx-3" style="font-size: 1.75rem;">Recording:</h1>
+    <h1 class="text-primary mx-3">Recording:</h1>
   </div>
   <hr class="mx-4" />
 
