@@ -49,11 +49,14 @@
     //   window.pushToast("Select winning number", "danger");
     // }
 
-    const dataRes = await saveRecordDB($bet);
-    console.log(dataRes);
+    const response = await saveRecordDB($bet);
+
+    if (response.status !== 200) {
+      window.pushToast("There was an error adding the record!", "danger");
+      return;
+    }
 
     $betsList.push($bet);
-    //$winNbrsList.push($bet);
     MostRecentRecordsComponent.populateDataMatrix();
 
     strategy_003_Component.run($bet, $betsList);

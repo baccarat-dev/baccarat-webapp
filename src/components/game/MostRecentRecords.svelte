@@ -9,7 +9,7 @@
   import { getAllRecordsDB, resetGameDB } from "../../api/main/shortGame";
 
   let nbrRows = 5;
-  let nbrCols = 10;
+  let nbrCols = 5;
 
   let dataMatrix = [];
 
@@ -24,22 +24,26 @@
 
   export function populateDataMatrix() {
     dataMatrix = [];
-    let latestBets;
-    let latestWinNbrs;
+    let latestBets = $betsList;
+    let latestWinNbrs = $winNbrsList;
     const boardSize = nbrCols * nbrRows;
-    const dataLength = $betsList.length;
-    if (dataLength > boardSize) {
-      latestBets = $betsList.slice(dataLength - boardSize, dataLength);
-      latestWinNbrs = $winNbrsList.slice(dataLength - boardSize, dataLength);
-    } else {
-      latestBets = $betsList;
-      latestWinNbrs = $winNbrsList;
+    const nbOfBets = $betsList.length;
+    const nbOfWinNbrs = $winNbrsList.length;
+
+    // trim data to the latest
+    if (nbOfBets > boardSize) {
+      while (latestBets.length > boardSize) {
+        latestBets = latestBets.slice(5, nbOfBets);
+      }
     }
+
     for (let i = 0; i < nbrCols; i++) {
       const row = [];
       for (let j = 0; j < nbrRows; j++) {
         const idx = i * nbrRows + j;
-        row.push([latestBets[idx], latestWinNbrs[idx]]);
+        const bet = latestBets[idx];
+        const nbr = latestWinNbrs[idx];
+        row.push([bet, nbr]);
       }
       dataMatrix.push(row);
     }
@@ -70,11 +74,16 @@
 
   async function resetGame() {
     if ($betsList.length === 0) {
-      window.pushToast("Game Has No Records Yet.", "warning");
+      window.pushToast("Game Has No Records Yet.", "danger");
     } else {
       const res = await resetGameDB();
-      resetStoreValues();
-      window.pushToast("All records cleared! ", "danger");
+      console.log(res);
+      if (res.status === 200) {
+        resetStoreValues();
+        window.pushToast("All records cleared! ", "success");
+      } else {
+        window.pushToast(res.msg || "Internal Server Error!", "danger");
+      }
     }
   }
 </script>
