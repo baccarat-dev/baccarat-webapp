@@ -1,12 +1,5 @@
 <script>
-  import {
-    bet,
-    winNbr,
-    round,
-    hand,
-    betsList,
-    winNbrsList,
-  } from "../../store/sessionStore";
+  import { bet, winNbr, round, hand, betsList } from "../../store/sessionStore";
 
   import { saveRecordDB } from "../../api/main/shortGame";
 
@@ -49,20 +42,18 @@
     $bet = e.target.value;
   }
 
-  async function addRecord(e) {
-    $bet = e.target.value;
+  async function addRecord() {
     // if (!$bet) {
     //   window.pushToast("Select P, B, or T", "danger");
     // } else if ($winNbr === null) {
     //   window.pushToast("Select winning number", "danger");
     // }
 
-    const dataRes = saveRecordDB($bet);
+    const dataRes = await saveRecordDB($bet);
     console.log(dataRes);
-    window.pushToast("done: " + $bet);
 
     $betsList.push($bet);
-    $winNbrsList.push($bet);
+    //$winNbrsList.push($bet);
     MostRecentRecordsComponent.populateDataMatrix();
 
     strategy_003_Component.run($bet, $betsList);
@@ -70,8 +61,11 @@
     strategy_005_Component.run($bet, $betsList);
     strategy_006_Component.run($bet, $betsList);
     $round++;
+  }
 
-    //($winNbrsList, $betsList);
+  function handleKeydown(e) {
+    $bet = e.key.toUpperCase();
+    addRecord();
   }
 
   export let strategy_003_Component,
@@ -81,6 +75,8 @@
 
   export let MostRecentRecordsComponent;
 </script>
+
+<svelte:window on:keydown={handleKeydown} />
 
 <div>
   <div class="row">
@@ -99,16 +95,24 @@
     <!-- Player Btn -->
     <button
       value="P"
-      on:click={addRecord}
+      on:click={(e) => {
+        $bet = e.target.value;
+        addRecord();
+      }}
       class={"btn btn-lg btn-outline-primary " + ($bet === "P" ? "active" : "")}
+      style="font-size: 5rem;"
       type="button">P</button
     >
     <!-- Banker Btn -->
     <button
       value="B"
-      on:click={addRecord}
+      on:click={(e) => {
+        $bet = e.target.value;
+        addRecord();
+      }}
       class={"btn btn-lg btn-outline-danger mx-2 " +
         ($bet === "B" ? "active" : "")}
+      style="font-size: 5rem;"
       type="button">B</button
     >
     <!-- Tie Btn -->

@@ -3,6 +3,7 @@
     betsList,
     winNbrsList,
     isPageLoading,
+    resetStoreValues,
   } from "../../store/sessionStore";
 
   import { getAllRecordsDB, resetGameDB } from "../../api/main/shortGame";
@@ -70,10 +71,8 @@
   async function deleteAll() {
     const res = await resetGameDB();
     console.log(res);
-    $betsList = [];
-    $winNbrsList = [];
+    resetStoreValues();
     window.pushToast("All records cleared! ", "danger");
-    window.location.reload();
   }
 </script>
 
@@ -119,9 +118,7 @@
             <tr style="line-height: 50px;">
               {#each row as c}
                 <td style="min-width:70px;min-height:60px;"
-                  >{c.every((x) => typeof x !== "undefined")
-                    ? c[0] + " - " + c[1]
-                    : "-"}</td
+                  >{typeof c[0] !== "undefined" ? c[0] : "-"}</td
                 >
               {/each}
             </tr>
