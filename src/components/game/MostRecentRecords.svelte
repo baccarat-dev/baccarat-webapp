@@ -73,6 +73,9 @@
   }
 
   async function resetGame() {
+    if (!window.confirm("You sure ?")) {
+      return;
+    }
     if ($betsList.length === 0) {
       window.pushToast("Game Has No Records Yet.", "danger");
     } else {
