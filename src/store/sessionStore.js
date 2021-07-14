@@ -8,11 +8,12 @@ export const round = writable(1),
   hand = writable([]),
   handsList = writable([]),
   sideBarShow = writable(false),
-  isPageLoading = writable(true);
+  isPageLoading = writable(true),
+  strategiesData = writable([]);
 
 export const REMOTE_API_URL = "https://baccarat-api-server.herokuapp.com";
 export const LOCAL_API_URL = "http://localhost:11111";
-export const MAIN_API_URL = REMOTE_API_URL;
+export const MAIN_API_URL = LOCAL_API_URL;
 
 export const resetStoreValues = () => {
   round.set(1);
@@ -22,4 +23,5 @@ export const resetStoreValues = () => {
   winNbrsList.set([]);
   hand.set([]);
   handsList.set([]);
+  strategiesData.set([]);
 };

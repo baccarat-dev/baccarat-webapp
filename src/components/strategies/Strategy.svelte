@@ -1,21 +1,22 @@
 <script>
-  export let name, currentLevel, maxLevel, percentage, nextMove;
+  export let data;
+  console.log(data);
 </script>
 
 <div
   style="display:flex; justify-content: space-between; font-size: 1rem !important;"
 >
-  <h3 style="width: 350px;">- {name}</h3>
+  <h3 style="width: 350px;">- {data.name}</h3>
   <h3 style="min-width: 200px;">
-    lvl: {currentLevel}
+    lvl: {data.lvl}
   </h3>
   <h3 style="min-width: 200px;">
-    maxlvl: {maxLevel}
+    maxlvl: {data.maxLvl}
   </h3>
   <h3 style="min-width: 200px;">
-    %: {percentage ? percentage : "-"}
+    %: {data.percent ? data.percent : "-"}
   </h3>
   <h3 style="min-width: 200px;">
-    next: {nextMove ? nextMove : "-"}
+    next: {data.nextMove ? data.nextMove : "-"}
   </h3>
 </div>

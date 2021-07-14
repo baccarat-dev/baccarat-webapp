@@ -1,18 +1,12 @@
 <script>
   import { onMount } from "svelte";
 
-  //strategies
-  import Strategy_003 from "./components/strategies/Strategy_003.svelte";
-  import Strategy_004 from "./components/strategies/Strategy_004.svelte";
-  import Strategy_005 from "./components/strategies/Strategy_005.svelte";
-  import Strategy_006 from "./components/strategies/Strategy_006.svelte";
-  let strategy_003_Component,
-    strategy_004_Component,
-    strategy_005_Component,
-    strategy_006_Component;
-
-  //state
-  import { isPageLoading } from "./store/sessionStore";
+  import {
+    round,
+    betsList,
+    isPageLoading,
+    strategiesData,
+  } from "./store/sessionStore";
 
   //components
   import Toast from "./components/misc/Toast.svelte";
@@ -20,19 +14,34 @@
   import Hamburger from "./components/sidebar/Hamburger.svelte";
   import Recorder from "./components/game/Recorder.svelte";
   import MostRecentRecords from "./components/game/MostRecentRecords.svelte";
-  let MostRecentRecordsComponent;
-  let LoaderComponent;
+  import Strategy from "./components/strategies/Strategy.svelte";
+
+  // DB Operations
+  import { fetchGameDataDB } from "./api/main/shortGame";
 
   onMount(async () => {
-    await MostRecentRecordsComponent.fetchAllRecords();
+    const game = await fetchGameDataDB();
+    $betsList = game.bets;
+    $round = game.round;
+    $strategiesData = game.strategies;
+    $isPageLoading = false;
   });
+
+  $: {
+    $round = $round;
+    fetchGameDataDB().then((game) => {
+      console.log(game);
+      $strategiesData = game.strategies;
+      console.log($strategiesData);
+    });
+  }
 </script>
 
 <div style="margin: 0;padding:0;">
   <div
     style={"display: " + ($isPageLoading === true ? "block" : "none") + " ;"}
   >
-    <Loader bind:this={LoaderComponent} {isPageLoading} />
+    <Loader {isPageLoading} />
   </div>
   <div>
     <div class="container-fluid p-0 bg-white">
@@ -54,16 +63,10 @@
 
       <div class="row m-0 bg-light pt-3 mb-5">
         <div class="col-12 col-lg-6">
-          <Recorder
-            {MostRecentRecordsComponent}
-            {strategy_003_Component}
-            {strategy_004_Component}
-            {strategy_005_Component}
-            {strategy_006_Component}
-          />
+          <Recorder />
         </div>
         <div class="col-12 col-lg-6">
-          <MostRecentRecords bind:this={MostRecentRecordsComponent} />
+          <MostRecentRecords />
         </div>
 
         <br />
@@ -79,19 +82,7 @@
         <div>
           <hr />
           <div class="my-3">
-            <Strategy_003 bind:this={strategy_003_Component} />
-          </div>
-          <hr />
-          <div class="my-3">
-            <Strategy_004 bind:this={strategy_004_Component} />
-          </div>
-          <hr />
-          <div class="my-3">
-            <Strategy_005 bind:this={strategy_005_Component} />
-          </div>
-          <hr />
-          <div class="my-3">
-            <Strategy_006 bind:this={strategy_006_Component} />
+            <Strategy data={$strategiesData} />
           </div>
           <hr />
         </div>

@@ -57,12 +57,7 @@
     }
 
     $betsList.push($bet);
-    MostRecentRecordsComponent.populateDataMatrix();
 
-    strategy_003_Component.run($bet, $betsList);
-    strategy_004_Component.run($bet, $betsList);
-    strategy_005_Component.run($bet, $betsList);
-    strategy_006_Component.run($bet, $betsList);
     $round++;
   }
 
@@ -73,13 +68,6 @@
       addRecord();
     }
   }
-
-  export let strategy_003_Component,
-    strategy_004_Component,
-    strategy_005_Component,
-    strategy_006_Component;
-
-  export let MostRecentRecordsComponent;
 </script>
 
 <svelte:window on:keydown={handleKeydown} />

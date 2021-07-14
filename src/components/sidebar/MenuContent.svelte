@@ -7,7 +7,7 @@
     winNbrsList,
     sideBarShow,
   } from "../../store/sessionStore";
-  async function reset() {}
+  async function reset(strategyDetails) {}
 
   function selectGame(e) {
     $sideBarShow = false;

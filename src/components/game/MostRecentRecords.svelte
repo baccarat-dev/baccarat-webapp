@@ -1,12 +1,13 @@
 <script>
   import {
+    round,
     betsList,
     winNbrsList,
     isPageLoading,
     resetStoreValues,
   } from "../../store/sessionStore";
 
-  import { getAllRecordsDB, resetGameDB } from "../../api/main/shortGame";
+  import { fetchGameDataDB, resetGameDB } from "../../api/main/shortGame";
 
   let nbrRows = 5;
   let nbrCols = 5;
@@ -14,10 +15,9 @@
   let dataMatrix = [];
 
   export async function fetchAllRecords() {
-    const data = await getAllRecordsDB();
+    const data = await fetchGameDataDB();
     console.log(data);
-    $betsList = data;
-    $winNbrsList = data;
+    $betsList = data.bets;
     populateDataMatrix();
     $isPageLoading = false;
   }
@@ -28,12 +28,11 @@
     let latestWinNbrs = $winNbrsList;
     const boardSize = nbrCols * nbrRows;
     const nbOfBets = $betsList.length;
-    const nbOfWinNbrs = $winNbrsList.length;
 
     // trim data to the latest
     if (nbOfBets > boardSize) {
       while (latestBets.length > boardSize) {
-        latestBets = latestBets.slice(5, nbOfBets);
+        latestBets = latestBets.slice(nbrRows, nbOfBets);
       }
     }
 
@@ -88,6 +87,10 @@
         window.pushToast(res.msg || "Internal Server Error!", "danger");
       }
     }
+  }
+  $: {
+    $round = $round;
+    populateDataMatrix();
   }
 </script>
 
