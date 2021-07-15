@@ -29,11 +29,8 @@
 
   $: {
     $round = $round;
-    fetchGameDataDB().then((game) => {
-      console.log(game);
-      $strategiesData = game.strategies;
-      console.log($strategiesData);
-    });
+    console.log(`round: ${$round}`);
+    console.log($strategiesData);
   }
 </script>
 
@@ -81,9 +78,13 @@
         <br /><br /><br />
         <div>
           <hr />
-          <div class="my-3">
-            <Strategy data={$strategiesData} />
-          </div>
+          {#if $strategiesData.length > 0}
+            {#each $strategiesData as S}
+              <div class="my-3">
+                <Strategy data={S} />
+              </div>
+            {/each}
+          {/if}
           <hr />
         </div>
       </div>

@@ -1,7 +1,14 @@
 <script>
-  import { bet, winNbr, round, hand, betsList } from "../../store/sessionStore";
+  import {
+    bet,
+    winNbr,
+    round,
+    hand,
+    betsList,
+    strategiesData,
+  } from "../../store/sessionStore";
 
-  import { saveRecordDB } from "../../api/main/shortGame";
+  import { saveRecordDB, fetchGameDataDB } from "../../api/main/shortGame";
 
   const winNbrBtnsStatusReset = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   let winNbrBtnsStatus = winNbrBtnsStatusReset;
@@ -55,10 +62,11 @@
       window.pushToast("There was an error adding the record!", "danger");
       return;
     }
-
     $betsList.push($bet);
-
     $round++;
+
+    const game = await fetchGameDataDB();
+    $strategiesData = game.strategies;
   }
 
   function handleKeydown(e) {

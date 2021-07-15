@@ -81,7 +81,7 @@
       const res = await resetGameDB();
       console.log(res);
       if (res.status === 200) {
-        resetStoreValues();
+        window.location.reload();
         window.pushToast("All records cleared! ", "success");
       } else {
         window.pushToast(res.msg || "Internal Server Error!", "danger");

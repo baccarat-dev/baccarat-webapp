@@ -15,7 +15,7 @@ export const REMOTE_API_URL = "https://baccarat-api-server.herokuapp.com";
 export const LOCAL_API_URL = "http://localhost:11111";
 export const MAIN_API_URL = LOCAL_API_URL;
 
-export const resetStoreValues = () => {
+export const resetStoreValues = async () => {
   round.set(1);
   bet.set(null);
   betsList.set([]);
@@ -23,5 +23,4 @@ export const resetStoreValues = () => {
   winNbrsList.set([]);
   hand.set([]);
   handsList.set([]);
-  strategiesData.set([]);
 };
