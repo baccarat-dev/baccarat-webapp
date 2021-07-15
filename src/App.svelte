@@ -33,6 +33,7 @@
     $strategiesData.sort((s1, s2) => {
       return s1.percent - s2.percent;
     });
+    $strategiesData.reverse();
     $strategiesData = $strategiesData;
   }
 </script>
