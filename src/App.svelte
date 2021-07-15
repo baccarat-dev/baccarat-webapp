@@ -30,7 +30,10 @@
   $: {
     $round = $round;
     console.log(`round: ${$round}`);
-    console.log($strategiesData);
+    $strategiesData.sort((s1, s2) => {
+      return s1.percent - s2.percent;
+    });
+    $strategiesData = $strategiesData;
   }
 </script>
 
