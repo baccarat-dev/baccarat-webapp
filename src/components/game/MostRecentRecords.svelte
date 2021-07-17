@@ -9,7 +9,7 @@
   import { fetchGameDataDB } from "../../api/main/shortGame";
 
   let nbrRows = 5;
-  let nbrCols = 7;
+  let nbrCols = 10;
 
   let dataMatrix = [];
 
