@@ -34,7 +34,6 @@
     $round;
     $betsList;
     $strategiesData.sort((s1, s2) => {
-      return;
       return s2.percent - s1.percent;
     });
     $strategiesData = $strategiesData;
