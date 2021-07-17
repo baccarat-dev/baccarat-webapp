@@ -23,7 +23,15 @@ async function resetGameDB(game_id) {
   );
 }
 
-export { saveRecordDB, fetchGameDataDB, resetGameDB };
+async function undoRecordDB(game_id) {
+  game_id = "60ef2a69c6b49b20e1d87c7a";
+  return await request(
+    MAIN_API_URL + "/short-game/type-I/undo/" + game_id,
+    "DELETE"
+  );
+}
+
+export { saveRecordDB, fetchGameDataDB, resetGameDB, undoRecordDB };
 
 async function request(url = "", method = "GET", body = {}) {
   // Default options are marked with *

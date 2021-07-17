@@ -6,6 +6,7 @@
     betsList,
     isPageLoading,
     strategiesData,
+    stats,
   } from "./store/sessionStore";
 
   //components
@@ -24,17 +25,20 @@
     $betsList = game.bets;
     $round = game.round;
     $strategiesData = game.strategies;
+    $stats = { pct_avg_P: game.pct_avg_P, pct_avg_B: game.pct_avg_B };
     $isPageLoading = false;
   });
 
   $: {
-    $round = $round;
-    console.log(`round: ${$round}`);
+    // watch for changes in theses variables
+    $round;
+    $betsList;
     $strategiesData.sort((s1, s2) => {
-      return s1.percent - s2.percent;
+      return;
+      return s2.percent - s1.percent;
     });
-    $strategiesData.reverse();
     $strategiesData = $strategiesData;
+    $stats = $stats;
   }
 </script>
 
@@ -61,38 +65,36 @@
       </nav>
 
       <br />
-
-      <div class="row m-0 bg-light pt-3 mb-5">
-        <div class="col-12 col-lg-6">
-          <Recorder />
-        </div>
-        <div class="col-12 col-lg-6">
-          <MostRecentRecords />
-        </div>
-
+      <div class="container">
+        <Recorder />
+        <hr />
         <br />
-      </div>
-      <!-- End recording Row -->
-      <div class="row m-0 bg-light pt-3">
-        <div class="row">
-          <div class="col">
-            <h1 class="text-primary mx-3">Strategies:</h1>
+        <MostRecentRecords />
+
+        <hr />
+
+        <!-- End recording Row -->
+        <div class="row m-0 bg-light pt-3">
+          <div class="row">
+            <div class="col">
+              <h2 class="text-primary mx-3">Strategies:</h2>
+            </div>
+          </div>
+          <br />
+          <div>
+            {#if $strategiesData.length > 0}
+              {#each $strategiesData as S}
+                <div class="my-3">
+                  <Strategy data={S} />
+                </div>
+              {/each}
+            {/if}
+            <hr />
           </div>
         </div>
-        <br /><br /><br />
-        <div>
-          <hr />
-          {#if $strategiesData.length > 0}
-            {#each $strategiesData as S}
-              <div class="my-3">
-                <Strategy data={S} />
-              </div>
-            {/each}
-          {/if}
-          <hr />
-        </div>
+        <!-- End Strategies Row -->
       </div>
-      <!-- End Strategies Row -->
+
       <br /><br />
     </div>
     <!-- End Container  -->

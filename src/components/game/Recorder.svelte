@@ -6,9 +6,14 @@
     hand,
     betsList,
     strategiesData,
+    stats,
   } from "../../store/sessionStore";
 
-  import { saveRecordDB, fetchGameDataDB } from "../../api/main/shortGame";
+  import {
+    saveRecordDB,
+    fetchGameDataDB,
+    undoRecordDB,
+  } from "../../api/main/shortGame";
 
   const winNbrBtnsStatusReset = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   let winNbrBtnsStatus = winNbrBtnsStatusReset;
@@ -56,7 +61,12 @@
     //   window.pushToast("Select winning number", "danger");
     // }
 
+    console.log($bet);
+
     const response = await saveRecordDB($bet);
+    console.log($bet);
+
+    console.log(response);
 
     if (response.status !== 200) {
       window.pushToast("There was an error adding the record!", "danger");
@@ -67,13 +77,32 @@
 
     const game = await fetchGameDataDB();
     $strategiesData = game.strategies;
+    $stats = { pct_avg_P: game.pct_avg_P, pct_avg_B: game.pct_avg_B };
   }
 
   function handleKeydown(e) {
-    const key = e.key.toUpperCase();
-    if (["P", "B"].includes(key)) {
-      $bet = key;
+    const KEY = e.key.toUpperCase();
+    if (["P", "B"].includes(KEY)) {
+      $bet = KEY;
       addRecord();
+    } else if (KEY === "BACKSPACE") {
+      undoRecord();
+    }
+  }
+
+  async function undoRecord() {
+    if ($betsList.length) {
+      const res = await undoRecordDB();
+      console.log(res);
+      if (res.status === 200) {
+        $betsList.pop();
+        $round--;
+        $betsList = $betsList;
+      } else {
+        window.pushToast("Couldn't Undo!", "warning");
+      }
+    } else {
+      window.pushToast("Can't Undo Now!", "warning");
     }
   }
 </script>
@@ -81,21 +110,47 @@
 <svelte:window on:keydown={handleKeydown} />
 
 <div>
-  <div class="row">
-    <h1 class="text-primary mx-3">Recording:</h1>
-  </div>
-  <hr class="mx-4" />
-
-  <h3
-    class="d-block text-center my-2 display-6 mb-3"
-    style="font-size:1.5rem; font-weight: 350;"
-  >
-    Round N°{$round}:
-  </h3>
-  <br />
-  <div class="d-flex flex-nowrap justify-content-center">
-    <!-- Player Btn -->
+  <div style="display: flex;align-items: center;justify-content:center;">
+    <h3 class="text-dark mx-5" style="margin-right: auto;">
+      Round N°{$round}:
+    </h3>
     <button
+      on:click={() => {
+        $bet = "P";
+        addRecord();
+      }}
+      class={"btn btn-lg btn-outline-primary " + ($bet === "P" ? "active" : "")}
+      style="font-size: 1.5rem; min-width:120px"
+      type="button"
+      >P
+      <small style="margin-left: 10px;"> {"  " + $stats.pct_avg_P + "%"}</small>
+    </button>
+    <button
+      on:click={(e) => {
+        $bet = "B";
+        addRecord();
+      }}
+      class={"btn btn-lg btn-outline-danger mx-2 " +
+        ($bet === "B" ? "active" : "")}
+      style="font-size: 1.5rem; min-width:120px;"
+      type="button"
+      >B
+      <small style="margin-left: 10px;"> {"  " + $stats.pct_avg_B + "%"}</small>
+    </button>
+    <button
+      on:click={undoRecord}
+      class="btn btn-lg btn-outline-warning mx-4"
+      style="font-size: 1.5rem;"
+      type="button"
+    >
+      Undo
+    </button>
+  </div>
+
+  <!-- !!!!!!!!!!! CHANGE display:NONE below -->
+  <div style="display: none;" class="d-flex flex-nowrap justify-content-center">
+    <!-- Player Btn -->
+    <!-- <button
       value="P"
       on:click={(e) => {
         $bet = e.target.value;
@@ -104,9 +159,9 @@
       class={"btn btn-lg btn-outline-primary " + ($bet === "P" ? "active" : "")}
       style="font-size: 5rem;"
       type="button">P</button
-    >
+    > -->
     <!-- Banker Btn -->
-    <button
+    <!-- <button
       value="B"
       on:click={(e) => {
         $bet = e.target.value;
@@ -116,7 +171,7 @@
         ($bet === "B" ? "active" : "")}
       style="font-size: 5rem;"
       type="button">B</button
-    >
+    > -->
     <!-- Tie Btn -->
     <!-- <button
       value="T"
@@ -135,7 +190,6 @@
       type="button">ADD</button
     > -->
   </div>
-  <br />
 
   <!-- BEGIN Winning Number Selection Btn Group -->
   <!-- <div class="d-flex flex-wrap align-items-center justify-content-center">
@@ -181,7 +235,6 @@
       </div>
     </div> -->
   <!-- END Winning Number Selection Btn Group -->
-  <br />
 
   <!-- BEGIN cards selection Btn Group -->
   <!-- <div
@@ -264,19 +317,7 @@
   </div> -->
 
   <!-- END cards selection Btn Group -->
-
-  <br /><br /><br />
 </div>
 
 <style>
-  .mr-1 {
-    margin-right: 3px;
-  }
-  .mr-3 {
-    margin-right: 10px;
-  }
-  .vertical-center {
-    margin: 0;
-    align-self: center;
-  }
 </style>

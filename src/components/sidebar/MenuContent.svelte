@@ -7,11 +7,31 @@
     winNbrsList,
     sideBarShow,
   } from "../../store/sessionStore";
+
+  import { resetGameDB } from "../../api/main/shortGame";
+
   async function reset(strategyDetails) {}
 
   function selectGame(e) {
     $sideBarShow = false;
     window.pushToast('Switched to "' + e.target.className + '"');
+  }
+
+  async function resetGame() {
+    if (!window.confirm("You sure ?")) {
+      return;
+    }
+    if ($betsList.length === 0) {
+      window.pushToast("Game Has No Records Yet.", "danger");
+    } else {
+      const res = await resetGameDB();
+      if (res.status === 200) {
+        window.location.reload();
+        window.pushToast("All records cleared! ", "success");
+      } else {
+        window.pushToast(res.msg || "Internal Server Error!", "danger");
+      }
+    }
   }
 </script>
 
@@ -27,9 +47,11 @@
     </button>
 
     <button
-      class="m-0 btn btn-danger btn-md px-4 text-white mx-4 float-right d-inline"
-      >Delete Current</button
+      class="m-0 btn btn-danger btn-md px-4 text-white mx-4 my-3 float-right d-inline"
+      on:click={resetGame}
     >
+      RESET GAME
+    </button>
 
     <br /><br />
     <hr class="bg-white" />

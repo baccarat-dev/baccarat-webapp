@@ -4,19 +4,17 @@
     betsList,
     winNbrsList,
     isPageLoading,
-    resetStoreValues,
   } from "../../store/sessionStore";
 
-  import { fetchGameDataDB, resetGameDB } from "../../api/main/shortGame";
+  import { fetchGameDataDB } from "../../api/main/shortGame";
 
   let nbrRows = 5;
-  let nbrCols = 5;
+  let nbrCols = 7;
 
   let dataMatrix = [];
 
   export async function fetchAllRecords() {
     const data = await fetchGameDataDB();
-    console.log(data);
     $betsList = data.bets;
     populateDataMatrix();
     $isPageLoading = false;
@@ -71,23 +69,6 @@
     }
   }
 
-  async function resetGame() {
-    if (!window.confirm("You sure ?")) {
-      return;
-    }
-    if ($betsList.length === 0) {
-      window.pushToast("Game Has No Records Yet.", "danger");
-    } else {
-      const res = await resetGameDB();
-      console.log(res);
-      if (res.status === 200) {
-        window.location.reload();
-        window.pushToast("All records cleared! ", "success");
-      } else {
-        window.pushToast(res.msg || "Internal Server Error!", "danger");
-      }
-    }
-  }
   $: {
     $round = $round;
     populateDataMatrix();
@@ -95,49 +76,49 @@
 </script>
 
 <div>
-  <h1 class="text-primary mx-3 my-3">
-    Most Recent: ({nbrRows}x{nbrCols})
-  </h1>
-  <div class="input-group d-inline mx-5">
-    <input
-      class="d-inline form-control"
-      type="number"
-      min="1"
-      max="10"
-      name="nbrRows"
-      style="width: 80px; height:50px; font-weight: 500;font-size: 30px;"
-      value={nbrRows}
-      on:change={onDimsInputChange}
-    />
-    X
-    <input
-      class="form-control d-inline"
-      type="number"
-      min="1"
-      max="10"
-      value={nbrCols}
-      name="nbrCols"
-      style="width: 80px; height:50px; font-weight: 500;font-size: 30px;"
-      on:change={onDimsInputChange}
-    />
+  <div class="d-flex justify-content-center">
+    <div
+      class="input-group mx-4 d-flex align-items-center"
+      style="width: 200px;"
+    >
+      <input
+        class="d-inline form-control"
+        type="number"
+        min="1"
+        max="10"
+        name="nbrRows"
+        style="width: 80px; height:50px; font-weight: 500;font-size: 30px;"
+        value={nbrRows}
+        on:change={onDimsInputChange}
+      />
+
+      <b style="font-weight: 900;font-size: 30px;" class="mx-1">X</b>
+
+      <input
+        class="form-control d-inline"
+        type="number"
+        min="1"
+        max="10"
+        value={nbrCols}
+        name="nbrCols"
+        style="width: 80px; height:50px; font-weight: 500;font-size: 30px;"
+        on:change={onDimsInputChange}
+      />
+    </div>
   </div>
-  <div style="display:inline-flex;">
-    <button class="btn btn-lg btn-danger" on:click={resetGame}>
-      RESET GAME
-    </button>
-  </div>
+
   <hr class="mx-3" style="width: auto;" />
 
   {#if $betsList.length > 0}
-    <div class="d-flex flex-wrap">
+    <div class="d-flex flex-wrap justify-content-center">
       <table class="table table-bordered table-dark w-auto">
         <tbody>
           {#each dataMatrix as row}
             <tr style="line-height: 50px;">
               {#each row as c}
-                <td style="min-width:70px;min-height:60px;"
-                  >{typeof c[0] !== "undefined" ? c[0] : "-"}</td
-                >
+                <td style="min-width:70px;min-height:60px;">
+                  <b> {typeof c[0] !== "undefined" ? c[0] : "-"}</b>
+                </td>
               {/each}
             </tr>
           {/each}
@@ -146,7 +127,7 @@
     </div>
   {:else}
     <div class="alert alert-warning mx-2">
-      <h3 class="text-center text-warning">No Recent Data Yet</h3>
+      <h3 class="text-center text-warning">Game Not Started Yet</h3>
     </div>
   {/if}
 </div>
