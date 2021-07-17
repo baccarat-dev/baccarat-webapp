@@ -1,9 +1,12 @@
 <script>
   export let data;
+  export let i;
 </script>
 
 <div style="display:flex; justify-content: space-between;">
-  <h3 style="width: 350px; font-size: 1.3rem !important;">{data.name}</h3>
+  <h3 style="width: 350px; font-size: 1.3rem !important;">
+    {i + 1 + ") "}{data.name}
+  </h3>
   <h3 class="el">
     lvl: {data.lvl}
   </h3>

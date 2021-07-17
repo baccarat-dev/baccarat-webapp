@@ -82,9 +82,9 @@
           <br />
           <div>
             {#if $strategiesData.length > 0}
-              {#each $strategiesData as S}
+              {#each $strategiesData as S, i}
                 <div class="my-3">
-                  <Strategy data={S} />
+                  <Strategy data={S} {i} />
                 </div>
               {/each}
             {/if}
