@@ -3,15 +3,15 @@
 </script>
 
 <div style="display:flex; justify-content: space-between;">
-  <h3 style="width: 350px; font-size: 1.5rem !important;">{data.name}</h3>
+  <h3 style="width: 350px; font-size: 1.3rem !important;">{data.name}</h3>
   <h3 class="el">
     lvl: {data.lvl}
   </h3>
   <h3 class="el">
-    maxlvl: {data.maxLvl}
+    max: {data.maxLvl}
   </h3>
   <h3 class="el">
-    %: {data.percent ? data.percent : "-"}
+    {data.percent ? data.percent : "- "}%
   </h3>
   <h3 class="el">
     next: {data.nextMove ? data.nextMove : "-"}
@@ -20,7 +20,7 @@
 
 <style>
   .el {
-    min-width: 200px;
-    font-size: 1.5rem !important;
+    min-width: 70px;
+    font-size: 1.4rem !important;
   }
 </style>
