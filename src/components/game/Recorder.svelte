@@ -95,6 +95,9 @@
       const res = await undoRecordDB();
       console.log(res);
       if (res.status === 200) {
+        const game = await fetchGameDataDB();
+        $strategiesData = game.strategies;
+        $stats = { pct_avg_P: game.pct_avg_P, pct_avg_B: game.pct_avg_B };
         $betsList.pop();
         $round--;
         $betsList = $betsList;
