@@ -125,7 +125,8 @@
       class={"btn btn-lg btn-outline-primary " + ($bet === "P" ? "active" : "")}
       style="font-size: 1.5rem; min-width:120px"
       type="button"
-      >P
+    >
+      P
       <small style="margin-left: 10px;"> {"  " + $stats.pct_avg_P + "%"}</small>
     </button>
     <button
@@ -137,7 +138,8 @@
         ($bet === "B" ? "active" : "")}
       style="font-size: 1.5rem; min-width:120px;"
       type="button"
-      >B
+    >
+      B
       <small style="margin-left: 10px;"> {"  " + $stats.pct_avg_B + "%"}</small>
     </button>
     <button
@@ -187,7 +189,8 @@
     <!-- Add Btn -->
     <!-- <button
       on:click={addRecord}
-      value="Add"
+      value="Add"      }}
+
       style="font-size: 25px;font-weight: 500;"
       class="btn btn-lg btn-outline-warning mx-2 p-0 px-3"
       type="button">ADD</button

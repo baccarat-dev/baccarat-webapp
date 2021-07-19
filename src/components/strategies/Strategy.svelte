@@ -4,7 +4,7 @@
 </script>
 
 <div style="display:flex; justify-content: space-between;">
-  <h3 style="width: 350px; font-size: 1.3rem !important;">
+  <h3 style="width: 555px; font-size: 1.3rem !important;">
     {i + 1 + ") "}{data.name}
   </h3>
   <h3 class="el">
