@@ -61,12 +61,7 @@
     //   window.pushToast("Select winning number", "danger");
     // }
 
-    console.log($bet);
-
     const response = await saveRecordDB($bet);
-    console.log($bet);
-
-    console.log(response);
 
     if (response.status !== 200) {
       window.pushToast("There was an error adding the record!", "danger");
@@ -93,7 +88,6 @@
   async function undoRecord() {
     if ($betsList.length) {
       const res = await undoRecordDB();
-      console.log(res);
       if (res.status === 200) {
         const game = await fetchGameDataDB();
         $strategiesData = game.strategies;
