@@ -61,7 +61,7 @@
     //   window.pushToast("Select winning number", "danger");
     // }
 
-    const response = await saveRecordDB($bet);
+    const response = await saveRecordDB($bet, game_id);
 
     if (response.status !== 200) {
       window.pushToast("There was an error adding the record!", "danger");
@@ -70,7 +70,7 @@
     $betsList.push($bet);
     $round++;
 
-    const game = await fetchGameDataDB();
+    const game = await fetchGameDataDB(game_id);
     $strategiesData = game.strategies;
     $stats = { pct_avg_P: game.pct_avg_P, pct_avg_B: game.pct_avg_B };
   }
@@ -87,9 +87,9 @@
 
   async function undoRecord() {
     if ($betsList.length) {
-      const res = await undoRecordDB();
+      const res = await undoRecordDB(game_id);
       if (res.status === 200) {
-        const game = await fetchGameDataDB();
+        const game = await fetchGameDataDB(game_id);
         $strategiesData = game.strategies;
         $stats = { pct_avg_P: game.pct_avg_P, pct_avg_B: game.pct_avg_B };
         $betsList.pop();
@@ -102,6 +102,9 @@
       window.pushToast("Can't Undo Now!", "warning");
     }
   }
+
+  //props
+  export let game_id;
 </script>
 
 <svelte:window on:keydown={handleKeydown} />

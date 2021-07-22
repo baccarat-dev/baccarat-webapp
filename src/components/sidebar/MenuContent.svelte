@@ -24,7 +24,7 @@
     if ($betsList.length === 0) {
       window.pushToast("Game Has No Records Yet.", "danger");
     } else {
-      const res = await resetGameDB();
+      const res = await resetGameDB(game_id);
       if (res.status === 200) {
         window.location.reload();
         window.pushToast("All records cleared! ", "success");
@@ -33,6 +33,8 @@
       }
     }
   }
+
+  export let game_id;
 </script>
 
 <div>

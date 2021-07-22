@@ -8,6 +8,7 @@ import preprocess from "svelte-preprocess";
 import { config } from "dotenv";
 import replace from "@rollup/plugin-replace";
 import json from "@rollup/plugin-json";
+import alias from "rollup-plugin-alias";
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -46,6 +47,9 @@ export default {
     file: "public/build/bundle.js",
   },
   plugins: [
+    alias({
+      root: __dirname + "/src",
+    }),
     replace({
       preventAssignment: true,
       __api: JSON.stringify({

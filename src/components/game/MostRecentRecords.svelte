@@ -14,7 +14,7 @@
   let dataMatrix = [];
 
   export async function fetchAllRecords() {
-    const data = await fetchGameDataDB();
+    const data = await fetchGameDataDB(game_id);
     $betsList = data.bets;
     populateDataMatrix();
     $isPageLoading = false;
@@ -68,6 +68,9 @@
       populateDataMatrix();
     }
   }
+
+  //props
+  export let game_id;
 
   $: {
     $round = $round;

@@ -1,14 +1,13 @@
 import { MAIN_API_URL } from "../../store/sessionStore";
 
-async function saveRecordDB(bet) {
+async function saveRecordDB(bet, game_id) {
   return await request(MAIN_API_URL + "/short-game/type-I/", "POST", {
-    _id: "60ef2a69c6b49b20e1d87c7a",
+    _id: game_id,
     bet,
   });
 }
 
 async function fetchGameDataDB(game_id) {
-  game_id = "60ef2a69c6b49b20e1d87c7a";
   const response = await request(
     MAIN_API_URL + "/short-game/type-I/allrecords/" + game_id
   );
@@ -16,7 +15,6 @@ async function fetchGameDataDB(game_id) {
 }
 
 async function resetGameDB(game_id) {
-  game_id = "60ef2a69c6b49b20e1d87c7a";
   return await request(
     MAIN_API_URL + "/short-game/type-I/reset/" + game_id,
     "DELETE"
@@ -24,7 +22,6 @@ async function resetGameDB(game_id) {
 }
 
 async function undoRecordDB(game_id) {
-  game_id = "60ef2a69c6b49b20e1d87c7a";
   return await request(
     MAIN_API_URL + "/short-game/type-I/undo/" + game_id,
     "DELETE"
