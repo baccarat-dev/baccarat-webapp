@@ -14,8 +14,12 @@
     </Route>
 
     <Route>
-      <h3>Default</h3>
-      <p>No Route could be matched.</p>
+      <Link to="aaron/60ef2a69c6b49b20e1d87c7a">
+        <h3 class="text-center">Aaron</h3>
+      </Link>
+      <Link to="60f9762b88c1ca14647ad65e">
+        <h3 class="text-center">2nd Game</h3>
+      </Link>
     </Route>
   </main>
 </Router>
