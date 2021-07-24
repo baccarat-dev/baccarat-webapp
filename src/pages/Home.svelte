@@ -28,7 +28,7 @@
     $betsList = game.bets;
     $round = game.round;
     $strategiesData = game.strategies;
-    $stats = { pct_avg_P: game.pct_avg_P, pct_avg_B: game.pct_avg_B };
+    $stats = game.stats;
     $isPageLoading = false;
   });
 
@@ -70,8 +70,7 @@
       <br />
       <div class="container">
         <Recorder game_id={$params.id} />
-        <hr />
-        <br />
+        <br /><br />
         <MostRecentRecords game_id={$params.id} />
 
         <hr />

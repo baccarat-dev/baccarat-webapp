@@ -72,7 +72,7 @@
 
     const game = await fetchGameDataDB(game_id);
     $strategiesData = game.strategies;
-    $stats = { pct_avg_P: game.pct_avg_P, pct_avg_B: game.pct_avg_B };
+    $stats = game.stats;
   }
 
   function handleKeydown(e) {
@@ -91,7 +91,7 @@
       if (res.status === 200) {
         const game = await fetchGameDataDB(game_id);
         $strategiesData = game.strategies;
-        $stats = { pct_avg_P: game.pct_avg_P, pct_avg_B: game.pct_avg_B };
+        $stats = game.stats;
         $betsList.pop();
         $round--;
         $betsList = $betsList;
@@ -110,35 +110,51 @@
 <svelte:window on:keydown={handleKeydown} />
 
 <div>
+  <br />
   <div style="display: flex;align-items: center;justify-content:center;">
     <h3 class="text-dark mx-5" style="margin-right: auto;">
       Round N°{$round}:
     </h3>
-    <button
-      on:click={() => {
-        $bet = "P";
-        addRecord();
-      }}
-      class={"btn btn-lg btn-outline-primary " + ($bet === "P" ? "active" : "")}
-      style="font-size: 1.5rem; min-width:120px"
-      type="button"
-    >
-      P
-      <small style="margin-left: 10px;"> {"  " + $stats.pct_avg_P + "%"}</small>
-    </button>
-    <button
-      on:click={(e) => {
-        $bet = "B";
-        addRecord();
-      }}
-      class={"btn btn-lg btn-outline-danger mx-2 " +
-        ($bet === "B" ? "active" : "")}
-      style="font-size: 1.5rem; min-width:120px;"
-      type="button"
-    >
-      B
-      <small style="margin-left: 10px;"> {"  " + $stats.pct_avg_B + "%"}</small>
-    </button>
+    <div style="position:relative;">
+      <button
+        on:click={() => {
+          $bet = "P";
+          addRecord();
+        }}
+        class={"btn btn-lg btn-outline-primary " +
+          ($bet === "P" ? "active" : "")}
+        style="font-size: 1.5rem; min-width:120px;"
+        type="button"
+      >
+        P
+        <small style="margin-left: 10px;">
+          {"  " + $stats.pct_avg_P + "%"}</small
+        >
+      </button>
+      <h5 style="position: absolute;margin-top: -80px;left: 0;">
+        {$stats.P_next_count} - {$stats.P_next_pct}%
+      </h5>
+    </div>
+    <div style="position:relative;">
+      <button
+        on:click={(e) => {
+          $bet = "B";
+          addRecord();
+        }}
+        class={"btn btn-lg btn-outline-danger mx-2 " +
+          ($bet === "B" ? "active" : "")}
+        style="font-size: 1.5rem; min-width:120px;"
+        type="button"
+      >
+        B
+        <small style="margin-left: 10px;">
+          {"  " + $stats.pct_avg_B + "%"}</small
+        >
+      </button>
+      <h5 style="position: absolute;margin-top: -80px;right: 0;">
+        {$stats.B_next_count} - {$stats.B_next_pct}%
+      </h5>
+    </div>
     <button
       on:click={undoRecord}
       class="btn btn-lg btn-outline-warning mx-4"
