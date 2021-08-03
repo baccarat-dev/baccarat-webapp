@@ -4,11 +4,13 @@
     betsList,
     winNbrsList,
     isPageLoading,
+    strategiesData,
   } from "../../store/sessionStore";
 
   import { fetchGameDataDB } from "../../api/main/shortGame";
+  import Strategy from "../strategies/Strategy.svelte";
 
-  let nbrRows = 5;
+  let nbrRows = 6;
   let nbrCols = 10;
 
   let dataMatrix = [];
@@ -111,6 +113,14 @@
   </div>
 
   <hr class="mx-3" style="width: auto;" />
+  <div>
+    {#each $strategiesData.filter((s) => s.pinned) as S, i}
+      <Strategy data={S} {i} />
+    {/each}
+  </div>
+  {#if $strategiesData.filter((s) => s.pinned).length}
+    <hr class="mx-3" style="width: auto;" />
+  {/if}
 
   {#if $betsList.length > 0}
     <div class="d-flex flex-wrap justify-content-center">

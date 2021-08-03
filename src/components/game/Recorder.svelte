@@ -71,7 +71,13 @@
     $round++;
 
     const game = await fetchGameDataDB(game_id);
+    const temp = $strategiesData;
     $strategiesData = game.strategies;
+    temp.forEach((s, i) => {
+      if (s.pinned) {
+        $strategiesData[i].pinned = true;
+      }
+    });
     $stats = game.stats;
   }
 
