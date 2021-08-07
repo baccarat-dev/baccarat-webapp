@@ -162,9 +162,8 @@
       </h5>
     </div>
     <button
-      on:click={undoRecord}
       class="btn btn-lg btn-outline-warning mx-4"
-      style="font-size: 1.5rem;"
+      style="font-size: 1.5rem;display:none"
       type="button"
     >
       Undo
