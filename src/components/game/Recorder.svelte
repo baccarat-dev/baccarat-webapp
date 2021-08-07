@@ -68,7 +68,8 @@
       return;
     }
     $betsList.push($bet);
-    $round++;
+    $round = $betsList.length + 1;
+    $betsList = $betsList;
 
     const game = await fetchGameDataDB(game_id);
     const temp = $strategiesData;
@@ -119,7 +120,7 @@
   <br />
   <div style="display: flex;align-items: center;justify-content:center;">
     <h3 class="text-dark mx-5" style="margin-right: auto;">
-      Round N°{$round}:
+      Round N°{$betsList.length + 1}:
     </h3>
     <div style="position:relative;">
       <button
@@ -170,7 +171,6 @@
     </button>
   </div>
 
-  <!-- !!!!!!!!!!! CHANGE display:NONE below -->
   <div style="display: none;" class="d-flex flex-nowrap justify-content-center">
     <!-- Player Btn -->
     <!-- <button
