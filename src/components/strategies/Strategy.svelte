@@ -8,7 +8,6 @@
     let S = $D.find((S) => S._id === _id);
     S.pinned = true;
     $D = $D;
-    console.log($D);
   }
 </script>
 
