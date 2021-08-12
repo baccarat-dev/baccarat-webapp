@@ -55,7 +55,9 @@
 
   <hr class="mx-3" style="width: auto;" />
 
-  <div style="display: block;float:left">
+  <div
+    style="display: block;float:right; border-left:2px solid black; padding:10px"
+  >
     <h4>total W: {$metrics.filter((x) => x).length}</h4>
     <h4>total L: {$metrics.filter((x) => x === false).length}</h4>
     <h4>total S: {$metrics.filter((x) => x === null).length}</h4>
