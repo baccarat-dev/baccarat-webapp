@@ -1,12 +1,17 @@
 <script>
   import { Router, Route, Link } from "svelte-navigator";
   import Home from "./pages/Home.svelte";
+  import RecordsHistory from "./pages/RecordsHistory.svelte";
 </script>
 
 <Router>
   <main>
     <Route path="aaron/:id">
       <Home />
+    </Route>
+
+    <Route path="aaron/:id/history">
+      <RecordsHistory />
     </Route>
 
     <Route path="/:id">
