@@ -62,7 +62,6 @@
     }
   }
 
-  //props
   $: {
     $round = $round;
     $metrics;
