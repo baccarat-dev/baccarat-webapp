@@ -122,15 +122,21 @@
                 <td style="min-width:70px;min-height:60px;">
                   <span> {typeof c[0] !== "undefined" ? c[0] : ""}</span>
                   -
-                  <span>
+                  <span
+                    style="color:{c[1]
+                      ? 'green'
+                      : c[1] === null
+                      ? 'white'
+                      : 'red'}"
+                  >
                     {typeof c[0] === "undefined"
                       ? ""
                       : c[1]
                       ? "W"
                       : c[1] === null
                       ? "S"
-                      : "L"}</span
-                  >
+                      : "L"}
+                  </span>
                 </td>
               {/each}
             </tr>
