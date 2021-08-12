@@ -10,17 +10,17 @@
     $D = $D;
   }
 
-  function disable(e) {
+  async function disable(e) {
     const _id = e.target.value;
-    fetch(MAIN_API_URL + "/short-game/type-I/strategy/disable/" + _id);
+    await fetch(MAIN_API_URL + "/short-game/type-I/strategy/disable/" + _id);
     let S = $D.find((S) => S._id === _id);
     S.enabled = false;
     $D = $D;
   }
 
-  function enable(e) {
+  async function enable(e) {
     const _id = e.target.value;
-    fetch(MAIN_API_URL + "/short-game/type-I/strategy/enable/" + _id);
+    await fetch(MAIN_API_URL + "/short-game/type-I/strategy/enable/" + _id);
     let S = $D.find((S) => S._id === _id);
     S.enabled = true;
     $D = $D;
