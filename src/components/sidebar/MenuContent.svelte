@@ -1,16 +1,7 @@
 <script>
-  import {
-    round,
-    bet,
-    betsList,
-    winNbr,
-    winNbrsList,
-    sideBarShow,
-  } from "../../store/sessionStore";
+  import { betsList, sideBarShow } from "../../store/sessionStore";
 
   import { resetGameDB } from "../../api/main/shortGame";
-
-  async function reset(strategyDetails) {}
 
   function selectGame(e) {
     $sideBarShow = false;

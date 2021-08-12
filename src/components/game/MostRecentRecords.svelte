@@ -13,7 +13,7 @@
 
   let dataMatrix = [];
 
-  export function populateDataMatrix() {
+  function populateDataMatrix() {
     dataMatrix = [];
     let latestBets = $betsList;
     let latestMetrics = $metrics;
@@ -38,18 +38,17 @@
       dataMatrix.push(row);
     }
     dataMatrix = mT(dataMatrix);
-    console.log(dataMatrix);
   }
 
   // return the transpose of a matrix
   function mT(matrix) {
     return matrix.reduce(
-      ($, row) => row.map((_, i) => [...($[i] || []), row[i]]),
+      (x, row) => row.map((_, i) => [...(x[i] || []), row[i]]),
       []
     );
   }
 
-  function onDimsInputChange(e) {
+  function onDimensionsChange(e) {
     const x = e.target.value;
     if (x < 1 || x > 10) {
       window.pushToast("Enter number between 1 and 10", "danger", 5000);
@@ -64,10 +63,9 @@
   }
 
   //props
-  export let game_id;
-
   $: {
     $round = $round;
+    $metrics;
     populateDataMatrix();
   }
 </script>
@@ -86,7 +84,7 @@
         name="nbrRows"
         style="width: 80px; height:50px; font-weight: 500;font-size: 30px;"
         value={nbrRows}
-        on:change={onDimsInputChange}
+        on:change={onDimensionsChange}
       />
 
       <b style="font-weight: 900;font-size: 30px;" class="mx-1">X</b>
@@ -99,7 +97,7 @@
         value={nbrCols}
         name="nbrCols"
         style="width: 80px; height:50px; font-weight: 500;font-size: 30px;"
-        on:change={onDimsInputChange}
+        on:change={onDimensionsChange}
       />
     </div>
   </div>

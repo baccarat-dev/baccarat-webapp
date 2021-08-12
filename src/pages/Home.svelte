@@ -27,7 +27,6 @@
   onMount(async () => {
     const game = await fetchGameDataDB($params.id);
     $metrics = game.metrics.data.rightAndWrongs.pcts;
-    console.log($metrics);
     $betsList = game.bets;
     $round = game.round;
     $strategiesData = game.strategies;
@@ -37,7 +36,6 @@
 
   $: {
     // watch for changes in theses variables
-    console.log($metrics);
     $round;
     $betsList = $betsList;
     $strategiesData.sort((s1, s2) => {
@@ -75,7 +73,7 @@
       <div class="container">
         <Recorder game_id={$params.id} />
         <br /><br />
-        <MostRecentRecords game_id={$params.id} />
+        <MostRecentRecords />
 
         <hr />
 
