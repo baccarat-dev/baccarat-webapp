@@ -2,12 +2,10 @@
   import {
     round,
     betsList,
-    winNbrsList,
-    isPageLoading,
     strategiesData,
+    metrics,
   } from "../../store/sessionStore";
 
-  import { fetchGameDataDB } from "../../api/main/shortGame";
   import Strategy from "../strategies/Strategy.svelte";
 
   let nbrRows = 6;
@@ -15,24 +13,17 @@
 
   let dataMatrix = [];
 
-  export async function fetchAllRecords() {
-    const data = await fetchGameDataDB(game_id);
-    $betsList = data.bets;
-    populateDataMatrix();
-    $isPageLoading = false;
-  }
-
   export function populateDataMatrix() {
     dataMatrix = [];
     let latestBets = $betsList;
-    let latestWinNbrs = $winNbrsList;
+    let latestMetrics = $metrics;
     const boardSize = nbrCols * nbrRows;
     const nbOfBets = $betsList.length;
-
     // trim data to the latest
     if (nbOfBets > boardSize) {
       while (latestBets.length > boardSize) {
         latestBets = latestBets.slice(nbrRows, nbOfBets);
+        latestMetrics = latestMetrics.slice(nbrRows, nbOfBets);
       }
     }
 
@@ -41,12 +32,13 @@
       for (let j = 0; j < nbrRows; j++) {
         const idx = i * nbrRows + j;
         const bet = latestBets[idx];
-        const nbr = latestWinNbrs[idx];
+        const nbr = latestMetrics[idx];
         row.push([bet, nbr]);
       }
       dataMatrix.push(row);
     }
     dataMatrix = mT(dataMatrix);
+    console.log(dataMatrix);
   }
 
   // return the transpose of a matrix
@@ -130,7 +122,17 @@
             <tr style="line-height: 50px;">
               {#each row as c}
                 <td style="min-width:70px;min-height:60px;">
-                  <b> {typeof c[0] !== "undefined" ? c[0] : "-"}</b>
+                  <b> {typeof c[0] !== "undefined" ? c[0] : ""}</b>
+                  -
+                  <b>
+                    {typeof c[0] === "undefined"
+                      ? ""
+                      : c[1]
+                      ? "W"
+                      : c[1] === null
+                      ? "S"
+                      : "L"}</b
+                  >
                 </td>
               {/each}
             </tr>

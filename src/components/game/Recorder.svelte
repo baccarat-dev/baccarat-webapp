@@ -7,6 +7,7 @@
     betsList,
     strategiesData,
     stats,
+    metrics,
   } from "../../store/sessionStore";
 
   import {
@@ -73,6 +74,7 @@
 
     const game = await fetchGameDataDB(game_id);
     const temp = $strategiesData;
+    $metrics = game.metrics.data.rightAndWrongs.pcts;
     $strategiesData = game.strategies;
     temp.forEach((s, i) => {
       if (s.pinned) {
