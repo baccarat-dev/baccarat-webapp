@@ -1,10 +1,5 @@
 <script>
-  import {
-    round,
-    betsList,
-    strategiesData,
-    metrics,
-  } from "../../store/sessionStore";
+  import { round, betsList, metrics } from "../../store/sessionStore";
 
   let dataMatrix = [];
 
@@ -44,12 +39,14 @@
   }
 
   $: {
+    nbrRows = nbrRows;
+    nbrCols = nbrCols;
     $round = $round;
     $metrics;
     populateDataMatrix();
   }
 
-  export let nbrRows, nbrCols, trans;
+  export let nbrRows, nbrCols, trans, nbrOfTabs;
 </script>
 
 <div>
@@ -61,7 +58,7 @@
     <div class="d-flex flex-wrap justify-content-center">
       <table class="table table-bordered table-dark w-auto">
         <tbody>
-          {#each dataMatrix as row}
+          {#each dataMatrix as row, i}
             <tr style="line-height: 50px;">
               {#each row as c}
                 <td style="min-width:70px;min-height:60px;">
@@ -85,6 +82,10 @@
                 </td>
               {/each}
             </tr>
+            {#if !trans && !((i + 1) % nbrOfTabs)}
+              <p>{i}</p>
+              <br />
+            {/if}
           {/each}
         </tbody>
       </table>

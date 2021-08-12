@@ -1,5 +1,5 @@
 <script>
-  import { betsList, strategiesData } from "../../store/sessionStore";
+  import { round, betsList, strategiesData } from "../../store/sessionStore";
 
   import Strategy from "../strategies/Strategy.svelte";
   import TableRecords from "./TableRecords.svelte";
@@ -17,7 +17,6 @@
       } else if (e.target.name === "nbrCols") {
         nbrCols = parseInt(x);
       }
-      populateDataMatrix();
     }
   }
 </script>
