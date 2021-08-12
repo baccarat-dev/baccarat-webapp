@@ -93,8 +93,13 @@
                 </div>
               {/each}
             {/if}
-            <hr />
           </div>
+          <br />
+          <br />
+          <br />
+          <br />
+          <hr />
+          <br />
           <div>
             {#if $strategiesData.length > 0}
               {#each $strategiesData.filter((s) => !s.enabled) as S, i}

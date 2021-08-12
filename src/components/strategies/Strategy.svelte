@@ -1,5 +1,5 @@
 <script>
-  import { strategiesData as D } from "../../store/sessionStore";
+  import { strategiesData as D, MAIN_API_URL } from "../../store/sessionStore";
   export let data;
   export let i;
 
@@ -12,7 +12,7 @@
 
   function disable(e) {
     const _id = e.target.value;
-    fetch("http://localhost:4545/short-game/type-I/strategy/disable/" + _id);
+    fetch(MAIN_API_URL + "/short-game/type-I/strategy/disable/" + _id);
     let S = $D.find((S) => S._id === _id);
     S.enabled = false;
     $D = $D;
@@ -20,7 +20,7 @@
 
   function enable(e) {
     const _id = e.target.value;
-    fetch("http://localhost:4545/short-game/type-I/strategy/enable/" + _id);
+    fetch(MAIN_API_URL + "/short-game/type-I/strategy/enable/" + _id);
     let S = $D.find((S) => S._id === _id);
     S.enabled = true;
     $D = $D;
