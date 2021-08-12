@@ -9,6 +9,22 @@
     S.pinned = true;
     $D = $D;
   }
+
+  function disable(e) {
+    const _id = e.target.value;
+    fetch("http://localhost:4545/short-game/type-I/strategy/disable/" + _id);
+    let S = $D.find((S) => S._id === _id);
+    S.enabled = false;
+    $D = $D;
+  }
+
+  function enable(e) {
+    const _id = e.target.value;
+    fetch("http://localhost:4545/short-game/type-I/strategy/enable/" + _id);
+    let S = $D.find((S) => S._id === _id);
+    S.enabled = true;
+    $D = $D;
+  }
 </script>
 
 <div style="display:flex; justify-content: space-between;">
@@ -28,6 +44,16 @@
     next: {data.nextMove ? data.nextMove : "-"}
   </h3>
   <button on:click={pin} value={data._id}> PIN </button>
+
+  {#if data.enabled}
+    <button on:click={disable} value={data._id} class="btn btn-sm btn-danger">
+      🗑
+    </button>
+  {:else}
+    <button on:click={enable} value={data._id} class="btn btn-sm btn-success">
+      ⬤
+    </button>
+  {/if}
 </div>
 
 <style>

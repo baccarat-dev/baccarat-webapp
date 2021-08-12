@@ -87,7 +87,17 @@
           <br />
           <div>
             {#if $strategiesData.length > 0}
-              {#each $strategiesData as S, i}
+              {#each $strategiesData.filter((s) => s.enabled) as S, i}
+                <div class="my-3">
+                  <Strategy data={S} {i} />
+                </div>
+              {/each}
+            {/if}
+            <hr />
+          </div>
+          <div>
+            {#if $strategiesData.length > 0}
+              {#each $strategiesData.filter((s) => !s.enabled) as S, i}
                 <div class="my-3">
                   <Strategy data={S} {i} />
                 </div>
