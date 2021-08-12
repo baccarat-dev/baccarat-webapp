@@ -1,5 +1,5 @@
 <script>
-  import { round, betsList, strategiesData } from "../../store/sessionStore";
+  import { metrics, strategiesData } from "../../store/sessionStore";
 
   import Strategy from "../strategies/Strategy.svelte";
   import TableRecords from "./TableRecords.svelte";
@@ -54,6 +54,13 @@
   </div>
 
   <hr class="mx-3" style="width: auto;" />
+
+  <div style="display: block;float:left">
+    <h4>total W: {$metrics.filter((x) => x).length}</h4>
+    <h4>total L: {$metrics.filter((x) => x === false).length}</h4>
+    <h4>total S: {$metrics.filter((x) => x === null).length}</h4>
+  </div>
+
   <div>
     {#each $strategiesData.filter((s) => s.pinned) as S, i}
       <Strategy data={S} {i} />

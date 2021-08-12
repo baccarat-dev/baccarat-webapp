@@ -73,6 +73,7 @@
       <div class="container">
         <Recorder game_id={$params.id} />
         <br /><br />
+
         <MostRecentRecords />
 
         <hr />
