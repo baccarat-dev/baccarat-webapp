@@ -16,19 +16,16 @@
 
   async function addRecord() {
     const response = await saveRecordDB($bet, game_id);
-
     if (response.status !== 200) {
       window.pushToast("There was an error adding the record!", "danger");
       return;
     }
-    $betsList.push($bet);
-    $round = $betsList.length + 1;
-    $betsList = $betsList;
-
     const game = await fetchGameDataDB(game_id);
-    const temp = $strategiesData;
+
+    $round = $betsList.length + 1;
+    $betsList = game.bets;
     $metrics = game.metrics.data.rightAndWrongs.pcts;
-    console.log($metrics);
+    const temp = $strategiesData;
     $strategiesData = game.strategies;
     temp.forEach((s, i) => {
       if (s.pinned) {
@@ -66,10 +63,6 @@
     }
   }
 
-  $: {
-    // watch for changes in theses variables
-    $metrics = $metrics;
-  }
   //props
   export let game_id;
 </script>

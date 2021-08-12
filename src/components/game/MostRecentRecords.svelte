@@ -14,6 +14,7 @@
   let dataMatrix = [];
 
   function populateDataMatrix() {
+    console.log("populated");
     dataMatrix = [];
     let latestBets = $betsList;
     let latestMetrics = $metrics;
@@ -119,16 +120,16 @@
             <tr style="line-height: 50px;">
               {#each row as c}
                 <td style="min-width:70px;min-height:60px;">
-                  <b> {typeof c[0] !== "undefined" ? c[0] : ""}</b>
+                  <span> {typeof c[0] !== "undefined" ? c[0] : ""}</span>
                   -
-                  <b>
+                  <span>
                     {typeof c[0] === "undefined"
                       ? ""
                       : c[1]
                       ? "W"
                       : c[1] === null
                       ? "S"
-                      : "L"}</b
+                      : "L"}</span
                   >
                 </td>
               {/each}
