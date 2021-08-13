@@ -71,7 +71,7 @@
   {#if $strategiesData.filter((s) => s.pinned).length}
     <hr class="mx-3" style="width: auto;" />
   {/if}
-  <TableRecords {nbrRows} {nbrCols} trans={true} />
+  <TableRecords {nbrRows} {nbrCols} from={null} to={null} />
 </div>
 
 <style>

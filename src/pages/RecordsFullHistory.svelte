@@ -7,23 +7,37 @@
     round,
     betsList,
     isPageLoading,
-    strategiesData,
     stats,
     metrics,
   } from "../store/sessionStore";
 
   // DB Operations
   import { fetchGameDataDB } from "../api/main/shortGame";
-
   import { useParams } from "svelte-navigator";
   const params = useParams();
 
+  let tableSlices = [];
   onMount(async () => {
     const game = await fetchGameDataDB($params.id);
     $metrics = game.metrics.data.rightAndWrongs.pcts;
     $betsList = game.bets;
     $stats = game.stats;
     $isPageLoading = false;
+
+    const tempIndices = [];
+    $betsList.forEach((x, i) => {
+      if (i % (nbrRows * nbrCols) === 0) {
+        tempIndices.push(i);
+      }
+    });
+    tempIndices.push(Number(tempIndices.slice(-1)) + nbrRows * nbrCols);
+
+    for (let i = 0; i < tempIndices.length - 1; i++) {
+      tableSlices.push([tempIndices[i], tempIndices[i + 1]]);
+    }
+    console.log(tempIndices);
+    console.log(tableSlices);
+    tableSlices = tableSlices;
   });
 
   let nbrRows = 6;
@@ -79,10 +93,11 @@
   </div>
 
   <br />
-  <TableRecords
-    nbrRows={nbrCols}
-    nbrCols={Math.round($betsList.length / 10 + 0.5)}
-    trans={false}
-    nbrOfTabs={nbrRows}
-  />
+  <div>
+    {#each tableSlices as s, i}
+      <div>
+        <TableRecords {nbrRows} {nbrCols} from={s[0]} to={s[1]} slice={true} />
+      </div>
+    {/each}
+  </div>
 </div>

@@ -1,7 +1,7 @@
 <script>
   import { Router, Route, Link } from "svelte-navigator";
   import Home from "./pages/Home.svelte";
-  import RecordsHistory from "./pages/RecordsHistory.svelte";
+  import RecordsFullHistory from "./pages/RecordsFullHistory.svelte";
 </script>
 
 <Router>
@@ -11,7 +11,7 @@
     </Route>
 
     <Route path="aaron/:id/history">
-      <RecordsHistory />
+      <RecordsFullHistory />
     </Route>
 
     <Route path="/:id">

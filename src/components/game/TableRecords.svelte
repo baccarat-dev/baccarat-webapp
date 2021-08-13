@@ -11,10 +11,16 @@
     const nbOfBets = $betsList.length;
     // trim data to the latest
     if (nbOfBets > boardSize) {
-      while (latestBets.length > boardSize) {
-        latestBets = latestBets.slice(nbrRows, nbOfBets);
-        latestMetrics = latestMetrics.slice(nbrRows, nbOfBets);
+      let start = nbrRows * Math.round((nbOfBets - boardSize) / nbrRows + 0.49);
+      let end = nbOfBets;
+      console.log(from, to, start, end, isNaN(from), isNaN(to));
+      if (slice) {
+        start = from;
+        end = to;
       }
+      console.log(from, to, start, end, !isNaN(from), !isNaN(to));
+      latestBets = latestBets.slice(start, end);
+      latestMetrics = latestMetrics.slice(start, end);
     }
 
     for (let i = 0; i < nbrCols; i++) {
@@ -27,7 +33,7 @@
       }
       dataMatrix.push(row);
     }
-    dataMatrix = trans ? mT(dataMatrix) : dataMatrix;
+    dataMatrix = mT(dataMatrix);
   }
 
   // return the transpose of a matrix
@@ -46,7 +52,7 @@
     populateDataMatrix();
   }
 
-  export let nbrRows, nbrCols, trans, nbrOfTabs;
+  export let nbrRows, nbrCols, from, to, slice;
 </script>
 
 <div>
@@ -58,7 +64,7 @@
     <div class="d-flex flex-wrap justify-content-center">
       <table class="table table-bordered table-dark w-auto">
         <tbody>
-          {#each dataMatrix as row, i}
+          {#each dataMatrix as row}
             <tr style="line-height: 50px;">
               {#each row as c}
                 <td style="min-width:70px;min-height:60px;">
@@ -82,10 +88,6 @@
                 </td>
               {/each}
             </tr>
-            {#if !trans && !((i + 1) % nbrOfTabs)}
-              <p>{i}</p>
-              <br />
-            {/if}
           {/each}
         </tbody>
       </table>
