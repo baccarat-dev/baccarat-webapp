@@ -4,6 +4,8 @@
   let dataMatrix = [];
 
   function populateDataMatrix() {
+    console.log("populating matrix");
+    console.log(nbrRows, nbrCols);
     dataMatrix = [];
     let latestBets = $betsList;
     let latestMetrics = $metrics;
@@ -13,12 +15,10 @@
     if (nbOfBets > boardSize) {
       let start = nbrRows * Math.round((nbOfBets - boardSize) / nbrRows + 0.49);
       let end = nbOfBets;
-      console.log(from, to, start, end, isNaN(from), isNaN(to));
       if (slice) {
         start = from;
         end = to;
       }
-      console.log(from, to, start, end, !isNaN(from), !isNaN(to));
       latestBets = latestBets.slice(start, end);
       latestMetrics = latestMetrics.slice(start, end);
     }

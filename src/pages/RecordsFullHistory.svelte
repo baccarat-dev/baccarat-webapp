@@ -23,39 +23,47 @@
     $betsList = game.bets;
     $stats = game.stats;
     $isPageLoading = false;
+    const r = localStorage.getItem("nbrRows");
+    const c = localStorage.getItem("nbrCols");
+    nbrRows = r ? parseInt(r) : nbrRows;
+    nbrCols = c ? parseInt(c) : nbrCols;
+    createTables();
+  });
 
+  function createTables() {
+    console.log("fucking the table");
+    console.log(nbrRows, nbrCols);
     const tempIndices = [];
     $betsList.forEach((x, i) => {
       if (i % (nbrRows * nbrCols) === 0) {
         tempIndices.push(i);
       }
     });
-    tempIndices.push(Number(tempIndices.slice(-1)) + nbrRows * nbrCols);
+    tempIndices.push(tempIndices.slice(-1) + nbrRows * nbrCols);
 
     for (let i = 0; i < tempIndices.length - 1; i++) {
       tableSlices.push([tempIndices[i], tempIndices[i + 1]]);
     }
-    console.log(tempIndices);
-    console.log(tableSlices);
     tableSlices = tableSlices;
-  });
+  }
 
-  let nbrRows = 6;
+  let nbrRows = 7;
   let nbrCols = 10;
 
   function onDimensionsChange(e) {
-    console.log("changeed");
     const x = e.target.value;
     if (x < 1 || x > 10) {
       window.pushToast("Enter number between 1 and 10", "danger", 5000);
     } else {
       if (e.target.name === "nbrRows") {
         nbrRows = parseInt(x);
+        localStorage.setItem("nbrRows", x);
       } else if (e.target.name === "nbrCols") {
         nbrCols = parseInt(x);
+        localStorage.setItem("nbrCols", x);
       }
     }
-    $round = $round;
+    location.reload();
   }
 </script>
 
@@ -94,7 +102,7 @@
 
   <br />
   <div>
-    {#each tableSlices as s, i}
+    {#each tableSlices as s}
       <div>
         <TableRecords {nbrRows} {nbrCols} from={s[0]} to={s[1]} slice={true} />
       </div>
