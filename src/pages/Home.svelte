@@ -8,6 +8,7 @@
     strategiesData,
     stats,
     metrics,
+    mfker,
   } from "../store/sessionStore";
 
   //components
@@ -21,17 +22,19 @@
   // DB Operations
   import { fetchGameDataDB } from "../api/main/shortGame";
 
-  import { useParams } from "svelte-navigator";
+  import { Link, useParams } from "svelte-navigator";
   const params = useParams();
 
   onMount(async () => {
     const game = await fetchGameDataDB($params.id);
     $metrics = game.metrics.data.rightAndWrongs.pcts;
+    $mfker = game.metrics;
     $betsList = game.bets;
     $round = game.round;
     $strategiesData = game.strategies;
     $stats = game.stats;
     $isPageLoading = false;
+    console.log($mfker);
   });
 
   $: {
@@ -64,20 +67,22 @@
         style="position: fixed;top:0;width:100%; z-index: 99;"
         class="navbar navbar-expand-lg navbar-dark bg-dark py-3 mb-3"
       >
-        <span class="navbar-brand h1" style="margin-left: 75px;"
-          >Baccarat App</span
-        >
+        <span class="navbar-brand h1" style="margin-left: 75px;">
+          Baccarat App
+        </span>
+        <Link to="history">
+          <button
+            class="btn btn-light btn-md text-light mx-5"
+            style="background-color: transparent;">History</button
+          >
+        </Link>
       </nav>
-
       <br />
       <div class="container">
         <Recorder game_id={$params.id} />
         <br /><br />
-
         <MostRecentRecords />
-
         <hr />
-
         <!-- End recording Row -->
         <div class="row m-0 bg-light pt-3">
           <div class="row">

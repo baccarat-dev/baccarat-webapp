@@ -6,6 +6,7 @@
     strategiesData,
     stats,
     metrics,
+    mfker,
   } from "../../store/sessionStore";
 
   import {
@@ -33,6 +34,7 @@
       }
     });
     $stats = game.stats;
+    $mfker = game.metrics;
   }
 
   function handleKeydown(e) {
@@ -46,20 +48,22 @@
   }
 
   async function undoRecord() {
-    if ($betsList.length) {
+    const game = await fetchGameDataDB(game_id);
+    if ($betsList.length && game.undos) {
       const res = await undoRecordDB(game_id);
       if (res.status === 200) {
-        const game = await fetchGameDataDB(game_id);
+        location.reload();
+        return;
         $strategiesData = game.strategies;
         $stats = game.stats;
         $betsList.pop();
         $round--;
         $betsList = $betsList;
       } else {
-        window.pushToast("Couldn't Undo!", "warning");
+        window.pushToast("Can't Undo!", "warning");
       }
     } else {
-      window.pushToast("Can't Undo Now!", "warning");
+      window.pushToast("Can't Undo!", "warning");
     }
   }
 
@@ -116,8 +120,9 @@
       </h5>
     </div>
     <button
+      on:click={undoRecord}
       class="btn btn-lg btn-outline-warning mx-4"
-      style="font-size: 1.5rem;display:none"
+      style="font-size: 1.5rem;"
       type="button"
     >
       Undo

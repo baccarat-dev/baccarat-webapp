@@ -4,7 +4,6 @@
   import { onMount } from "svelte";
 
   import {
-    round,
     betsList,
     isPageLoading,
     stats,
