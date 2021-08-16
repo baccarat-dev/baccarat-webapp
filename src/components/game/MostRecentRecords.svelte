@@ -89,7 +89,8 @@
   {#if Object.keys($mfker).length}
     <div class="text-center mb-3">
       <h5 class="d-inline mx-3 mx-5">
-        MaxLvl:4 <span class="mx-3">-</span> lvl: {$mfker.winsPerLvl.lvl}
+        max: {$mfker.winsPerLvl.maxLvl} <span class="mx-2">-</span> lvl: {$mfker
+          .winsPerLvl.lvl}
       </h5>
       {#each $mfker.winsPerLvl.count as m}
         <h5 class="d-inline mx-3 text-dark">
