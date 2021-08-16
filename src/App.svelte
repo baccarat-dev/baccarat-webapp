@@ -13,6 +13,9 @@
     <Route path="aaron/:id/history">
       <RecordsFullHistory />
     </Route>
+    <Route path="/:id/history">
+      <RecordsFullHistory />
+    </Route>
 
     <Route path="/:id">
       <Home />
