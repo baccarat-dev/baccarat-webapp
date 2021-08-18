@@ -24,7 +24,8 @@
     <h3
       style="position:absolute; text-align: center;justify-self: center;align-self: center;"
     >
-      {Math.round(time * 10) / 10}
+      <!-- {Math.round(time * 10) / 10} -->
+      <small>loading</small>
     </h3>
     <div
       class="spinner-border text-dark"
