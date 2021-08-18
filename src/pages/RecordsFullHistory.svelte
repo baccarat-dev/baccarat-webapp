@@ -22,6 +22,7 @@
     $metrics = game.metrics.data.rightAndWrongs.pcts;
     $betsList = game.bets;
     $stats = game.stats;
+    $mfker = game.metrics;
     $isPageLoading = false;
     const r = localStorage.getItem("nbrRows");
     const c = localStorage.getItem("nbrCols");
@@ -69,7 +70,7 @@
 
 <div>
   <br />
-  br
+
   <div class="d-flex justify-content-center">
     <div
       class="input-group mx-4 d-flex align-items-center"
