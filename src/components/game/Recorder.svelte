@@ -92,11 +92,11 @@
       >
         P
         <small style="margin-left: 10px;">
-          {"  " + $stats.P_next_pct + "%"}</small
+          {$stats.P_next_count} - {"  " + $stats.P_next_pct + "%"}</small
         >
       </button>
       <h5 style="position: absolute;margin-top: -80px;left: 0;">
-        {$stats.P_next_count} - {$stats.pct_avg_P}%
+        {$stats.pct_avg_P}%
       </h5>
     </div>
     <div style="position:relative;">
@@ -112,11 +112,11 @@
       >
         B
         <small style="margin-left: 10px;">
-          {"  " + $stats.B_next_pct + "%"}</small
+          {$stats.B_next_count} - {"  " + $stats.B_next_pct + "%"}</small
         >
       </button>
       <h5 style="position: absolute;margin-top: -80px;right: 0;">
-        {$stats.B_next_count} - {$stats.pct_avg_B}%
+        {$stats.pct_avg_B}%
       </h5>
     </div>
     <button
