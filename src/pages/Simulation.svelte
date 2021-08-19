@@ -29,6 +29,7 @@
       window.pushToast(data.msg, "danger");
     } else {
       metrics = data.game.metrics;
+      window.pushToast("Finished in " + data.game.execTime + "ms", "success");
     }
   }
 
