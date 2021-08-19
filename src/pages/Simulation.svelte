@@ -110,8 +110,7 @@
           {#if Object.keys(metrics).length}
             <div class="text-center mb-3">
               <h5 class="d-inline mx-3 mx-5">
-                max: {metrics.winsPerLvl.maxLvl} <span class="mx-2">-</span>
-                lvl: {metrics.winsPerLvl.lvl}
+                lvl: {metrics.winsPerLvl.lvl} <span class="mx-2">-</span>
               </h5>
               {#each metrics.winsPerLvl.count as m}
                 <h5 class="d-inline mx-3 text-dark">
