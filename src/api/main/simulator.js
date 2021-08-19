@@ -1,10 +1,16 @@
-import { MAIN_API_URL } from "../../store/sessionStore";
 import { request } from "./request";
 
-async function runSimulation(_ids) {
-  return await request(MAIN_API_URL + "/sim/run/", "POST", {
+const API_URL = "https://baccarat-simulator.herokuapp.com";
+
+async function runSimulation(_ids, nbrOfBets) {
+  return await request(API_URL + "/sim/run/", "POST", {
     _ids,
+    nbrOfBets,
   });
 }
 
-export { runSimulation };
+async function getStrats() {
+  return await request(API_URL + "/sim/strats/", "GET");
+}
+
+export { runSimulation, getStrats };

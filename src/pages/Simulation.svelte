@@ -3,13 +3,11 @@
   import Loader from "../components/misc/Loader.svelte";
   import Toast from "../components/misc/Toast.svelte";
   import Strategy from "../components/strategies/Strategy.svelte";
-  import { isPageLoading, MAIN_API_URL } from "../store/sessionStore";
-  import { runSimulation } from "../api/main/simulator";
+  import { isPageLoading } from "../store/sessionStore";
+  import { runSimulation, getStrats } from "../api/main/simulator";
 
   onMount(async () => {
-    const data = await (await fetch(MAIN_API_URL + "/sim/strats")).json();
-    strategies = data;
-    console.log(strategies);
+    strategies = await getStrats();
     $isPageLoading = false;
   });
 
@@ -21,10 +19,10 @@
   }
   async function run() {
     metrics = null;
+    running = true;
     const _ids = strategies.filter((S) => S.enabled).map((S) => S._id);
-    const data = await runSimulation(_ids);
-    console.log(_ids);
-    console.log(data);
+    const data = await runSimulation(_ids, nbrOfBets);
+    running = false;
     if (data.status != 200) {
       window.pushToast(data.msg, "danger");
     } else {
@@ -35,6 +33,11 @@
 
   let strategies = [];
   let metrics;
+  let nbrOfBets = 1000;
+  let running = false;
+  $: {
+    console.log(nbrOfBets);
+  }
 </script>
 
 <main>
@@ -47,6 +50,16 @@
       <br />
       <div class="d-flex justify-content-center">
         <h1 class="text-center d-inline mx-3">Simulator</h1>
+        <input
+          type="number"
+          value={nbrOfBets}
+          class="form-control"
+          style="width: fit-content;max-width:200px;font-weight:700;"
+          min="100"
+          max="100000"
+          step="5000"
+          on:change={(e) => (nbrOfBets = +e.target.value)}
+        />
         <button
           on:click={run}
           class="btn btn-lg btn-warning mx-3"
@@ -73,7 +86,7 @@
       </div>
       <br />
       <div>
-        {#if metrics}
+        {#if metrics && !running}
           <div class="text-center mb-3">
             <h5 class="d-inline mx-3 text-success">
               max W: {metrics.quickStats.max_conseq_wins}
@@ -123,6 +136,25 @@
               {/each}
             </div>
           {/if}
+        {:else if running}
+          <div
+            class="text-center bg-light"
+            style="height:100vh;width:100vw; display: flex; justify-content: center; align-items: center;"
+          >
+            <h3
+              style="position:absolute; text-align: center;justify-self: center;align-self: center;"
+            >
+              <!-- {Math.round(time * 10) / 10} -->
+              <small>loading</small>
+            </h3>
+            <div
+              class="spinner-border text-dark"
+              role="status"
+              style="width: 8rem; height: 8rem;"
+            >
+              <span class="sr-only" />
+            </div>
+          </div>
         {/if}
       </div>
       <br />
