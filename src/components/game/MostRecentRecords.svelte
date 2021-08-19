@@ -106,7 +106,7 @@
 
   <div>
     {#each $strategiesData.filter((s) => s.pinned) as S, i}
-      <Strategy data={S} {i} />
+      <Strategy strategies={$strategiesData} {S} {i} />
     {/each}
   </div>
   {#if $strategiesData.filter((s) => s.pinned).length}

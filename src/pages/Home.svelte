@@ -95,7 +95,7 @@
             {#if $strategiesData.length > 0}
               {#each $strategiesData.filter((s) => s.enabled) as S, i}
                 <div class="my-3">
-                  <Strategy data={S} {i} />
+                  <Strategy strategies={$strategiesData} {S} {i} />
                 </div>
               {/each}
             {/if}
@@ -105,7 +105,7 @@
             {#if $strategiesData.length > 0}
               {#each $strategiesData.filter((s) => !s.enabled) as S, i}
                 <div class="my-3">
-                  <Strategy data={S} {i} />
+                  <Strategy strategies={$strategiesData} {S} {i} />
                 </div>
               {/each}
             {/if}

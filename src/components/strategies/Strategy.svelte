@@ -1,56 +1,56 @@
 <script>
-  import { strategiesData as D, MAIN_API_URL } from "../../store/sessionStore";
-  export let data;
-  export let i;
+  import { MAIN_API_URL } from "../../store/sessionStore";
 
   function pin(e) {
     const _id = e.target.value;
-    let S = $D.find((S) => S._id === _id);
+    let S = strategies.find((S) => S._id === _id);
     S.pinned = true;
-    $D = $D;
+    strategies = strategies;
   }
 
   async function disable(e) {
     const _id = e.target.value;
     await fetch(MAIN_API_URL + "/short-game/type-I/strategy/disable/" + _id);
-    let S = $D.find((S) => S._id === _id);
+    let S = strategies.find((S) => S._id === _id);
     S.enabled = false;
-    $D = $D;
+    strategies = strategies;
   }
 
   async function enable(e) {
     const _id = e.target.value;
     await fetch(MAIN_API_URL + "/short-game/type-I/strategy/enable/" + _id);
-    let S = $D.find((S) => S._id === _id);
+    let S = strategies.find((S) => S._id === _id);
     S.enabled = true;
-    $D = $D;
+    strategies = strategies;
   }
+
+  export let strategies, S, i;
 </script>
 
 <div style="display:flex; justify-content: space-between;">
   <h3 style="width: 555px; font-size: 1.3rem !important;">
-    {i + 1 + ") "}{data.name}
+    {i + 1 + ") "}{S.name}
   </h3>
   <h3 class="el">
-    lvl: {data.lvl}
+    lvl: {S.lvl}
   </h3>
   <h3 class="el">
-    max: {data.maxLvl}
+    max: {S.maxLvl}
   </h3>
   <h3 class="el">
-    {data.percent ? data.percent : "- "}%
+    {S.percent ? S.percent : "- "}%
   </h3>
   <h3 class="el">
-    next: {data.nextMove ? data.nextMove : "-"}
+    next: {S.nextMove ? S.nextMove : "-"}
   </h3>
-  <button on:click={pin} value={data._id}> PIN </button>
+  <button on:click={pin} value={S._id}> PIN </button>
 
-  {#if data.enabled}
-    <button on:click={disable} value={data._id} class="btn btn-sm btn-danger">
+  {#if S.enabled}
+    <button on:click={disable} value={S._id} class="btn btn-sm btn-danger">
       🗑
     </button>
   {:else}
-    <button on:click={enable} value={data._id} class="btn btn-sm btn-success">
+    <button on:click={enable} value={S._id} class="btn btn-sm btn-success">
       ⬤
     </button>
   {/if}
