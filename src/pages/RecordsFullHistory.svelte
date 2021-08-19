@@ -140,9 +140,9 @@
         <h5 class="d-inline mx-3 text-dark">
           <small> L{m.lvl}: </small>
           {Math.round(
-            (100 * m.n) /
+            (10000 * m.n) /
               $mfker.winsPerLvl.count.reduce((acc, x) => x.n + acc, 0)
-          )}%
+          ) / 100}%
         </h5>
       {/each}
     </div>
