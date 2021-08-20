@@ -32,8 +32,6 @@
   });
 
   function createTables() {
-    console.log("fucking the table");
-    console.log(nbrRows, nbrCols);
     const tempIndices = [];
     $betsList.forEach((x, i) => {
       if (i % (nbrRows * nbrCols) === 0) {

@@ -34,7 +34,6 @@
     $strategiesData = game.strategies;
     $stats = game.stats;
     $isPageLoading = false;
-    console.log($mfker);
   });
 
   $: {

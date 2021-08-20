@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import Loader from "../components/misc/Loader.svelte";
   import Toast from "../components/misc/Toast.svelte";
-  import Strategy from "../components/strategies/Strategy.svelte";
+  import Strategy from "../components/simulation/Strategy.svelte";
   import { isPageLoading } from "../store/sessionStore";
   import { runSimulation, getStrats } from "../api/main/simulator";
 
@@ -14,14 +14,20 @@
   function enableAllStrats() {
     strategies = strategies.map((S) => ({ ...S, enabled: true }));
   }
+
   function disableAllStrats() {
     strategies = strategies.map((S) => ({ ...S, enabled: false }));
   }
+
   async function run() {
     metrics = null;
     running = true;
-    const _ids = strategies.filter((S) => S.enabled).map((S) => S._id);
-    const data = await runSimulation(_ids, nbrOfBets);
+    const selectedStrategies = strategies
+      .filter((S) => S.enabled)
+      .map((S) => {
+        return { _id: S._id, maxLvl: S.maxLvl };
+      });
+    const data = await runSimulation(selectedStrategies, nbrOfBets);
     running = false;
     if (data.status != 200) {
       window.pushToast(data.msg, "danger");
@@ -35,9 +41,6 @@
   let metrics;
   let nbrOfBets = 1000;
   let running = false;
-  $: {
-    console.log(nbrOfBets);
-  }
 </script>
 
 <main>
@@ -63,8 +66,9 @@
         <button
           on:click={run}
           class="btn btn-lg btn-warning mx-3"
-          style="height: 50px; width:100px">RUN</button
-        >
+          style="height: 50px; width:100px"
+          >RUN
+        </button>
         <br />
         <hr />
         <br />
@@ -110,31 +114,16 @@
             </h5>
           </div>
           {#if Object.keys(metrics).length}
-            <div class="text-center mb-3">
-              <h5 class="d-inline mx-3 text-dark">Wins btw 4 Ls:</h5>
-              <h5 class="d-inline mx-3 text-dark">
-                MIN: {metrics.winsBetweenLossess.min ?? 0}
-              </h5>
-              <h5 class="d-inline mx-3 text-dark">
-                MAX: {metrics.winsBetweenLossess.max ?? 0}
-              </h5>
-            </div>
-          {/if}
-          {#if Object.keys(metrics).length}
-            <div class="text-center mb-3">
-              <h5 class="d-inline mx-3 mx-5">
-                lvl: {metrics.winsPerLvl.lvl} <span class="mx-2">-</span>
-              </h5>
-              {#each metrics.winsPerLvl.count as m}
-                <h5 class="d-inline mx-3 text-dark">
-                  <small> L{m.lvl}: </small>
-                  {Math.round(
-                    (10000 * m.n) /
-                      metrics.winsPerLvl.count.reduce((acc, x) => x.n + acc, 0)
-                  ) / 100}%
-                </h5>
-              {/each}
-            </div>
+            {#each metrics.winsPerLvl.count as m}
+              <span class="mx-3 d-inline-block">
+                <b> L{m.lvl}:</b>
+                {m.n} -
+                {Math.round(
+                  (10000 * m.n) /
+                    metrics.winsPerLvl.count.reduce((acc, x) => x.n + acc, 0)
+                ) / 100}%
+              </span>
+            {/each}
           {/if}
         {:else if running}
           <div

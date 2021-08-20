@@ -4,8 +4,6 @@
   let dataMatrix = [];
 
   function populateDataMatrix() {
-    console.log("populating matrix");
-    console.log(nbrRows, nbrCols);
     dataMatrix = [];
     let latestBets = $betsList;
     let latestMetrics = $metrics;
