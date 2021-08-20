@@ -41,6 +41,7 @@
   let metrics;
   let nbrOfBets = 1000;
   let running = false;
+  let maxLvl = 10;
 </script>
 
 <main>
@@ -85,8 +86,23 @@
           class="btn btn-lg btn-danger mx-3"
           style="height: 50px;"
         >
-          disabled all
+          disable all
         </button>
+        <div>
+          <label for="">Global Max Lvl</label>
+          <input
+            class="form-control"
+            style="width: fit-content;max-width:50px;font-weight:700;"
+            type="number"
+            value={maxLvl}
+            on:change={(e) => {
+              maxLvl = e.target.value;
+              strategies = strategies.map((S) => {
+                return { ...S, maxLvl };
+              });
+            }}
+          />
+        </div>
       </div>
       <br />
       <div>
@@ -146,6 +162,7 @@
           </div>
         {/if}
       </div>
+
       <br />
       {#if strategies.length > 0}
         {#each strategies as S, i}
@@ -157,3 +174,16 @@
     </div>
   {/if}
 </main>
+
+<style>
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield; /* Firefox */
+  }
+</style>
