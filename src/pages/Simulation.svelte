@@ -52,7 +52,7 @@
   let maxLvl = 10;
   let randomizer = {
     text: "Native",
-    switch: true,
+    switch: false,
   };
 </script>
 
