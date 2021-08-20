@@ -27,7 +27,11 @@
       .map((S) => {
         return { _id: S._id, maxLvl: S.maxLvl };
       });
-    const data = await runSimulation(selectedStrategies, nbrOfBets);
+    const data = await runSimulation(
+      selectedStrategies,
+      nbrOfBets,
+      randomizer.switch
+    );
     running = false;
     if (data.status != 200) {
       window.pushToast(data.msg, "danger");
@@ -42,6 +46,10 @@
   let nbrOfBets = 1000;
   let running = false;
   let maxLvl = 10;
+  let randomizer = {
+    text: "Native",
+    switch: true,
+  };
 </script>
 
 <main>
@@ -52,7 +60,7 @@
     <div>
       <Toast />
       <br />
-      <div class="d-flex justify-content-center">
+      <div class="d-flex justify-content-center align-items-center">
         <h1 class="text-center d-inline mx-3">Simulator</h1>
         <input
           type="number"
@@ -89,7 +97,6 @@
           disable all
         </button>
         <div>
-          <label for="">Global Max Lvl</label>
           <input
             class="form-control"
             style="width: fit-content;max-width:50px;font-weight:700;"
@@ -102,6 +109,19 @@
               });
             }}
           />
+        </div>
+        <div class="form-check form-switch mx-2">
+          <input
+            style="width: 45px;height:20px"
+            class="form-check-input mx-2"
+            type="checkbox"
+            id="flexSwitchCheckChecked"
+            checked={randomizer.switch}
+            on:change={(e) => (randomizer.switch = !randomizer.switch)}
+          />
+          <label class="form-check-label" for="flexSwitchCheckChecked">
+            {randomizer.switch ? "random.org" : "native random"}
+          </label>
         </div>
       </div>
       <br />
