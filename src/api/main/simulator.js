@@ -1,6 +1,7 @@
 import { request } from "./request";
-
-const API_URL = "https://baccarat-simulator.herokuapp.com"; //  "http://localhost:1212"
+const local = "http://localhost:1212";
+const remote = "https://baccarat-simulator.herokuapp.com";
+const API_URL = local;
 
 async function runSimulation(strategies, nbrOfBets, usingRandOrg) {
   return await request(API_URL + "/sim/run/", "POST", {
