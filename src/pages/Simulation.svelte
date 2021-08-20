@@ -5,6 +5,7 @@
   import Strategy from "../components/simulation/Strategy.svelte";
   import { isPageLoading } from "../store/sessionStore";
   import { runSimulation, getStrats } from "../api/main/simulator";
+  import RecordsFullHistory from "./sim/RecordsFullHistory.svelte";
 
   onMount(async () => {
     strategies = await getStrats();
@@ -20,6 +21,7 @@
   }
 
   async function run() {
+    game = null;
     metrics = null;
     running = true;
     const selectedStrategies = strategies
@@ -36,11 +38,13 @@
     if (data.status != 200) {
       window.pushToast(data.msg, "danger");
     } else {
-      metrics = data.game.metrics;
+      game = data.game;
+      metrics = game.metrics;
       window.pushToast("Finished in " + data.game.execTime + "ms", "success");
     }
   }
 
+  let game;
   let strategies = [];
   let metrics;
   let nbrOfBets = 1000;
@@ -160,18 +164,20 @@
               </h5>
             </div>
           {/if}
-          {#if Object.keys(metrics).length}
-            {#each metrics.winsPerLvl.count as m}
-              <span class="mx-3 d-inline-block">
-                <b> L{m.lvl}:</b>
-                {m.n} -
-                {Math.round(
-                  (10000 * m.n) /
-                    metrics.winsPerLvl.count.reduce((acc, x) => x.n + acc, 0)
-                ) / 100}%
-              </span>
-            {/each}
-          {/if}
+          <div class="d-flex justify-content-center">
+            {#if Object.keys(metrics).length}
+              {#each metrics.winsPerLvl.count as m}
+                <span class="mx-3 d-inline-block">
+                  <b> L{m.lvl}:</b>
+                  {m.n} -
+                  {Math.round(
+                    (10000 * m.n) /
+                      metrics.winsPerLvl.count.reduce((acc, x) => x.n + acc, 0)
+                  ) / 100}%
+                </span>
+              {/each}
+            {/if}
+          </div>
         {:else if running}
           <div
             class="text-center bg-light"
@@ -193,6 +199,12 @@
           </div>
         {/if}
       </div>
+
+      {#if game}
+        <div>
+          <RecordsFullHistory {game} />
+        </div>
+      {/if}
 
       <br />
       {#if strategies.length > 0}
