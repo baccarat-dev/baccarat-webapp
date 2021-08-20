@@ -17,7 +17,6 @@
 
   let tableSlices = [];
   onMount(async () => {
-    console.log(game);
     $metrics = game.metrics.data.rightAndWrongs.pcts;
     $betsList = game.bets;
     $stats = game.stats;
