@@ -130,6 +130,17 @@
             </h5>
           </div>
           {#if Object.keys(metrics).length}
+            <div class="text-center mb-3">
+              <h5 class="d-inline mx-3 text-dark">Wins btw 4 Ls:</h5>
+              <h5 class="d-inline mx-3 text-dark">
+                MIN: {metrics.winsBetweenLossess.min ?? 0}
+              </h5>
+              <h5 class="d-inline mx-3 text-dark">
+                MAX: {metrics.winsBetweenLossess.max ?? 0}
+              </h5>
+            </div>
+          {/if}
+          {#if Object.keys(metrics).length}
             {#each metrics.winsPerLvl.count as m}
               <span class="mx-3 d-inline-block">
                 <b> L{m.lvl}:</b>
