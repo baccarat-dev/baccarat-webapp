@@ -1,37 +1,18 @@
 <script>
-  import TableRecords from "../../components/game/TableRecords.svelte";
-
   import { onMount } from "svelte";
 
-  import {
-    betsList,
-    isPageLoading,
-    stats,
-    metrics,
-    mfker,
-  } from "../../store/sessionStore";
-
-  // DB Operations
-  import { useParams } from "svelte-navigator";
-  const params = useParams();
+  import TableRecords from "../../components/game/TableRecords.svelte";
 
   let tableSlices = [];
   onMount(async () => {
-    $metrics = game.metrics.data.rightAndWrongs.pcts;
-    $betsList = game.bets;
-    $stats = game.stats;
-    $mfker = game.metrics;
-    $isPageLoading = false;
-    const r = localStorage.getItem("nbrRows");
-    const c = localStorage.getItem("nbrCols");
-    nbrRows = r ? parseInt(r) : nbrRows;
-    nbrCols = c ? parseInt(c) : nbrCols;
+    winsAndLosses = game.metrics.data.rightAndWrongs.pcts;
+    betsList = game.bets;
     createTables();
   });
 
   function createTables() {
     const tempIndices = [];
-    $betsList.forEach((x, i) => {
+    betsList.forEach((x, i) => {
       if (i % (nbrRows * nbrCols) === 0) {
         tempIndices.push(i);
       }
@@ -43,68 +24,27 @@
     tableSlices = tableSlices;
   }
 
-  let nbrRows = 7;
-  let nbrCols = 10;
-
-  function onDimensionsChange(e) {
-    const x = e.target.value;
-    if (x < 1 || x > 10) {
-      window.pushToast("Enter number between 1 and 10", "danger", 5000);
-    } else {
-      if (e.target.name === "nbrRows") {
-        nbrRows = parseInt(x);
-        localStorage.setItem("nbrRows", x);
-      } else if (e.target.name === "nbrCols") {
-        nbrCols = parseInt(x);
-        localStorage.setItem("nbrCols", x);
-      }
-    }
-    location.reload();
-  }
-  export let game;
+  let betsList, winsAndLosses;
+  export let game, nbrRows, nbrCols;
 </script>
 
 <div>
   <br />
-
-  <div class="d-flex justify-content-center">
-    <div
-      class="input-group mx-4 d-flex align-items-center"
-      style="width: 200px;"
-    >
-      <input
-        class="d-inline form-control"
-        type="number"
-        min="1"
-        max="10"
-        name="nbrRows"
-        style="width: 80px; height:50px; font-weight: 500;font-size: 30px;"
-        value={nbrRows}
-        on:change={onDimensionsChange}
-      />
-
-      <b style="font-weight: 900;font-size: 30px;" class="mx-1">X</b>
-
-      <input
-        class="form-control d-inline"
-        type="number"
-        min="1"
-        max="10"
-        value={nbrCols}
-        name="nbrCols"
-        style="width: 80px; height:50px; font-weight: 500;font-size: 30px;"
-        on:change={onDimensionsChange}
-      />
-    </div>
-  </div>
-
   <br />
   <hr />
   <br />
   <div>
     {#each tableSlices as s}
       <div>
-        <TableRecords {nbrRows} {nbrCols} from={s[0]} to={s[1]} slice={true} />
+        <TableRecords
+          {betsList}
+          metrics={winsAndLosses}
+          {nbrRows}
+          {nbrCols}
+          from={s[0]}
+          to={s[1]}
+          slice={true}
+        />
       </div>
     {/each}
   </div>

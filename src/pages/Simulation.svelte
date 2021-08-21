@@ -6,10 +6,18 @@
   import { isPageLoading } from "../store/sessionStore";
   import { runSimulation, getStrats } from "../api/main/simulator";
   import RecordsFullHistory from "./sim/RecordsFullHistory.svelte";
+  import TableDimensions from "../components/simulation/TableDimensions.svelte";
 
   onMount(async () => {
     strategies = await getStrats();
     $isPageLoading = false;
+
+    const r = localStorage.getItem("nbrRows");
+    const c = localStorage.getItem("nbrCols");
+    nbrRows = r ? parseInt(r) : nbrRows;
+    nbrCols = c ? parseInt(c) : nbrCols;
+    nbrRows_fixed = nbrRows;
+    nbrCols_fixed = nbrCols;
   });
 
   function enableAllStrats() {
@@ -42,6 +50,9 @@
       metrics = game.metrics;
       window.pushToast("Finished in " + data.game.execTime + "ms", "success");
     }
+
+    nbrRows_fixed = nbrRows;
+    nbrCols_fixed = nbrCols;
   }
 
   let game;
@@ -54,6 +65,12 @@
     text: "Native",
     switch: false,
   };
+
+  let nbrRows = 5;
+  let nbrCols = 10;
+  let nbrRows_fixed;
+  let nbrCols_fixed;
+  let showStrategies = true;
 </script>
 
 <main>
@@ -65,7 +82,8 @@
       <Toast />
       <br />
       <div class="d-flex justify-content-center align-items-center">
-        <h1 class="text-center d-inline mx-3">Simulator</h1>
+        <TableDimensions bind:nbrRows bind:nbrCols />
+
         <input
           type="number"
           value={nbrOfBets}
@@ -78,7 +96,7 @@
         />
         <button
           on:click={run}
-          class="btn btn-lg btn-warning mx-3"
+          class="btn btn-md btn-warning mx-3"
           style="height: 50px; width:100px"
           >RUN
         </button>
@@ -88,14 +106,14 @@
 
         <button
           on:click={enableAllStrats}
-          class="btn btn-lg btn-success mx-3"
+          class="btn btn-md btn-success mx-3"
           style="height: 50px;"
         >
           enable all
         </button>
         <button
           on:click={disableAllStrats}
-          class="btn btn-lg btn-danger mx-3"
+          class="btn btn-md btn-danger mx-3"
           style="height: 50px;"
         >
           disable all
@@ -129,6 +147,27 @@
         </div>
       </div>
       <br />
+
+      <div class="d-flex justify-content-center">
+        <div class="form-check form-switch mx-5">
+          <input
+            style="width: 45px;height:20px"
+            class="form-check-input mx-2"
+            type="checkbox"
+            id="showStrategiesSwitchCheckChecked"
+            checked={showStrategies}
+            on:change={(e) => (showStrategies = !showStrategies)}
+          />
+          <label
+            class="form-check-label"
+            for="showStrategiesSwitchCheckChecked"
+          >
+            {showStrategies ? "Hide" : "Show"} Strategies
+          </label>
+        </div>
+      </div>
+      <br />
+
       <div>
         {#if metrics && !running}
           <div class="text-center mb-3">
@@ -200,19 +239,23 @@
         {/if}
       </div>
 
-      {#if game}
-        <div>
-          <RecordsFullHistory {game} />
-        </div>
-      {/if}
-
       <br />
-      {#if strategies.length > 0}
+      {#if strategies.length > 0 && showStrategies}
         {#each strategies as S, i}
           <div class="container my-3">
             <Strategy {strategies} {S} {i} />
           </div>
         {/each}
+      {/if}
+
+      {#if game}
+        <div>
+          <RecordsFullHistory
+            nbrRows={nbrRows_fixed}
+            nbrCols={nbrCols_fixed}
+            {game}
+          />
+        </div>
       {/if}
     </div>
   {/if}

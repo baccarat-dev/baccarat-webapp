@@ -1,6 +1,7 @@
 <script>
   import {
     metrics,
+    betsList,
     strategiesData,
     stats,
     mfker,
@@ -111,7 +112,14 @@
   {#if $strategiesData.filter((s) => s.pinned).length}
     <hr class="mx-3" style="width: auto;" />
   {/if}
-  <TableRecords {nbrRows} {nbrCols} from={null} to={null} />
+  <TableRecords
+    betsList={$betsList}
+    metrics={$metrics}
+    {nbrRows}
+    {nbrCols}
+    from={null}
+    to={null}
+  />
 
   <br />
 </div>

@@ -1,14 +1,14 @@
 <script>
-  import { round, betsList, metrics } from "../../store/sessionStore";
+  export let betsList, metrics;
 
   let dataMatrix = [];
 
   function populateDataMatrix() {
     dataMatrix = [];
-    let latestBets = $betsList;
-    let latestMetrics = $metrics;
+    let latestBets = betsList;
+    let latestMetrics = metrics;
     const boardSize = nbrCols * nbrRows;
-    const nbOfBets = $betsList.length;
+    const nbOfBets = betsList.length;
     // trim data to the latest
     if (nbOfBets > boardSize) {
       let start = nbrRows * Math.round((nbOfBets - boardSize) / nbrRows + 0.49);
@@ -45,8 +45,7 @@
   $: {
     nbrRows = nbrRows;
     nbrCols = nbrCols;
-    $round = $round;
-    $metrics;
+    metrics;
     populateDataMatrix();
   }
 
@@ -54,7 +53,7 @@
 </script>
 
 <div>
-  {#if !$betsList.length}
+  {#if !betsList.length}
     <div class="alert alert-warning mx-2">
       <h3 class="text-center text-warning">Game Not Started Yet</h3>
     </div>

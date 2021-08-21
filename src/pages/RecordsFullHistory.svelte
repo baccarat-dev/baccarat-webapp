@@ -147,7 +147,15 @@
   <div>
     {#each tableSlices as s}
       <div>
-        <TableRecords {nbrRows} {nbrCols} from={s[0]} to={s[1]} slice={true} />
+        <TableRecords
+          betsList={$betsList}
+          metrics={$metrics}
+          {nbrRows}
+          {nbrCols}
+          from={s[0]}
+          to={s[1]}
+          slice={true}
+        />
       </div>
     {/each}
   </div>
