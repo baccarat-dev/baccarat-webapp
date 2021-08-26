@@ -1,31 +1,6 @@
 <script>
-  import { betsList, sideBarShow } from "../../store/sessionStore";
-
-  import { resetGameDB } from "../../api/main/shortGame";
-
-  function selectGame(e) {
-    $sideBarShow = false;
-    window.pushToast('Switched to "' + e.target.className + '"');
-  }
-
-  async function resetGame() {
-    if (!window.confirm("You sure ?")) {
-      return;
-    }
-    if ($betsList.length === 0) {
-      window.pushToast("Game Has No Records Yet.", "danger");
-    } else {
-      const res = await resetGameDB(game_id);
-      if (res.status === 200) {
-        window.location.reload();
-        window.pushToast("All records cleared! ", "success");
-      } else {
-        window.pushToast(res.msg || "Internal Server Error!", "danger");
-      }
-    }
-  }
-
-  export let game_id;
+  import { navigate } from "svelte-navigator";
+  import { sideBarShow } from "../../stores/sessionStore";
 </script>
 
 <div>
@@ -34,44 +9,24 @@
     style="display:block; height:auto; margin-left:27px; padding-left:20px;"
   >
     <h4 class="text-white"><li>Game Options</li></h4>
-    <br />
-    <button class="m-0 btn btn-success btn-md px-4 text-white mx-4 d-inline">
-      Start New
-    </button>
-
+    <hr />
     <button
-      class="m-0 btn btn-danger btn-md px-4 text-white mx-4 my-3 float-right d-inline"
-      on:click={resetGame}
+      class="m-0 btn btn-primary btn-md px-4 text-white mx-4 d-inline"
+      on:click={() => {
+        navigate("/new/game");
+        $sideBarShow = false;
+      }}
     >
-      RESET GAME
+      New Game
     </button>
-
-    <br /><br />
-    <hr class="bg-white" />
-    <br />
-    <div class="px-3">
-      <h5 class="text-white">Select Old Game</h5>
-      <table class="table table-hover table-dark">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr on:click={selectGame} class="1st game">
-            <th scope="row" class="1st game">1</th>
-            <td class="1st game">1st game</td>
-            <td class="1st game">11-11-1111</td>
-          </tr>
-          <tr on:click={selectGame} class="2nd game">
-            <th scope="row" class="2nd game">2</th>
-            <td class="2nd game">2nd game</td>
-            <td class="2nd game">11-11-1111</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <button
+      class="m-0 btn btn-primary btn-md px-4 text-white mx-4 d-inline"
+      on:click={() => {
+        navigate("/mygames");
+        $sideBarShow = false;
+      }}
+    >
+      List Games
+    </button>
   </div>
 </div>

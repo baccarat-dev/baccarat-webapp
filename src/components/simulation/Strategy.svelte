@@ -3,6 +3,7 @@
     const _id = e.target.value;
     let S = strategies.find((S) => S._id === _id);
     S.enabled = false;
+    updateLocalStorage();
     strategies = strategies;
   }
 
@@ -10,9 +11,31 @@
     const _id = e.target.value;
     let S = strategies.find((S) => S._id === _id);
     S.enabled = true;
+    updateLocalStorage();
     strategies = strategies;
   }
 
+  function updateLocalStorage() {
+    let localStrategies = localStorage.getItem("strategies");
+    if (localStrategies) {
+      localStrategies = JSON.parse(localStrategies);
+      localStrategies.forEach((s) => {
+        if (s.name === S.name) {
+          s.maxLvl = S.maxLvl;
+          s.enabled = S.enabled;
+        }
+        console.log(s.maxLvl, S.maxLvl);
+      });
+      console.log(localStrategies);
+      localStorage.setItem("strategies", JSON.stringify(localStrategies));
+    }
+  }
+
+  function setMaxLvl(e) {
+    S.maxLvl = +e.target.value;
+    updateLocalStorage();
+    strategies = strategies;
+  }
   export let strategies, S, i;
 </script>
 
@@ -32,9 +55,7 @@
     style="width: 40px;font-size:1.4rem;"
     type="number"
     value={S.maxLvl}
-    on:change={(e) => {
-      S.maxLvl = +e.target.value;
-    }}
+    on:change={setMaxLvl}
   />
 
   <h3 class="mx-3" style="width: 400px; font-size: 1.3rem !important;">

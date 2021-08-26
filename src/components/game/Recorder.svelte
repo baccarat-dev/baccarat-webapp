@@ -7,13 +7,13 @@
     stats,
     metrics,
     mfker,
-  } from "../../store/sessionStore";
+  } from "../../stores/sessionStore";
 
   import {
     saveRecordDB,
     fetchGameDataDB,
     undoRecordDB,
-  } from "../../api/main/shortGame";
+  } from "../../api/main/game";
 
   async function addRecord() {
     const response = await saveRecordDB($bet, game_id);

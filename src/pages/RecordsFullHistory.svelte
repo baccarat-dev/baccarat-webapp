@@ -9,10 +9,10 @@
     stats,
     metrics,
     mfker,
-  } from "../store/sessionStore";
+  } from "../stores/sessionStore";
 
   // DB Operations
-  import { fetchGameDataDB } from "../api/main/shortGame";
+  import { fetchGameDataDB } from "../api/main/game";
   import { useParams } from "svelte-navigator";
   const params = useParams();
 

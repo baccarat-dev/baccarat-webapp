@@ -1,0 +1,149 @@
+<script>
+  import { onMount } from "svelte";
+  import { navigate } from "svelte-navigator";
+  import { createGame, getAllGames, getAllStrategies } from "../api/main/game";
+
+  import Strategy from "../components/simulation/Strategy.svelte";
+  import { game, isPageLoading, user } from "../stores/sessionStore";
+
+  onMount(async () => {
+    let res = await getAllGames($user._id);
+    games = res.data;
+    res = await getAllStrategies();
+    strategies = res.data;
+    strategies.forEach((S) => {
+      S.maxLvl = 10;
+    });
+    let localStrategies = localStorage.getItem("strategies");
+    if (localStrategies) {
+      localStrategies = JSON.parse(localStrategies);
+      localStrategies.forEach((s1) => {
+        let S = strategies.find((s2) => s1.name === s2.name);
+        if (S) {
+          S.maxLvl = s1.maxLvl;
+          S.enabled = s1.enabled;
+        }
+      });
+    } else {
+      localStorage.setItem("strategies", JSON.stringify(strategies));
+    }
+    console.log(games, strategies);
+    $isPageLoading = false;
+  });
+
+  function enableAllStrats() {
+    strategies = strategies.map((S) => ({ ...S, enabled: true }));
+    localStorage.setItem("strategies", JSON.stringify(strategies));
+  }
+
+  function disableAllStrats() {
+    strategies = strategies.map((S) => ({ ...S, enabled: false }));
+    localStorage.setItem("strategies", JSON.stringify(strategies));
+  }
+
+  function setDefaultMaxLvl(e) {
+    defaultMaxLvl = e.target.value;
+    strategies = strategies.map((S) => {
+      return { ...S, maxLvl: defaultMaxLvl };
+    });
+    localStorage.setItem("defaultMaxLvl", defaultMaxLvl);
+    localStorage.setItem("strategies", JSON.stringify(strategies));
+  }
+
+  async function startGame() {
+    const selectedStrategies = strategies.filter((s) => s.enabled);
+    if (!selectedStrategies.length) {
+      window.pushToast("Select at least 1 strategy", "danger");
+    } else {
+      const resp = await createGame($user._id, selectedStrategies, gameName);
+      if (resp.status === 201) {
+        $game = resp.data;
+        navigate("/play");
+        window.pushToast(resp.msg, "success");
+      } else {
+        window.pushToast(resp.msg, "danger");
+      }
+    }
+  }
+
+  let games = [],
+    strategies = [],
+    defaultMaxLvl = localStorage.getItem("defaultMaxLvl") || 10,
+    gameName = "",
+    rollOverMode = true;
+  $: {
+    console.log(strategies);
+  }
+</script>
+
+<div style="margin: 0;padding:0;">
+  <main>
+    <div class="d-flex justify-content-center align-items-center">
+      <button on:click={enableAllStrats} class="btn btn-md btn-success mx-3">
+        enable all
+      </button>
+      <button on:click={disableAllStrats} class="btn btn-md btn-danger mx-3">
+        disable all
+      </button>
+      <div>
+        <input
+          class="form-control"
+          style="width: fit-content;max-width:50px;font-weight:700;"
+          type="number"
+          value={defaultMaxLvl}
+          on:change={setDefaultMaxLvl}
+        />
+      </div>
+      <div class="form-check form-switch mx-5">
+        <input
+          style="width: 45px;height:20px"
+          class="form-check-input mx-2"
+          type="checkbox"
+          id="showStrategiesSwitchCheckChecked"
+          checked={rollOverMode}
+          on:change={(e) => (rollOverMode = !rollOverMode)}
+        />
+        <label class="form-check-label" for="rollOverModeSwitchCheckChecked">
+          Lvl mode: {rollOverMode ? " rollover" : "continuous"}
+        </label>
+      </div>
+
+      <input
+        class="form-control"
+        style="max-width:175px;"
+        type="text"
+        value={gameName}
+        on:change={(e) => (gameName = e.target.value)}
+        placeholder="enter game name"
+      />
+      <button on:click={startGame} class="btn btn-md btn-info mx-3">
+        Start Game!
+      </button>
+    </div>
+
+    <br />
+
+    {#if strategies.length}
+      {#each strategies as S, i}
+        <div class="container my-3">
+          <Strategy {strategies} {S} {i} />
+        </div>
+      {/each}
+    {/if}
+
+    <br />
+  </main>
+</div>
+
+<style>
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield; /* Firefox */
+  }
+</style>

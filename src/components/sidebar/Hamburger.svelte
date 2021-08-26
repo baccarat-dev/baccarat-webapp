@@ -1,8 +1,6 @@
 <script>
   import MenuContent from "./MenuContent.svelte";
-  import { sideBarShow } from "../../store/sessionStore";
-
-  export let game_id;
+  import { sideBarShow } from "../../stores/sessionStore";
 </script>
 
 <div style="margin-right: 50px;">
@@ -26,7 +24,7 @@
     <div class="spinner diagonal part-2" />
   </label>
   <div id="SideBarMenuConent" style="position:fixed;" class="bg-dark">
-    <MenuContent {game_id} />
+    <MenuContent />
   </div>
   <div
     id="overlay"

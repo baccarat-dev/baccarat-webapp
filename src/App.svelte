@@ -1,43 +1,56 @@
 <script>
   import { Router, Route, Link } from "svelte-navigator";
-  import Home from "./pages/Home.svelte";
+  import PrivateRoute from "./components/auth/PrivateRoute.svelte";
+  import Loader from "./components/misc/Loader.svelte";
+  import Toast from "./components/misc/Toast.svelte";
+  import Navigation from "./components/navigation.svelte";
+  import ListGames from "./pages/ListGames.svelte";
+  import Login from "./pages/Login.svelte";
+  import NewGame from "./pages/NewGame.svelte";
+  import NotFound404 from "./pages/NotFound404.svelte";
+  import PlayGame from "./pages/PlayGame.svelte";
   import RecordsFullHistory from "./pages/RecordsFullHistory.svelte";
   import Simulation from "./pages/Simulation.svelte";
+  import { isPageLoading } from "./stores/sessionStore";
 </script>
 
 <Router>
   <main>
-    <Route path="aaron/:id">
-      <Home />
+    <Toast />
+    <Loader />
+
+    <Route path="/login">
+      <Navigation />
+      <Login registration={false} />
     </Route>
 
-    <Route path="aaron/:id/history">
-      <RecordsFullHistory />
-    </Route>
-    <Route path="/:id/history">
-      <RecordsFullHistory />
+    <Route path="/signup">
+      <Navigation />
+      <Login registration={true} />
     </Route>
 
-    <Route path="/:id">
-      <Home />
-    </Route>
+    <PrivateRoute path="/play" let:location>
+      <Navigation />
+      <PlayGame />
+    </PrivateRoute>
 
-    <Route path="sim">
+    <PrivateRoute path="/mygames" let:location>
+      <Navigation />
+      <ListGames />
+    </PrivateRoute>
+
+    <PrivateRoute path="/simulator" let:location>
+      <Navigation />
       <Simulation />
-    </Route>
+    </PrivateRoute>
 
-    <Route>
-      <br />
-      <Link to="aaron/60ef2a69c6b49b20e1d87c7a">
-        <h3 class="text-center">Aaron</h3>
-      </Link>
-      <Link to="60f9762b88c1ca14647ad65e">
-        <h3 class="text-center">2nd Game</h3>
-      </Link>
-      <br />
-      <Link to="sim">
-        <h3 class="text-center">Simulation</h3>
-      </Link>
+    <PrivateRoute path="/new/game" let:location>
+      <Navigation />
+      <NewGame />
+    </PrivateRoute>
+
+    <Route path="*">
+      <NotFound404 />
     </Route>
   </main>
 </Router>
