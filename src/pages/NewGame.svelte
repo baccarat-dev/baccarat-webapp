@@ -78,6 +78,7 @@
 
 <div style="margin: 0;padding:0;">
   <main>
+    <br /><br /><br />
     <div class="d-flex justify-content-center align-items-center">
       <button on:click={enableAllStrats} class="btn btn-md btn-success mx-3">
         enable all

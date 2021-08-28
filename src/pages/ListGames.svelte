@@ -43,6 +43,8 @@
 </script>
 
 <div>
+  <br /><br /><br />
+
   <h3 class="text-primary text-center">Select a Game to Start</h3>
   <br />
   <div class="px-3 d-flex justify-content-center">
