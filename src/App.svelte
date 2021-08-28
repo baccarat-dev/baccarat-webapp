@@ -11,7 +11,6 @@
   import PlayGame from "./pages/PlayGame.svelte";
   import RecordsFullHistory from "./pages/RecordsFullHistory.svelte";
   import Simulation from "./pages/Simulation.svelte";
-  import { isPageLoading } from "./stores/sessionStore";
 </script>
 
 <Router>
@@ -20,6 +19,10 @@
     <Loader />
 
     <Route path="/login">
+      <Navigation />
+      <Login registration={false} />
+    </Route>
+    <Route path="/">
       <Navigation />
       <Login registration={false} />
     </Route>

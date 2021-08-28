@@ -37,6 +37,10 @@ async function createGame(user_id, strategies, name) {
   });
 }
 
+async function deleteGame(_id) {
+  return await request(MAIN_API_URL + "/game/" + _id, "DELETE");
+}
+
 export {
   saveRecordDB,
   fetchGameDataDB,
@@ -45,4 +49,5 @@ export {
   getAllGames,
   getAllStrategies,
   createGame,
+  deleteGame,
 };

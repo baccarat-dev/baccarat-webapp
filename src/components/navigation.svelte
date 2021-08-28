@@ -31,6 +31,29 @@
         </span>
 
         {#if $user && $user.accessToken}
+          <div
+            style="display:flex;justify-content:flex-start;"
+            class="navbar-nav me-auto mb-2 mb-lg-0 mx-3"
+          >
+            <button
+              class="btn btn-light btn-md text-light mx-5"
+              style="background-color: transparent;"
+              on:click={() => {
+                navigate("/new/game");
+              }}
+            >
+              New Game
+            </button>
+            <button
+              class="btn btn-light btn-md text-light"
+              style="background-color: transparent;"
+              on:click={() => {
+                navigate("/mygames");
+              }}
+            >
+              List Games
+            </button>
+          </div>
           <div style="float:right; display:flex;justify-content:flex-end;">
             <Link to="/simulator">
               <button
