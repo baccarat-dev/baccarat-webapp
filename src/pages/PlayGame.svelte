@@ -47,6 +47,7 @@
 </script>
 
 <div>
+  <br /><br /><br />
   <div class="container-fluid p-0 bg-white">
     <div class="container">
       <Recorder game_id={$game?._id} />
