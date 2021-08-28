@@ -7,6 +7,7 @@
   import { game, isPageLoading, user } from "../stores/sessionStore";
 
   onMount(async () => {
+    $isPageLoading = true;
     let res = await getAllGames($user._id);
     games = res.data;
     res = await getAllStrategies();
