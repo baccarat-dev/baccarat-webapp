@@ -13,15 +13,18 @@
 
   // DB Operations
   import { fetchGame } from "../api/main/game";
-  import { useParams } from "svelte-navigator";
-  const params = useParams();
+  import { navigate } from "svelte-navigator";
 
   let tableSlices = [];
   onMount(async () => {
-    const game = await fetchGame($params.id);
+    const res = await fetchGame(localStorage.getItem("game_id"));
+    if (res.status !== 200) {
+      return navigate("/mygames");
+    }
+    const game = res.data;
     $metrics = game.metrics.data.rightAndWrongs.pcts;
     $betsList = game.bets;
-    $stats = game.stats;
+    $stats = game.metrics.quickStats;
     $mfker = game.metrics;
     $isPageLoading = false;
     const r = localStorage.getItem("nbrRows");
@@ -49,6 +52,7 @@
   let nbrCols = 10;
 
   function onDimensionsChange(e) {
+    $isPageLoading = true;
     const x = e.target.value;
     if (x < 1 || x > 10) {
       window.pushToast("Enter number between 1 and 10", "danger", 5000);

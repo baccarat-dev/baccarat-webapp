@@ -24,9 +24,7 @@
           s.maxLvl = S.maxLvl;
           s.enabled = S.enabled;
         }
-        console.log(s.maxLvl, S.maxLvl);
       });
-      console.log(localStrategies);
       localStorage.setItem("strategies", JSON.stringify(localStrategies));
     }
   }

@@ -19,7 +19,6 @@
       return;
     }
     $game = response.data;
-    console.log($game);
     $round = $betsList.length + 1;
     $betsList = $game.bets;
     $metrics = $game.metrics.data.rightAndWrongs.pcts;

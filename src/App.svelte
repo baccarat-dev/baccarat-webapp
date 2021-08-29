@@ -22,10 +22,10 @@
       <Navigation />
       <Login registration={false} />
     </Route>
-    <Route path="/">
+    <PrivateRoute path="/">
       <Navigation />
       <Login registration={false} />
-    </Route>
+    </PrivateRoute>
 
     <Route path="/signup">
       <Navigation />
@@ -40,6 +40,11 @@
     <PrivateRoute path="/mygames" let:location>
       <Navigation />
       <ListGames />
+    </PrivateRoute>
+
+    <PrivateRoute path="/history" let:location>
+      <Navigation />
+      <RecordsFullHistory />
     </PrivateRoute>
 
     <PrivateRoute path="/simulator" let:location>

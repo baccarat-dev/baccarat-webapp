@@ -1,16 +1,14 @@
 <script>
   import { onMount } from "svelte";
   import { navigate } from "svelte-navigator";
-  import { createGame, getAllGames, getAllStrategies } from "../api/main/game";
+  import { createGame, getAllStrategies } from "../api/main/game";
 
   import Strategy from "../components/simulation/Strategy.svelte";
-  import { game, isPageLoading, user } from "../stores/sessionStore";
+  import { isPageLoading, user } from "../stores/sessionStore";
 
   onMount(async () => {
     $isPageLoading = true;
-    let res = await getAllGames($user._id);
-    games = res.data;
-    res = await getAllStrategies();
+    const res = await getAllStrategies();
     strategies = res.data;
     strategies.forEach((S) => {
       S.maxLvl = 10;
@@ -28,7 +26,6 @@
     } else {
       localStorage.setItem("strategies", JSON.stringify(strategies));
     }
-    console.log(games, strategies);
     $isPageLoading = false;
   });
 
@@ -67,14 +64,10 @@
     }
   }
 
-  let games = [],
-    strategies = [],
+  let strategies = [],
     defaultMaxLvl = localStorage.getItem("defaultMaxLvl") || 10,
     gameName = "",
     rollOverMode = true;
-  $: {
-    console.log(strategies);
-  }
 </script>
 
 <div style="margin: 0;padding:0;">

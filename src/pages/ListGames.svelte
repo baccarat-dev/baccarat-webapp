@@ -15,7 +15,6 @@
   }
 
   async function deleteGame(_id) {
-    console.log(_id);
     const resp = await delGameDB(_id);
     if (resp.status === 200) {
       await fetchGames();

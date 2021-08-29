@@ -18,7 +18,6 @@
       return;
     }
     const response = await login(email, password);
-    console.log(response);
     if (response.status === 200) {
       $user = { accessToken: response.accessToken, ...response.user };
       localStorage.setItem("accessToken", response.accessToken);
