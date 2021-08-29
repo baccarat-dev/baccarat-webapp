@@ -4,17 +4,14 @@
   import moment from "moment";
   import { getAllGames, deleteGame as delGameDB } from "../api/main/game";
 
-  import { game, isPageLoading, user } from "../stores/sessionStore";
+  import { isPageLoading, user } from "../stores/sessionStore";
 
-  function selectGame(e) {
-    if (!e.target.id) {
+  async function selectGame(_id) {
+    if (!_id) {
       return;
     }
-    $game = JSON.parse(
-      JSON.stringify(games.find((g) => g.name === e.target.id))
-    );
+    localStorage.setItem("game_id", _id);
     navigate("/play");
-    window.pushToast('Started Game "' + e.target.id + '"');
   }
 
   async function deleteGame(_id) {
@@ -59,10 +56,14 @@
       </thead>
       <tbody>
         {#each games as game}
-          <tr on:click={selectGame} id={game.name}>
-            <th scope="row" id={game.name}>1</th>
-            <td id={game.name}>{game.name}</td>
-            <td id={game.name}>{moment(new Date(game.startedOn)).fromNow()}</td>
+          <tr
+            on:click={() => {
+              selectGame(game._id);
+            }}
+          >
+            <th scope="row">1</th>
+            <td>{game.name}</td>
+            <td>{moment(new Date(game.startedOn)).fromNow()}</td>
             <td
               on:click={() => {
                 deleteGame(game._id);

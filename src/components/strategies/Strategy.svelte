@@ -5,6 +5,12 @@
     S.pinned = true;
     strategies = strategies;
   }
+  function unpin(e) {
+    const _id = e.target.value;
+    let S = strategies.find((S) => S._id === _id);
+    S.pinned = false;
+    strategies = strategies;
+  }
 
   export let strategies, S, i;
 </script>
@@ -25,7 +31,15 @@
   <h3 class="el">
     next: {S.nextMove ? S.nextMove : "-"}
   </h3>
-  <button on:click={pin} value={S._id}> PIN </button>
+  {#if S.pinned}
+    <button class="btn btn-sm btn-light" on:click={unpin} value={S._id}>
+      unpin
+    </button>
+  {:else}
+    <button class="btn btn-sm btn-light" on:click={pin} value={S._id}>
+      pin
+    </button>
+  {/if}
 </div>
 
 <style>

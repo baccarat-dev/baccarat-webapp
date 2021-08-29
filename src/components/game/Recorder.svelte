@@ -7,13 +7,10 @@
     stats,
     metrics,
     mfker,
+    game,
   } from "../../stores/sessionStore";
 
-  import {
-    saveRecordDB,
-    fetchGameDataDB,
-    undoRecordDB,
-  } from "../../api/main/game";
+  import { saveRecordDB, fetchGame, undoRecordDB } from "../../api/main/game";
 
   async function addRecord() {
     const response = await saveRecordDB($bet, game_id);
@@ -21,20 +18,20 @@
       window.pushToast("There was an error adding the record!", "danger");
       return;
     }
-    const game = await fetchGameDataDB(game_id);
-
+    $game = response.data;
+    console.log($game);
     $round = $betsList.length + 1;
-    $betsList = game.bets;
-    $metrics = game.metrics.data.rightAndWrongs.pcts;
+    $betsList = $game.bets;
+    $metrics = $game.metrics.data.rightAndWrongs.pcts;
     const temp = $strategiesData;
-    $strategiesData = game.strategies;
+    $strategiesData = $game.strategies;
     temp.forEach((s, i) => {
       if (s.pinned) {
         $strategiesData[i].pinned = true;
       }
     });
-    $stats = game.stats;
-    $mfker = game.metrics;
+    $stats = $game.metrics.quickStats;
+    $mfker = $game.metrics;
   }
 
   function handleKeydown(e) {
@@ -48,7 +45,7 @@
   }
 
   async function undoRecord() {
-    const game = await fetchGameDataDB(game_id);
+    const game = await fetchGame(game_id);
     if ($betsList.length && game.undos) {
       const res = await undoRecordDB(game_id);
       if (res.status === 200) {
@@ -66,19 +63,15 @@
       window.pushToast("Can't Undo!", "warning");
     }
   }
-
-  //props
-  export let game_id;
+  let game_id = localStorage.getItem("game_id");
 </script>
 
 <svelte:window on:keydown={handleKeydown} />
 
 <div>
   <br />
+
   <div style="display: flex;align-items: center;justify-content:center;">
-    <h3 class="text-dark mx-5" style="margin-right: auto;">
-      Round N°{$betsList.length + 1}:
-    </h3>
     <div style="position:relative;">
       <button
         on:click={() => {

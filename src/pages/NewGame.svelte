@@ -51,14 +51,14 @@
     localStorage.setItem("strategies", JSON.stringify(strategies));
   }
 
-  async function startGame() {
+  async function createNewGame() {
     const selectedStrategies = strategies.filter((s) => s.enabled);
     if (!selectedStrategies.length) {
       window.pushToast("Select at least 1 strategy", "danger");
     } else {
       const resp = await createGame($user._id, selectedStrategies, gameName);
       if (resp.status === 201) {
-        $game = resp.data;
+        localStorage.setItem("game_id", resp.data._id);
         navigate("/play");
         window.pushToast(resp.msg, "success");
       } else {
@@ -118,7 +118,7 @@
         on:change={(e) => (gameName = e.target.value)}
         placeholder="enter game name"
       />
-      <button on:click={startGame} class="btn btn-md btn-info mx-3">
+      <button on:click={createNewGame} class="btn btn-md btn-info mx-3">
         Start Game!
       </button>
     </div>

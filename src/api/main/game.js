@@ -8,11 +8,6 @@ async function saveRecordDB(bet, game_id) {
   });
 }
 
-async function fetchGameDataDB(game_id) {
-  const response = await request(MAIN_API_URL + "/game/allrecords/" + game_id);
-  return response.data;
-}
-
 async function resetGameDB(game_id) {
   return await request(MAIN_API_URL + "/game/reset/" + game_id, "DELETE");
 }
@@ -41,13 +36,17 @@ async function deleteGame(_id) {
   return await request(MAIN_API_URL + "/game/" + _id, "DELETE");
 }
 
+async function fetchGame(_id) {
+  return await request(MAIN_API_URL + "/game/" + _id, "GET");
+}
+
 export {
   saveRecordDB,
-  fetchGameDataDB,
   resetGameDB,
   undoRecordDB,
   getAllGames,
   getAllStrategies,
   createGame,
   deleteGame,
+  fetchGame,
 };

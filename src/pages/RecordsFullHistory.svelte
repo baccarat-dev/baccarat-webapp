@@ -12,13 +12,13 @@
   } from "../stores/sessionStore";
 
   // DB Operations
-  import { fetchGameDataDB } from "../api/main/game";
+  import { fetchGame } from "../api/main/game";
   import { useParams } from "svelte-navigator";
   const params = useParams();
 
   let tableSlices = [];
   onMount(async () => {
-    const game = await fetchGameDataDB($params.id);
+    const game = await fetchGame($params.id);
     $metrics = game.metrics.data.rightAndWrongs.pcts;
     $betsList = game.bets;
     $stats = game.stats;

@@ -62,9 +62,9 @@
       <table class="table table-bordered table-dark w-auto">
         <tbody>
           {#each dataMatrix as row}
-            <tr style="line-height: 50px;">
+            <tr style="line-height: 20px;">
               {#each row as c}
-                <td style="min-width:70px;min-height:60px;">
+                <td style="min-width:70px;">
                   <span> {typeof c[0] !== "undefined" ? c[0] : ""}</span>
                   -
                   <span
