@@ -21,6 +21,7 @@
   import { fetchGame } from "../api/main/game";
 
   onMount(async () => {
+    $isPageLoading = true;
     const resp = await fetchGame(localStorage.getItem("game_id"));
     $game = resp?.data;
     if (!$game) {
