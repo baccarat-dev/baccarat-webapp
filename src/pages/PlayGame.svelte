@@ -95,6 +95,7 @@
               {#each $mfker.winsPerLvl.count as m}
                 <h5 class="d-inline mx-3 text-dark">
                   <small> L{m.lvl}: </small>
+                  {m.n} -
                   {Math.round(
                     (10000 * m.n) /
                       $mfker.winsPerLvl.count.reduce((acc, x) => x.n + acc, 0)
