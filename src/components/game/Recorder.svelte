@@ -13,6 +13,10 @@
   import { saveRecordDB, fetchGame, undoRecordDB } from "../../api/main/game";
 
   async function addRecord() {
+    if (busy) {
+      return window.pushToast("recorder busy", "danger");
+    }
+    busy = true;
     const response = await saveRecordDB($bet, game_id);
     if (response.status !== 200) {
       window.pushToast("There was an error adding the record!", "danger");
@@ -31,6 +35,8 @@
     });
     $stats = $game.metrics.quickStats;
     $mfker = $game.metrics;
+
+    busy = false;
   }
 
   function handleKeydown(e) {
@@ -44,9 +50,11 @@
   }
 
   async function undoRecord() {
-    const game = await fetchGame(game_id);
+    const response = await fetchGame(game_id);
+    const game = response.data;
     if ($betsList.length && game.undos) {
       const res = await undoRecordDB(game_id);
+      console.log(res);
       if (res.status === 200) {
         location.reload();
         return;
@@ -59,10 +67,13 @@
         window.pushToast("Can't Undo!", "warning");
       }
     } else {
+      console.log(game);
       window.pushToast("Can't Undo!", "warning");
     }
   }
   let game_id = localStorage.getItem("game_id");
+
+  let busy = false;
 </script>
 
 <svelte:window on:keydown={handleKeydown} />
