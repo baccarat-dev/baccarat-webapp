@@ -61,10 +61,21 @@
     <div class="d-flex flex-wrap justify-content-center">
       <table class="table table-bordered table-dark w-auto">
         <tbody>
-          {#each dataMatrix as row}
+          {#each dataMatrix as row, i}
             <tr style="line-height: 20px;">
               {#each row as c}
-                <td style="min-width:70px;">
+                <td
+                  style="min-width:70px;"
+                  class=""
+                  on:click={(e) => {
+                    const cls = e.target.className;
+                    if (!cls) {
+                      e.target.className = "bg-warning";
+                    } else {
+                      e.target.className = "";
+                    }
+                  }}
+                >
                   <span> {typeof c[0] !== "undefined" ? c[0] : ""}</span>
                   -
                   <span

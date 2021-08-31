@@ -4,7 +4,6 @@
     betsList,
     strategiesData,
     stats,
-    mfker,
   } from "../../stores/sessionStore";
   import Strategy from "../strategies/Strategy.svelte";
 
@@ -82,6 +81,7 @@
     {nbrCols}
     from={null}
     to={null}
+    slice={false}
   />
 
   <br />
