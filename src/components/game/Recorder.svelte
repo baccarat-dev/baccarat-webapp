@@ -54,7 +54,6 @@
     const game = response.data;
     if ($betsList.length && game.undos) {
       const res = await undoRecordDB(game_id);
-      console.log(res);
       if (res.status === 200) {
         location.reload();
         return;
@@ -67,7 +66,6 @@
         window.pushToast("Can't Undo!", "warning");
       }
     } else {
-      console.log(game);
       window.pushToast("Can't Undo!", "warning");
     }
   }
