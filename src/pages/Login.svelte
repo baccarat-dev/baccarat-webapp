@@ -22,14 +22,14 @@
       $user = { accessToken: response.accessToken, ...response.user };
       localStorage.setItem("accessToken", response.accessToken);
       localStorage.setItem("user", JSON.stringify(response.user));
-      navigate("/mygames");
+      navigate("/new/game");
     } else {
       window.pushToast(response.msg, "danger");
     }
   }
   onMount(() => {
     if ($user && $user.accessToken) {
-      navigate("/mygames");
+      navigate("/new/game");
     }
     $isPageLoading = false;
   });

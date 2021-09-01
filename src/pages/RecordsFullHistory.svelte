@@ -3,13 +3,9 @@
 
   import { onMount } from "svelte";
 
-  import {
-    betsList,
-    isPageLoading,
-    stats,
-    metrics,
-    mfker,
-  } from "../stores/sessionStore";
+  import { isPageLoading } from "../stores/sessionStore";
+  let metrics, betsList, stats, mfker;
+  let ready = false;
 
   // DB Operations
   import { fetchGame } from "../api/main/game";
@@ -19,24 +15,25 @@
   onMount(async () => {
     const res = await fetchGame(localStorage.getItem("game_id"));
     if (res.status !== 200) {
-      return navigate("/mygames");
+      return navigate("/new/game");
     }
     const game = res.data;
-    $metrics = game.metrics.data.rightAndWrongs.pcts;
-    $betsList = game.bets;
-    $stats = game.metrics.quickStats;
-    $mfker = game.metrics;
+    metrics = game.metrics.data.rightAndWrongs.pcts;
+    betsList = game.bets;
+    stats = game.metrics.quickStats;
+    mfker = game.metrics;
     $isPageLoading = false;
     const r = localStorage.getItem("nbrRows");
     const c = localStorage.getItem("nbrCols");
     nbrRows = r ? parseInt(r) : nbrRows;
     nbrCols = c ? parseInt(c) : nbrCols;
     createTables();
+    ready = true;
   });
 
   function createTables() {
     const tempIndices = [];
-    $betsList.forEach((x, i) => {
+    betsList.forEach((x, i) => {
       if (i % (nbrRows * nbrCols) === 0) {
         tempIndices.push(i);
       }
@@ -70,98 +67,104 @@
 </script>
 
 <div>
-  <br />
+  {#if ready}
+    <div>
+      <br />
 
-  <div class="d-flex justify-content-center">
-    <div
-      class="input-group mx-4 d-flex align-items-center"
-      style="width: 200px;"
-    >
-      <input
-        class="d-inline form-control"
-        type="number"
-        min="1"
-        max="10"
-        name="nbrRows"
-        style="width: 80px; height:50px; font-weight: 500;font-size: 30px;"
-        value={nbrRows}
-        on:change={onDimensionsChange}
-      />
+      <div class="d-flex justify-content-center">
+        <div
+          class="input-group mx-4 d-flex align-items-center"
+          style="width: 200px;"
+        >
+          <input
+            class="d-inline form-control"
+            type="number"
+            min="1"
+            max="10"
+            name="nbrRows"
+            style="width: 80px; height:50px; font-weight: 500;font-size: 30px;"
+            value={nbrRows}
+            on:change={onDimensionsChange}
+          />
 
-      <b style="font-weight: 900;font-size: 30px;" class="mx-1">X</b>
+          <b style="font-weight: 900;font-size: 30px;" class="mx-1">X</b>
 
-      <input
-        class="form-control d-inline"
-        type="number"
-        min="1"
-        max="10"
-        value={nbrCols}
-        name="nbrCols"
-        style="width: 80px; height:50px; font-weight: 500;font-size: 30px;"
-        on:change={onDimensionsChange}
-      />
-    </div>
-  </div>
-
-  <br />
-  <hr />
-  <br />
-  <div class="text-center mb-3">
-    <h5 class="d-inline mx-3 text-success">max W: {$stats.max_conseq_wins}</h5>
-    <h5 class="d-inline mx-3 text-danger">
-      max L: {$stats.max_conseq_losses}
-    </h5>
-    <h5 class="d-inline mx-3 text-success">
-      total W: {$metrics.filter((x) => x).length}
-    </h5>
-    <h5 class="d-inline mx-3 text-danger">
-      total L: {$metrics.filter((x) => x === false).length}
-    </h5>
-    <h5 class="d-inline mx-3">
-      total S: {$metrics.filter((x) => x === null).length}
-    </h5>
-  </div>
-  {#if Object.keys($mfker).length}
-    <div class="text-center mb-3">
-      <h5 class="d-inline mx-3 text-dark">Wins btw 4 Ls:</h5>
-      <h5 class="d-inline mx-3 text-dark">
-        MIN: {$mfker.winsBetweenLossess.min ?? 0}
-      </h5>
-      <h5 class="d-inline mx-3 text-dark">
-        MAX: {$mfker.winsBetweenLossess.max ?? 0}
-      </h5>
-    </div>
-  {/if}
-  {#if Object.keys($mfker).length}
-    <div class="text-center mb-3">
-      <h5 class="d-inline mx-3 mx-5">
-        lvl: {$mfker.winsPerLvl.lvl} <span class="mx-2">-</span>
-      </h5>
-      {#each $mfker.winsPerLvl.count as m}
-        <h5 class="d-inline mx-3 text-dark">
-          <small> L{m.lvl}: </small>
-          {m.n} -
-          {Math.round(
-            (10000 * m.n) /
-              $mfker.winsPerLvl.count.reduce((acc, x) => x.n + acc, 0)
-          ) / 100}%
-        </h5>
-      {/each}
-    </div>
-  {/if}
-  <div>
-    {#each tableSlices as s}
-      <div>
-        <TableRecords
-          betsList={$betsList}
-          metrics={$metrics}
-          {nbrRows}
-          {nbrCols}
-          from={s[0]}
-          to={s[1]}
-          slice={true}
-        />
+          <input
+            class="form-control d-inline"
+            type="number"
+            min="1"
+            max="10"
+            value={nbrCols}
+            name="nbrCols"
+            style="width: 80px; height:50px; font-weight: 500;font-size: 30px;"
+            on:change={onDimensionsChange}
+          />
+        </div>
       </div>
-    {/each}
-  </div>
+
+      <br />
+      <hr />
+      <br />
+      <div class="text-center mb-3">
+        <h5 class="d-inline mx-3 text-success">
+          max W: {stats.max_conseq_wins}
+        </h5>
+        <h5 class="d-inline mx-3 text-danger">
+          max L: {stats.max_conseq_losses}
+        </h5>
+        <h5 class="d-inline mx-3 text-success">
+          total W: {metrics.filter((x) => x).length}
+        </h5>
+        <h5 class="d-inline mx-3 text-danger">
+          total L: {metrics.filter((x) => x === false).length}
+        </h5>
+        <h5 class="d-inline mx-3">
+          total S: {metrics.filter((x) => x === null).length}
+        </h5>
+      </div>
+      {#if Object.keys(mfker).length}
+        <div class="text-center mb-3">
+          <h5 class="d-inline mx-3 text-dark">Wins btw 4 Ls:</h5>
+          <h5 class="d-inline mx-3 text-dark">
+            MIN: {mfker.winsBetweenLossess.min ?? 0}
+          </h5>
+          <h5 class="d-inline mx-3 text-dark">
+            MAX: {mfker.winsBetweenLossess.max ?? 0}
+          </h5>
+        </div>
+      {/if}
+      {#if Object.keys(mfker).length}
+        <div class="text-center mb-3">
+          <h5 class="d-inline mx-3 mx-5">
+            lvl: {mfker.winsPerLvl.lvl} <span class="mx-2">-</span>
+          </h5>
+          {#each mfker.winsPerLvl.count as m}
+            <h5 class="d-inline mx-3 text-dark">
+              <small> L{m.lvl}: </small>
+              {m.n} -
+              {Math.round(
+                (10000 * m.n) /
+                  mfker.winsPerLvl.count.reduce((acc, x) => x.n + acc, 0)
+              ) / 100}%
+            </h5>
+          {/each}
+        </div>
+      {/if}
+      <div>
+        {#each tableSlices as s}
+          <div>
+            <TableRecords
+              {betsList}
+              {metrics}
+              {nbrRows}
+              {nbrCols}
+              from={s[0]}
+              to={s[1]}
+              slice={true}
+            />
+          </div>
+        {/each}
+      </div>
+    </div>
+  {/if}
 </div>

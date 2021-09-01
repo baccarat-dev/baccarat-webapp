@@ -4,7 +4,7 @@
   import moment from "moment";
   import { getAllGames, deleteGame as delGameDB } from "../api/main/game";
 
-  import { isPageLoading, user } from "../stores/sessionStore";
+  import { isPageLoading, sideBarShow, user } from "../stores/sessionStore";
 
   async function selectGame(_id) {
     if (!_id) {
@@ -12,6 +12,7 @@
     }
     localStorage.setItem("game_id", _id);
     navigate("/play");
+    $sideBarShow = false;
   }
 
   async function deleteGame(_id) {
@@ -20,6 +21,7 @@
       await fetchGames();
       window.pushToast(resp.msg, "success");
     }
+    $sideBarShow = false;
   }
 
   async function fetchGames() {
@@ -39,38 +41,36 @@
 </script>
 
 <div>
-  <br /><br /><br />
-
-  <h3 class="text-primary text-center">Select a Game to Start</h3>
-  <br />
-  <div class="px-3 d-flex justify-content-center">
-    <table class="table table-hover table-dark" style="width: 50%;">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Name</th>
-          <th scope="col">Date</th>
-          <th scope="col">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {#each games as game}
-          <tr
-            on:click={() => {
-              selectGame(game._id);
-            }}
-          >
-            <th scope="row">1</th>
-            <td>{game.name}</td>
-            <td>{moment(new Date(game.startedOn)).fromNow()}</td>
-            <td
-              on:click={() => {
-                deleteGame(game._id);
-              }}><button class="btn btn-sm btn-danger">delete</button></td
-            >
+  {#if games.length}
+    <div class="px-3 d-flex justify-content-center">
+      <table class="table table-hover table-dark">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Date</th>
+            <th scope="col">Actions</th>
           </tr>
-        {/each}
-      </tbody>
-    </table>
-  </div>
+        </thead>
+        <tbody>
+          {#each games as game}
+            <tr
+              on:click={() => {
+                selectGame(game._id);
+              }}
+            >
+              <th scope="row">1</th>
+              <td>{game.name}</td>
+              <td>{moment(game.startedOn).fromNow()}</td>
+              <td
+                on:click={() => {
+                  deleteGame(game._id);
+                }}><button class="btn btn-sm btn-danger">delete</button></td
+              >
+            </tr>
+          {/each}
+        </tbody>
+      </table>
+    </div>
+  {/if}
 </div>

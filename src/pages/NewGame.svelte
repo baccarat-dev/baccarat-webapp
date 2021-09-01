@@ -2,8 +2,7 @@
   import { onMount } from "svelte";
   import { navigate } from "svelte-navigator";
   import { createGame, getAllStrategies } from "../api/main/game";
-
-  import Strategy from "../components/simulation/Strategy.svelte";
+  import Strategy from "../components/strategies/Strategy2.svelte";
   import { isPageLoading, user } from "../stores/sessionStore";
 
   onMount(async () => {

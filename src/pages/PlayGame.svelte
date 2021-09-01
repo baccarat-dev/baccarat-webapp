@@ -25,7 +25,7 @@
     const resp = await fetchGame(localStorage.getItem("game_id"));
     $game = resp?.data;
     if (!$game) {
-      return navigate("/mygames");
+      return navigate("/new/game");
     }
     $metrics = $game.metrics.data.rightAndWrongs.pcts;
     $mfker = $game.metrics;
