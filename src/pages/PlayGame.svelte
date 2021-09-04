@@ -36,8 +36,6 @@
     $isPageLoading = false;
   });
 
-  let busy = false;
-
   $: {
     // watch for changes in theses variables
     $round;

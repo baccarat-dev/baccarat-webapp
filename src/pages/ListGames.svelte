@@ -13,6 +13,7 @@
     localStorage.setItem("game_id", _id);
     navigate("/play");
     $sideBarShow = false;
+    location.reload();
   }
 
   async function deleteGame(_id) {
