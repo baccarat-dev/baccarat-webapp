@@ -103,7 +103,6 @@
                       );
                       e.target.className = "";
                     }
-                    console.log(highlightedCells);
                   }}
                 >
                   <span> {typeof c[0] !== "undefined" ? c[0] : ""}</span>
