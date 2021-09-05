@@ -49,6 +49,7 @@
           highlightedCells.push(newCell);
         } else {
           document.getElementById(cell).className = "";
+          highlightedCells = highlightedCells.filter((x) => x !== cell);
         }
       });
     }
