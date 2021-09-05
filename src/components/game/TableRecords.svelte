@@ -1,5 +1,6 @@
 <script>
   export let betsList, metrics;
+  export let nbrRows, nbrCols, from, to, slice;
 
   let dataMatrix = [];
 
@@ -32,6 +33,25 @@
       dataMatrix.push(row);
     }
     dataMatrix = mT(dataMatrix);
+
+    const MOD = nbOfBets % nbrRows;
+    if (
+      MOD === 1 &&
+      nbOfBets > boardSize &&
+      document.getElementById("cell-1")
+    ) {
+      highlightedCells.forEach((cell) => {
+        const n = +cell.substr(5);
+        const newCell = "cell-" + (n - nbrRows);
+        if (n > nbrRows) {
+          document.getElementById(cell).className = "";
+          document.getElementById(newCell).className = "bg-warning";
+          highlightedCells.push(newCell);
+        } else {
+          document.getElementById(cell).className = "";
+        }
+      });
+    }
   }
 
   // return the transpose of a matrix
@@ -49,7 +69,7 @@
     populateDataMatrix();
   }
 
-  export let nbrRows, nbrCols, from, to, slice;
+  let highlightedCells = [];
 </script>
 
 <div>
@@ -63,17 +83,23 @@
         <tbody>
           {#each dataMatrix as row, i}
             <tr style="line-height: 20px;">
-              {#each row as c}
+              {#each row as c, j}
                 <td
+                  id={"cell-" + (i + 1 + j * nbrRows)}
                   style="min-width:70px;"
                   class=""
                   on:click={(e) => {
                     const cls = e.target.className;
                     if (!cls) {
+                      highlightedCells.push("cell-" + (i + 1 + j * nbrRows));
                       e.target.className = "bg-warning";
                     } else {
+                      highlightedCells = highlightedCells.filter(
+                        (x) => x !== "cell-" + (i + 1 + j * nbrRows)
+                      );
                       e.target.className = "";
                     }
+                    console.log(highlightedCells);
                   }}
                 >
                   <span> {typeof c[0] !== "undefined" ? c[0] : ""}</span>

@@ -38,6 +38,7 @@
   onMount(() => {
     fetchGames();
   });
+
   let games = [];
 </script>
 
