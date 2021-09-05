@@ -89,6 +89,9 @@
                   style="min-width:70px;"
                   class=""
                   on:click={(e) => {
+                    if (e.target.tagName !== "TD") {
+                      return;
+                    }
                     const cls = e.target.className;
                     if (!cls) {
                       highlightedCells.push("cell-" + (i + 1 + j * nbrRows));
