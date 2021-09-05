@@ -45,12 +45,14 @@
         const newCell = "cell-" + (n - nbrRows);
         if (n > nbrRows) {
           document.getElementById(cell).className = "";
+          highlightedCells = highlightedCells.filter((x) => x !== cell);
           document.getElementById(newCell).className = "bg-warning";
           highlightedCells.push(newCell);
         } else {
           document.getElementById(cell).className = "";
           highlightedCells = highlightedCells.filter((x) => x !== cell);
         }
+        console.log(highlightedCells);
       });
     }
   }
@@ -71,6 +73,10 @@
   }
 
   let highlightedCells = [];
+
+  $: {
+    console.log(highlightedCells);
+  }
 </script>
 
 <div>
@@ -95,7 +101,10 @@
                     }
                     const cls = e.target.className;
                     if (!cls) {
-                      highlightedCells.push("cell-" + (i + 1 + j * nbrRows));
+                      highlightedCells = [
+                        ...highlightedCells,
+                        "cell-" + (i + 1 + j * nbrRows),
+                      ];
                       e.target.className = "bg-warning";
                     } else {
                       highlightedCells = highlightedCells.filter(
