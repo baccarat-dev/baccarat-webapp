@@ -65,7 +65,7 @@
 
   let strategies = [],
     defaultMaxLvl = localStorage.getItem("defaultMaxLvl") || 10,
-    gameName = "",
+    gameName = "test",
     rollOverMode = true;
 </script>
 
