@@ -56,13 +56,13 @@
         </thead>
         <tbody>
           {#each games as game}
-            <tr
-              on:click={() => {
-                selectGame(game._id);
-              }}
-            >
+            <tr>
               <th scope="row">1</th>
-              <td>{game.name}</td>
+              <td
+                on:click={() => {
+                  selectGame(game._id);
+                }}>{game.name}</td
+              >
               <td>{moment(game.startedOn).fromNow()}</td>
               <td
                 on:click={() => {
