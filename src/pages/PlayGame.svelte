@@ -36,16 +36,13 @@
     $isPageLoading = false;
   });
 
+  let activeStrategies = [];
+  let idleStrategies = [];
+
   $: {
-    // watch for changes in theses variables
-    $round;
-    $betsList = $betsList;
-    $strategiesData.sort((s1, s2) => {
-      return 0;
-      return s2.percent - s1.percent;
-    });
-    $strategiesData = $strategiesData;
-    $stats = $stats;
+    activeStrategies = $strategiesData.filter((x) => x.lvl >= 7);
+    idleStrategies = $strategiesData.filter((x) => x.lvl < 7);
+    console.log($game);
   }
 </script>
 
@@ -54,6 +51,16 @@
   <div class="container-fluid p-0 bg-white">
     <div class="container">
       <div class="container">
+        {#if activeStrategies.length > 0}
+          <hr />
+          {#each activeStrategies as S, i}
+            <div class="my-3">
+              <Strategy bind:strategies={activeStrategies} {S} {i} />
+            </div>
+          {/each}
+          <hr />
+        {/if}
+
         <Recorder game_id={$game?._id} />
         <br />
         <div class="stats">
@@ -117,10 +124,10 @@
         </div>
         <br />
         <div>
-          {#if $strategiesData.length > 0}
-            {#each $strategiesData as S, i}
+          {#if idleStrategies.length > 0}
+            {#each idleStrategies as S, i}
               <div class="my-3">
-                <Strategy bind:strategies={$strategiesData} {S} {i} />
+                <Strategy bind:strategies={idleStrategies} {S} {i} />
               </div>
             {/each}
           {/if}
