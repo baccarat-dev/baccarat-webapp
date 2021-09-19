@@ -59,6 +59,7 @@
             </div>
           {/each}
           <hr />
+          <br />
         {/if}
 
         <Recorder game_id={$game?._id} />
